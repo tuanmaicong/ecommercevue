@@ -7,9 +7,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\ApiResponse;
 
 class ProfileController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      */
@@ -36,37 +38,33 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,'.Auth::user()->id,
             'image' => 'mimes:jpg,png,jpeg,gif|max:5012',
-            'phone' => 'int',
+            'phone' => 'numeric|min:10',
             'address' => 'required|string|max:255',
             'twitter_link' => 'string|max:255',
             'insta_link' => 'string|max:255',
-            'fb_link' => 'string|max:255',
+            'fb_link' => 'required|string|max:255',
         ]);
         if ($validation->fails()){
-            return response()->json([
-                'status' => 400,
-                'message' => $validation->errors()->first(),
-            ]);
+            return $this->error($validation->errors()->first(),400,[]);
         }else{
             if ($request->hasFile('image')) {
+                $oldFile = Auth::user()->image;
                 Auth::user()->image = upload_file('avatar', $request->file('image'));
+                Auth::user()->save();
+                delete_file($oldFile);
             }
                 $user = User::updateOrCreate(
                 ['id' => Auth::user()->id],
                 ['name' => $request->name,
                     'address' => $request->address,
                     'address' => $request->address,
-                    'image' => upload_file('avatar', $request->file('image')),
                     'phone' => $request->phone,
                     'twitter_link' => $request->twitter_link,
                     'insta_link' => $request->insta_link,
                     'fb_link' => $request->fb_link,
                     ]
             );
-            return response()->json([
-               'status' => 200,
-               'message' => 'Successfully update'
-            ]);
+            return $this->success([],'Successfully update');
         }
     }
 

@@ -42,7 +42,7 @@
                                 <div class="card-body">
                                     <div class="d-flex flex-column align-items-center text-center">
                                         <img src="{{asset(Auth::user()->image)}}" alt="Admin"
-                                             class="rounded-circle p-1 bg-primary" width="110">
+                                             class="rounded-circle p-1" width="110">
                                         <div class="mt-3">
                                             <h4>{{Auth::user()->name}}</h4>
                                             <p class="text-secondary mb-1">Full Stack Developer</p>
@@ -204,8 +204,9 @@
                                         <div class="row">
                                             <div class="col-sm-3"></div>
                                             <div class="col-sm-9 text-secondary">
-                                                <input type="submit" id="submitButton" class="btn btn-primary px-4"
-                                                       value="Save Changes"/>
+                                                <span id="submitButton">
+                                                    <input type="submit" id="submitButton" class="btn btn-primary px-4"/>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
