@@ -55,6 +55,9 @@
                         if (result.status === 'Success') {
                             showAlter(result.status, result.message)
                             $('#submitButton').html(html1); // Nút submit lại
+                            if(result.data.reload != undefined){
+                                window.location.href = window.location.href;
+                            }
                         } else {
                             showAlter(result.status, result.message)
                             $('#submitButton').html(html1); // Nút submit lại
@@ -68,7 +71,36 @@
             }
         });
     });
-
+    function deleteData(id, table){
+        let text = "Are you in sure delete";
+        if (confirm(text) == true) {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url('admin/deleteData') }}/'+ id + '/' + table +'',
+                data: '',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.status === 'Success') {
+                        showAlter(result.status, result.message)
+                        if(result.data.reload != undefined){
+                            window.location.href = window.location.href;
+                        }
+                    } else {
+                        showAlter(result.status, result.message)
+                        $('#submitButton').html(html1); // Nút submit lại
+                    }
+                },
+                error:function (result){
+                    showAlter(result.responseJSON.status,result.responseJSON.message);
+                    $('#submitButton').html(html1);
+                }
+            });
+        } else {
+            text = "You canceled!";
+        }
+    }
 </script>
 <script>
     function showAlter(status, message){

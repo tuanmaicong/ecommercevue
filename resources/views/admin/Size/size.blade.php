@@ -5,13 +5,13 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Home banner</div>
+                <div class="breadcrumb-title pe-3">Size</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Home banner</li>
+                            <li class="breadcrumb-item active" aria-current="page">Manage size</li>
                         </ol>
                     </nav>
                 </div>
@@ -33,9 +33,9 @@
                 </div>
             </div>
             <div class="col">
-                <button type="button" onclick="saveData('0','','','')" class="btn btn-outline-info px-5 radius-30 mb-3"
+                <button type="button" onclick="saveData('0','')" class="btn btn-outline-info px-5 radius-30 mb-3"
                         data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">Add home banner
+                        data-bs-target="#exampleModal">Add size
                 </button>
             </div>
             <div class="card">
@@ -45,9 +45,7 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Text</th>
-                                <th>Link</th>
-                                <th>Image</th>
+                                <th>Size</th>
                                 <th>Created_at</th>
                                 <th>Updated_at</th>
                                 <th>Action</th>
@@ -57,18 +55,16 @@
                             @foreach($data as $list)
                                 <tr>
                                     <td>{{$list->id}}</td>
-                                    <td>{{$list->text}}</td>
-                                    <td>{{$list->link}}</td>
-                                    <td><img src="{{asset($list->image)}}" width="100px" height="100px"></td>
+                                    <td>{{$list->size}}</td>
                                     <td>{{$list->created_at}}</td>
                                     <td>{{$list->updated_at}}</td>
                                     <td>
                                         <button type="button"
-                                                onclick="saveData('{{$list->id}}','{{$list->text}}','{{$list->link}}','{{$list->image}}')"
+                                                onclick="saveData('{{$list->id}}','{{$list->size}}')"
                                                 class="btn btn-outline-info px-5 radius-30" data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal">Update
                                         </button>
-                                        <button onclick="deleteData('{{$list->id}}','home_banners')" class="btn btn-outline-danger px-5 radius-30">Delete</button>
+                                        <button onclick="deleteData('{{$list->id}}','sizes')" class="btn btn-outline-danger px-5 radius-30">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -77,8 +73,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Text</th>
-                                <th>Link</th>
-                                <th>Image</th>
                                 <th>Created_at</th>
                                 <th>Updated_at</th>
                                 <th>Action</th>
@@ -94,35 +88,19 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add home banner</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add size</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="formSubmit" action="{{url('admin/updateHomeBanner')}}" method="post" enctype="multipart/form-data">
+                <form id="formSubmit" action="{{url('admin/updateSize')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body p-4">
                                 <div class="row mb-3">
-                                    <label for="enter_text" class="col-sm-3 col-form-label">Text</label>
+                                    <label for="enter_text" class="col-sm-3 col-form-label">Size</label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="text" class="form-control" id="enter_text"
+                                        <input type="text" name="size" class="form-control" id="enter_text"
                                                placeholder="Text" required>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="enter_link" class="col-sm-3 col-form-label">Link</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="link" class="form-control" id="enter_link"
-                                               placeholder="Link" required>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="enter_image" class="col-sm-3 col-form-label">Image</label>
-                                    <div class="col-sm-9">
-                                        <input type="file" name="image" class="form-control" id="photo" required>
-                                    </div>
-                                    <div id="image_key">
-                                        <img src="" id="imgPreview" height="200px" width="200px">
                                     </div>
                                 </div>
                             </div>
@@ -140,35 +118,9 @@
         </div>
     </div>
     <script>
-        function saveData(id, text, link, image) {
+        function saveData(id, size) {
             $('#enter_id').val(id);
-            $('#enter_text').val(text);
-            $('#enter_link').val(link);
-
-            if (image == '') {
-                var key_image = "{{ URL::asset('assets/images/pngegg.png') }}";
-                $('#imgPreview').attr('src', key_image);
-                $('#photo').prop('required',true);
-            } else {
-                // Nếu bản ghi có ảnh, hiển thị ảnh đó
-                var key_image = image;
-                $('#imgPreview').attr('src', "{{ URL::asset('') }}" + key_image);
-                $('#photo').prop('required',false);
-            }
-
-            // Xử lý sự kiện thay đổi của input file
-            $(document).ready(function () {
-                $('#photo').change(function () {
-                    var input = this;
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            $('#imgPreview').attr('src', e.target.result);
-                        }
-                        reader.readAsDataURL(input.files[0]);
-                    }
-                });
-            });
+            $('#enter_text').val(size);
         }
     </script>
 @endsection

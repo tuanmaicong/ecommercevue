@@ -42,7 +42,7 @@
                                 <div class="card-body">
                                     <div class="d-flex flex-column align-items-center text-center">
                                         <img src="{{asset(Auth::user()->image)}}" alt="Admin"
-                                             class="rounded-circle p-1" width="110">
+                                             id="imgPreview" class="rounded-circle p-1" width="110">
                                         <div class="mt-3">
                                             <h4>{{Auth::user()->name}}</h4>
                                             <p class="text-secondary mb-1">Full Stack Developer</p>
@@ -218,5 +218,22 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $('#image').change(function(){
+                var input = this;
+                if (input.files && input.files[0]) {
+                    //doc noi dung file
+                    var reader = new FileReader();
+                    //load va hien thi file
+                    reader.onload = function (e) {
+                        $('#imgPreview').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
+        });
+    </script>
     <!--end page wrapper -->
 @endsection

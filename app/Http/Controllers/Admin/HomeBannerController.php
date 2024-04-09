@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\HomeBanner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Traits\ApiResponse;
 
 class HomeBannerController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      */
@@ -30,7 +34,34 @@ class HomeBannerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(),[
+            'text' => 'required|string|max:255',
+            'link' => 'required|string|max:255',
+            'image' => 'mimes:jpg,png,jpeg,gif|max:5012',
+            'id' => 'required'
+        ]);
+        if ($validation->fails()){
+            return $this->error($validation->errors()->first(),400,[]);
+        }else{
+            $image_name = '';
+            if ($request->hasFile('image')) {
+                if ($request->id > 0) {
+                    $home_banner = HomeBanner::find($request->id);
+                    if ($home_banner) {
+                        $oldImage = $home_banner->image;
+                        delete_file($oldImage);
+                    }
+                }
+                $image_name = upload_file('home_banner', $request->file('image'));
+            } else {
+                $image_name = HomeBanner::where('id', $request->id)->value('image');
+            }
+            HomeBanner::updateOrCreate(
+                ['id' => $request->id],
+                ['text' => $request->post('text'), 'link' => $request->post('link'), 'image' => $image_name]
+            );
+            return $this->success(['reload'=> true], 'Successfully update');
+        }
     }
 
     /**
