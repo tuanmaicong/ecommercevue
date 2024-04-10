@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeBannerController;
@@ -26,6 +27,13 @@ Route::post('/updateSize',[SizeController::class,'store']);
 //Color
 Route::get('/manage_color',[ColorController::class,'index']);
 Route::post('/updateColor',[ColorController::class,'store']);
+
+//Attribute
+Route::get('/attribute_name',[AttributeController::class,'index_attribute_name']);
+Route::post('/update_attribute_name',[AttributeController::class,'store_attribute_name']);
+
+Route::get('/attribute_value',[AttributeController::class,'index_attribute_value']);
+Route::post('/update_attribute_value',[AttributeController::class,'store_attribute_value']);
 
 //Delete data
 Route::get('/deleteData/{id?}/{table?}',[DashboardController::class,'deleteData']);
