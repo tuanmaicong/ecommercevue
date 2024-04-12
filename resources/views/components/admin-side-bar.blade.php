@@ -41,6 +41,13 @@
             </a>
         </li>
         <li>
+            <a href="{{url('admin/brand')}}">
+                <div class="parent-icon"><i class='bx bx-cookie'></i>
+                </div>
+                <div class="menu-title">Manage brand</div>
+            </a>
+        </li>
+        <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-cart'></i>
                 </div>
@@ -52,6 +59,27 @@
                 <li><a href="{{url('admin/attribute_value')}}"><i class='bx bx-radio-circle'></i>Attribute value</a>
                 </li>
             </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-cart'></i>
+                </div>
+                <div class="menu-title">Category</div>
+            </a>
+            <ul>
+                <li><a href="{{url('admin/category')}}"><i class='bx bx-radio-circle'></i>Category</a>
+                </li>
+                <li><a href="{{url('admin/category_attribute')}}"><i class='bx bx-radio-circle'></i>Category attribute</a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-label">Tax</li>
+        <li>
+            <a href="{{url('admin/tax')}}">
+                <div class="parent-icon"><i class='bx bx-cookie'></i>
+                </div>
+                <div class="menu-title">Tax</div>
+            </a>
         </li>
         <li class="menu-label">Pages</li>
         <li>

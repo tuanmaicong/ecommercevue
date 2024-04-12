@@ -5,13 +5,13 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Attribute value</div>
+                <div class="breadcrumb-title pe-3">Category attribute</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Attribute value</li>
+                            <li class="breadcrumb-item active" aria-current="page">Category attribute</li>
                         </ol>
                     </nav>
                 </div>
@@ -35,7 +35,7 @@
             <div class="col">
                 <button type="button" onclick="saveData('0','','')" class="btn btn-outline-info px-5 radius-30 mb-3"
                         data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">Add attribute value
+                        data-bs-target="#exampleModal">Add category attribute
                 </button>
             </div>
             <div class="card">
@@ -45,10 +45,8 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Attribute name</th>
-                                <th>Value</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
+                                <th>Category</th>
+                                <th>Attribute</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -56,17 +54,15 @@
                             @foreach($data as $list)
                                 <tr>
                                     <td>{{$list->id}}</td>
-                                    <td>{{$list['singleAttribute']->name}},{{$list['singleAttribute']->slug}}</td>
-                                    <td>{{$list->value}}</td>
-                                    <td>{{$list->created_at}}</td>
-                                    <td>{{$list->updated_at}}</td>
+                                    <td>{{$list['category']->name}}</td>
+                                    <td>{{$list['attribute']->name}}</td>
                                     <td>
                                         <button type="button"
-                                                onclick="saveData('{{$list->id}}','{{$list->attribute_id}}','{{$list->value}}')"
+                                                onclick="saveData('{{$list->id}}','{{$list->category_id}}','{{$list->attribute_id}}')"
                                                 class="btn btn-outline-info px-5 radius-30" data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal">Update
                                         </button>
-                                        <button onclick="deleteData('{{$list->id}}','attribute_values')" class="btn btn-outline-danger px-5 radius-30">Delete</button>
+                                        <button onclick="deleteData('{{$list->id}}','category_attribute')" class="btn btn-outline-danger px-5 radius-30">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -74,10 +70,8 @@
                             <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Attribute ID</th>
-                                <th>Value</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
+                                <th>Category id</th>
+                                <th>Attribute id</th>
                                 <th>Action</th>
                             </tr>
                             </tfoot>
@@ -91,29 +85,34 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add attribute</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add category attribute</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="formSubmit" action="{{url('admin/update_attribute_value')}}" method="post" enctype="multipart/form-data">
+                <form id="formSubmit" action="{{url('admin/update_category_attribute')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body p-4">
                                 <div class="row mb-3">
-                                    <label for="enter_text" class="col-sm-3 col-form-label">Name</label>
+                                    <label for="enter_category_id" class="col-sm-3 col-form-label">Category</label>
                                     <div class="col-sm-9">
-                                        <select name="attribute_id" id="enter_attribute" class="form-select" aria-label="Default select example">
-                                            @foreach($attribute as $item)
-                                                <option value="{{$item->id}}">{{$item->name}},{{$item->slug}}</option>
+                                        <select name="category_id" id="category_id" class="form-select" aria-label="Default select example">
+                                            <option value="0">Select category</option>
+                                            @foreach($category as $cate)
+                                                <option value="{{$cate->id}}">{{$cate->name}}({{$cate->slug}})</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="enter_slug" class="col-sm-3 col-form-label">Slug</label>
+                                    <label for="enter_attribute_id" class="col-sm-3 col-form-label">Attribute</label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="value" class="form-control" id="enter_value"
-                                               placeholder="Value" required>
+                                        <select name="attribute_id" id="attribute_id" class="form-select" aria-label="Default select example">
+                                            <option value="0">Select attribute</option>
+                                            @foreach($attribute as $attri)
+                                                <option value="{{$attri->id}}">{{$attri->name}}({{$attri->slug}})</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -131,10 +130,14 @@
         </div>
     </div>
     <script>
-        function saveData(id, text, value) {
+        function saveData(id, category_id, attribute_id) {
+            if(id == 0){
+                $('#category_id option[value="'+id+'"]').selected();
+                $('#attribute_id option[value="'+id+'"]').selected();
+            }
             $('#enter_id').val(id);
-            $('#enter_attribute').val(text);
-            $('#enter_value').val(value);
+            $('#category_id').val(category_id);
+            $('#attribute_id').val(attribute_id);
         }
     </script>
 @endsection
