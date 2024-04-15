@@ -17,10 +17,15 @@ class CategoryAttribute extends Model
 
     public function attribute()
     {
-        return $this->hasOne(Attribute::class,'id','attribute_id');
+        return $this->hasMany(Attribute::class,'id','attribute_id');
     }
+
     public function category()
     {
         return $this->hasOne(Category::class,'id','category_id');
+    }
+    public function values()
+    {
+        return $this->hasMany(AttributeValue::class,'attribute_id','attribute_id');
     }
 }

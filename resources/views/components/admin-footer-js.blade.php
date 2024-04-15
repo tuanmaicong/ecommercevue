@@ -127,3 +127,29 @@
             .appendTo( '#example2_wrapper .col-md-6:eq(0)' );
     } );
 </script>
+<script type="text/javascript" src="{{asset('multiSelect/jquery.multi-select.js')}}"></script>
+<script type="text/javascript">
+    $(function(){
+
+        $('#ice-cream').multiSelect();
+        $('#line-wrap-example').multiSelect({
+            positionMenuWithin: $('.position-menu-within')
+        });
+        $('#categories').multiSelect({
+            noneText: 'All categories',
+            presets: [
+                {
+                    name: 'All categories',
+                    all: true
+                },
+                {
+                    name: 'My categories',
+                    options: ['a', 'c']
+                }
+            ]
+        });
+        $('#modal-example').multiSelect({
+            'modalHTML': '<div class="multi-select-modal">'
+        });
+    });
+</script>

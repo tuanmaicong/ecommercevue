@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeBannerController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TaxController;
@@ -52,6 +53,12 @@ Route::post('/update_brand',[BrandController::class,'store']);
 //Tax
 Route::get('/tax',[TaxController::class,'index']);
 Route::post('/update_tax',[TaxController::class,'store']);
+
+//Product
+Route::get('/product',[ProductController::class,'index']);
+Route::get('/manage_product/{id?}',[ProductController::class,'view_product']);
+Route::post('/update_product',[ProductController::class,'store']);
+Route::post('/get_attribute',[ProductController::class,'get_attribute']);
 
 //Delete data
 Route::get('/deleteData/{id?}/{table?}',[DashboardController::class,'deleteData']);
