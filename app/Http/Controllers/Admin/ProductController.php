@@ -8,6 +8,7 @@ use App\Models\CategoryAttribute;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\ProductAttr;
+use App\Models\ProductAttribute;
 use App\Models\ProductAttrImage;
 use App\Models\Size;
 use App\Models\Tax;
@@ -15,96 +16,168 @@ use Illuminate\Http\Request;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    //
     use ApiResponse;
+
     public function index()
     {
         $data = Product::get();
         return view('admin.Product.product', get_defined_vars());
     }
 
-    public function view_product($id=0)
+    public function view_product($id = 0)
     {
-        if ($id == 0){
+        $colors = Color::get();
+        $cat = Category::get();
+        $tax = Tax::get();
+        $sizes = Size::get();
+        $brand = Brand::get();
+        if ($id == 0) {
             //new product
             $data = new Product();
             $product_attr = new ProductAttr();
             $product_attr_image = new ProductAttrImage();
-            $colors = Color::get();
-            $cat = Category::get();
-            $tax = Tax::get();
-            $sizes = Size::get();
-            $brand = Brand::get();
-        }else{
+        } else {
             //update product
             $data['id'] = $id;
             $validation = Validator::make($data, [
                 'id' => 'required|exists:products,id'
             ]);
-            if ($validation->fails()){
+            if ($validation->fails()) {
                 return redirect()->back();
-            }else{
-                $data = Product::where('id',$id)->first();
+            } else {
+                $data = Product::where('id', $id)->with('attribute','product_attributes')->first();
+//                prx($data->toArray());
             }
         }
-//        prx(get_defined_vars());
-        return view('admin.Product.manage_product',get_defined_vars());
-//        prx(get_defined_vars());
+        return view('admin.Product.manage_product', get_defined_vars());
     }
+
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
-            'image' => 'mimes:jpg,png,jpeg,gif|max:5012',
-            'item_code' => 'required|string|max:255',
-            'id' => 'required'
-        ]);
-        if ($validation->fails()) {
-            return $this->error($validation->errors()->first(), 400, []);
-        } else {
-            $image_name = '';
-            if ($request->hasFile('image')) {
-                if ($request->id > 0) {
-                    $home_banner = Category::find($request->id);
-                    if ($home_banner) {
-                        $oldImage = $home_banner->image;
-                        delete_file($oldImage);
+        try {
+            DB::beginTransaction(); //make this block observable and process start
+//            prx($request->all());
+            $validation = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'slug' => 'required|string|max:255',
+                'image' => 'mimes:jpg,png,jpeg,gif|max:5012',
+                'item_code' => 'required|string|max:255',
+                'keywords' => 'required|string|max:255',
+                'category_id' => 'required|exists:categories,id',
+//            'id' => 'required'
+            ]);
+            if ($validation->fails()) {
+                return $this->error($validation->errors()->first(), 400, []);
+            } else {
+                $image_name = '';
+                if ($request->hasFile('image')) {
+                    if ($request->id > 0) {
+                        $product = Product::find($request->id);
+                        if ($product) {
+                            $oldImage = $product->image;
+                            delete_file($oldImage);
+                        }
                     }
+                    $image_name = upload_file('product_images', $request->file('image'));
+                } else {
+                    $image_name = Product::where('id', $request->id)->value('image');
                 }
-                $image_name = upload_file('category_image', $request->file('image'));
-            } else {
-                $image_name = Category::where('id', $request->id)->value('image');
-            }
-            if ($request->parent_category_id != 0) {
-                Category::updateOrCreate(
+                $productID = Product::updateOrCreate(
                     ['id' => $request->id],
-                    ['name' => $request->post('name'),
-                        'slug' => $request->post('slug'),
-                        'parent_category_id' => $request->post('parent_category_id'),
+                    ['name' => $request->name,
+                        'slug' => $request->slug,
+                        'item_code' => $request->item_code,
+                        'keywords' => $request->keywords,
+                        'category_id' => $request->category_id,
+                        'brand_id' => $request->brand_id,
+                        'tax_id' => $request->tax_id,
+                        'description' => $request->description,
                         'image' => $image_name,
                     ]
                 );
-            } else {
-                Category::updateOrCreate(
-                    ['id' => $request->id],
-                    ['name' => $request->post('name'),
-                        'slug' => $request->post('slug'),
-                        'image' => $image_name,
-                    ]
-                );
+                $productID = $productID->id;
+                //Product Attribute
+                $dataProductAttr =ProductAttribute::where('product_id', $productID)->get();
+                if ($dataProductAttr){
+                    ProductAttribute::where('product_id', $productID)->delete();
+                }
+                foreach ($request->attribute_id as $key => $value) {
+                    ProductAttribute::updateOrCreate(
+                        ['product_id' => $productID,
+                            'category_id' => $request->category_id,
+                            'attribute_value_id' => $value,
+                        ],
+                        ['product_id' => $productID,
+                            'category_id' => $request->category_id,
+                            'attribute_value_id' => $value,
+                        ]
+                    );
+                }
+                //Product Attrs
+                $productAttrNewID = [];
+//                prx($request->all());
+                foreach ($request->sku as $key => $value) {
+                    $productAttrId = ProductAttr::updateOrCreate(
+                        ['id' => $request->productAttrId[$key]],
+                        ['product_id' => $productID,
+                            'color_id' => $request->color_id[$key],
+                            'size_id' => $request->size_id[$key],
+                            'sku' => $request->sku[$key],
+                            'mrp' => $request->mrp[$key],
+                            'qty' => $request->qty[$key],
+                            'length' => $request->length[$key],
+                            'width' => $request->width[$key],
+                            'height' => $request->height[$key],
+                            'weight' => $request->weight[$key],
+                        ]
+                    );
+                    $productAttrId = $productAttrId->id;
+                    $imageVal = 'attr_image_'.$request->imageValue[$key];
+                    if ($request->$imageVal){
+                        foreach ($request->$imageVal as $key=>$value) {
+                            //Product Attr Image
+                            if ($request->$imageVal){
+                                $image_name = upload_file('product_attr_images', $value);
+                                ProductAttrImage::updateOrCreate(
+                                    ['product_id' => $productID,
+                                        'product_attr_id' => $productAttrId,
+                                        'image' => $image_name
+                                    ],
+                                );
+                            }
+                        }
+                    }
+
+
+                }
+                DB::commit(); //process end
+                echo "No Error occurs";
+                return redirect()->back();
+//                return $this->success(['reload' => true], 'Successfully update');
             }
-            return $this->success(['reload' => true], 'Successfully update');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack(); // if error occurs rollback all database queries
+            echo $th;
         }
     }
+
     public function get_attribute(Request $request)
     {
         $category_id = $request->category_id;
-        $data = CategoryAttribute::where('category_id',$category_id)->with('attribute','values')->get();
+        $data = CategoryAttribute::where('category_id', $category_id)->with('attribute', 'values')->get();
         return $this->success(['data' => $data], 'Successfully update');
+    }
+    public function removeAttrId(Request $request)
+    {
+        $type = $request->type;
+//        prx($request->id);
+        DB::table($type)->where('id',$request->id)->delete();
+        return $this->success(['status' => 'Success'], 'Successfully update');
     }
 }

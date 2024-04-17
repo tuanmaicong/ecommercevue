@@ -40,6 +40,7 @@
             e.preventDefault(); // Ngăn chặn chuyển hướng sang trang khác
             if ($(this).parsley().validate()) {
                 var formData = new FormData(this);
+                console.log(formData);
                 var html = '<button class="btn btn-primary" type="button" disabled=""> ' +
                     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</button>';
                 var html1 = '<input type="submit" id="submitButton" class="btn btn-primary px-4"/>';
@@ -130,8 +131,7 @@
 <script type="text/javascript" src="{{asset('multiSelect/jquery.multi-select.js')}}"></script>
 <script type="text/javascript">
     $(function(){
-
-        $('#ice-cream').multiSelect();
+        $('#attribute_id').multiSelect();
         $('#line-wrap-example').multiSelect({
             positionMenuWithin: $('.position-menu-within')
         });

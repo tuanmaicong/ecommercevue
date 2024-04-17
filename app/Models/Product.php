@@ -20,4 +20,12 @@ class Product extends Model
       'tax_id',
     ];
 
+    public function attribute()
+    {
+        return $this->hasMany(ProductAttribute::class,'product_id','id')->with('attribute_values');
+    }
+    public function product_attributes()
+    {
+        return $this->hasMany(ProductAttr::class,'product_id','id')->with('images');
+    }
 }
