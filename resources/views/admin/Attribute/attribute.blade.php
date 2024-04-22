@@ -47,8 +47,6 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Slug</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -58,8 +56,6 @@
                                     <td>{{$list->id}}</td>
                                     <td>{{$list->name}}</td>
                                     <td>{{$list->slug}}</td>
-                                    <td>{{$list->created_at}}</td>
-                                    <td>{{$list->updated_at}}</td>
                                     <td>
                                         <button type="button"
                                                 onclick="saveData('{{$list->id}}','{{$list->name}}','{{$list->slug}}')"
@@ -76,8 +72,6 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Slug</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
                                 <th>Action</th>
                             </tr>
                             </tfoot>

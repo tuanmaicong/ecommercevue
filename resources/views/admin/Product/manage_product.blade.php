@@ -137,7 +137,7 @@
                                         </div>
                                         @php
                                             $count = 1;
-                                            $imageCount = 111;
+                                            $imageCount = 999;
                                         @endphp
                                         <div class="row" id="addAttr">
                                             @if(isset($data['product_attributes']) && count($data['product_attributes']) > 0)
@@ -215,7 +215,7 @@
                                                                         <div id="attrImage_{{$imageCount}}">
                                                                             <div class="col-sm-12 mb-2">
                                                                                 <input type="file" name="attr_image_{{$count}}[]"
-                                                                                       class="form-control" id="image_{{$count}}">
+                                                                                       class="form-control image-input" data-image-id="{{$imageAttr->id}}" id="image_{{$count}}">
                                                                             </div>
                                                                             @if($imageAttr->image != '')
                                                                                 <img src="{{asset($imageAttr->image)}}" width="100px" height="100px">
@@ -438,6 +438,15 @@
         });
     </script>
     <script>
+        $(document).ready(function() {
+            $(".image-input").change(function() {
+                var imageId = $(this).data("image-id");
+                var inputName = $(this).attr("name");
+                // Thêm ID của ảnh vào tên của input file
+                $(this).attr("name", inputName.replace("[]", "[" + imageId + "]"));
+            });
+        });
+
         function removeAttr(id,attrId='',type='image') {
             $('#' + id + '').remove();
             if (type != '' ){

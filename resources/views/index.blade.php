@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TuanmcShop</title>
     <link rel="canonical" href="index.html">
     <link rel="shortcut icon"
-          href="{{asset('cdn/shop/files/Screenshot_1_7236c851-9e1e-45da-9a57-1bcfcd00431d_32x328727.png?v=1613747260')}}"
+          href="{{asset('cdn/shop/files/logo-icon.png.png')}}"
           type="image/png" /><!-- Title and description -->
     <title>
-        Fusta-demo
+        TuanmcShop
     </title><!-- Helpers -->
     <!-- CSS -->
     <link href="{{asset('cdn/shop/t/6/assets/timber.scss0a24.css?v=85188126753300990151709628052')}}" rel="stylesheet" type="text/css"
@@ -59,5 +59,8 @@
 </div>
 @vite('resources/js/app.js')
 <script src="{{asset('cdn/js/main.js')}}"></script>
+<script>
+    console.log('123')
+</script>
 </body>
 </html>

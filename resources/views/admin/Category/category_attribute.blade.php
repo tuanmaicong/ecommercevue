@@ -52,10 +52,11 @@
                             </thead>
                             <tbody>
                             @foreach($data as $list)
+{{--                                @php prx($list); @endphp--}}
                                 <tr>
                                     <td>{{$list->id}}</td>
-                                    <td>{{$list['category']->name}}</td>
-                                    <td>{{$list['attribute']->name}}</td>
+                                    <td>{{$list->category->name}}</td>
+                                    <td>{{$list->attribute[0]->name}}</td>
                                     <td>
                                         <button type="button"
                                                 onclick="saveData('{{$list->id}}','{{$list->category_id}}','{{$list->attribute_id}}')"
@@ -85,7 +86,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add category attribute</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Category attribute</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="formSubmit" action="{{url('admin/update_category_attribute')}}" method="post" enctype="multipart/form-data">
@@ -131,13 +132,15 @@
     </div>
     <script>
         function saveData(id, category_id, attribute_id) {
-            if(id == 0){
-                $('#category_id option[value="'+id+'"]').selected();
-                $('#attribute_id option[value="'+id+'"]').selected();
-            }
+            // if(id == 0){
+            //     $('#category_id option[value="' + id + '"]').attr('selected',true);
+            //     $('#attribute_id option[value="' + id + '"]');
+            // }
+            // console.log(id);
             $('#enter_id').val(id);
             $('#category_id').val(category_id);
             $('#attribute_id').val(attribute_id);
+
         }
     </script>
 @endsection

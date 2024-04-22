@@ -26,14 +26,13 @@
                         <div class="card-body p-sm-5">
                             <div class="">
                                 <div class="mb-3 text-center">
-                                    <img src="{{asset('assets/images/logo-icon.png')}}" width="60" alt="">
+                                    <img src="{{asset('assets/images/logo-icon.png')}}" width="200" alt="">
                                 </div>
                                 <div class="text-center mb-4">
-                                    <h5 class="">Rocker Admin</h5>
-                                    <p class="mb-0">Please log in to your account</p>
+                                    <p id="nonti" class="mb-0">Please log in to your account</p>
                                 </div>
                                 <div class="form-body">
-                                    <form class="row g-3" id="formSubmit">
+                                    <form class="row g-3" id="formSubmit" action="{{asset('/login_user')}}">
                                         @csrf
                                         <div class="col-12">
                                             <label for="inputEmailAddress" class="form-label">Email</label>
@@ -63,7 +62,7 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="d-grid">
-                                                <button type="submit" class="btn btn-primary">Sign in</button>
+                                                <button type="submit" class="btn" style="background-color:#d15a2d;color: white">Sign in</button>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -119,12 +118,12 @@
                     if (result.status === 200){
                         window.location.href = result.url;
                     }else {
-                        alert('Wrong');
+                        $('#nonti').html('Email or password is incorrect').css('color', 'red');
                     }
                 }
             });
         }else {
-            alert('Error')
+            alert('Login error!')
         }
     });
 </script>

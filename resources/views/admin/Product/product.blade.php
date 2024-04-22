@@ -33,14 +33,9 @@
                 </div>
             </div>
             <div class="col">
-                <button type="button" onclick="saveData('0','','','','')" class="btn btn-outline-info px-5 radius-30 mb-3"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">Add Product
-                </button>
-            </div>
-            <div class="col">
                 <a href="{{url('admin/manage_product')}}/0">
-                    Add Product
+                    <button type="button" class="btn btn-outline-info px-5 radius-30 mb-3">Add Product
+                    </button>
                 </a>
             </div>
             <div class="card">
@@ -51,9 +46,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Slug</th>
                                 <th>Image</th>
-                                <th>Attribute name</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -62,11 +55,7 @@
                                 <tr>
                                     <td>{{$list->id}}</td>
                                     <td>{{$list->name}}</td>
-                                    <td>{{$list->slug}}</td>
                                     <td><img src="{{asset($list->image)}}" width="100px" height="100px"></td>
-                                    <td>{{$list->parent_category_id}}</td>
-                                    <td>{{$list->created_at}}</td>
-                                    <td>{{$list->updated_at}}</td>
                                     <td>
                                         <a href="{{url('admin/manage_product')}}/{{$list->id}}">
                                             <button type="button"
@@ -74,7 +63,7 @@
                                             </button>
                                         </a>
 
-                                        <button onclick="deleteData('{{$list->id}}','categories')" class="btn btn-outline-danger px-5 radius-30">Delete</button>
+                                        <button onclick="deleteData('{{$list->id}}','products')" class="btn btn-outline-danger px-5 radius-30">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -83,9 +72,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Slug</th>
                                 <th>Image</th>
-                                <th>Attribute name</th>
                                 <th>Action</th>
                             </tr>
                             </tfoot>

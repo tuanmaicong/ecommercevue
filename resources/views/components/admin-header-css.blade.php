@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-    <link rel="icon" href="{{asset('assets/images/favicon-32x32.png')}}" type="image/png"/>
+    <link rel="icon" href="{{asset('cdn/shop/files/logo-icon.png.png')}}" type="image/png"/>
     <!--plugins-->
     <link href="{{asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />
@@ -26,5 +26,5 @@
     <link rel="stylesheet" href="{{asset('assets/snackbar/dist/js-snackbar.css')}}"/>
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <link href="{{asset('assets/plugins/datatable/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" />
-    <title>Rocker - Bootstrap 5 Admin Dashboard Template</title>
+    <title>TuanmcShop - Dashboard</title>
 </head>

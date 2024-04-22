@@ -17,14 +17,13 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
 
-                            <p>Welcome To <span>Fusta-demo</span></p>
+                            <p>Welcome To <span>Tuanmc-Shop</span></p>
 
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="header-top-settings language-currency-wrapper">
                                 <ul class="nav align-items-center justify-content-end">
                                     <li class="drodown-show curreny-wrap currency">
-                                        <localization-form>
                                             <form method="post" action="" id="localization_form"
                                                   class="shopify-localization-form"
                                                   enctype="multipart/form-data">
@@ -46,7 +45,6 @@
                                                     <input type="hidden" name="country_code" value="US">
                                                 </div>
                                             </form>
-                                        </localization-form>
                                     </li>
                                 </ul>
                             </div>
@@ -60,7 +58,7 @@
                     <div class="row">
                         <div class="col-lg-2 col-md-5 col-5">
                             <div class="logo"><a href="index.html" class="theme-logo">
-                                <img src="cdn/shop/files/logo_300x300a420.jpg?v=1613745373" alt="Fusta-demo">
+                                <img src="cdn/shop/files/logo-icon.png" alt="Fusta-demo">
                             </a></div>
                         </div>
                         <div class="col-lg-8 d-none d-lg-block">
@@ -128,7 +126,6 @@
             <button class="search-close"><span class="icon-close"></span></button>
         </div>
         <div class="sidebar-search-input">
-            <predictive-search id="predictive-search-toggle" search-open="false">
                 <form action="" method="get" class="search-bar" role="search">
                     <div class="form-search">
                         <input id="Search" type="search" name="q" value="" role="combobox" aria-expanded="false"
@@ -136,14 +133,13 @@
                                aria-haspopup="listbox" aria-autocomplete="list" autocorrect="off" autocomplete="off"
                                autocapitalize="off"
                                spellcheck="false" class="header-search-field form-control"
-                               placeholder="Search our store">
+                               placeholder="Search our store" style="box-shadow: none">
                         <button class="search-btn" type="submit">
                             <i class="icon-magnifier"></i>
                         </button>
                     </div>
                     <div id="predictive-search" tabindex="-1"></div>
                 </form>
-            </predictive-search>
         </div>
     </div>
     <!-- main-search start -->
@@ -276,9 +272,15 @@
         </footer>
         <!-- footer-area end -->
     </div>
+    <div id="scripts">
+
+    </div>
 </template>
 <script>
 export default {
-    name: 'Layout'
+    name: 'Layout',
+    mounted() {
+        var src = ['']
+    }
 }
 </script>

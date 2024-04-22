@@ -25,7 +25,7 @@ class CategoryController extends Controller
         $data = CategoryAttribute::with('category', 'attribute')->get();
         $category = Category::get();
         $attribute = Attribute::get();
-//        prx($category);
+//        prx($data);
         return view('admin.Category.category_attribute', get_defined_vars());
     }
 

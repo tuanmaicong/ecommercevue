@@ -47,8 +47,6 @@
                                 <th>ID</th>
                                 <th>Attribute name</th>
                                 <th>Value</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -58,8 +56,6 @@
                                     <td>{{$list->id}}</td>
                                     <td>{{$list['singleAttribute']->name}},{{$list['singleAttribute']->slug}}</td>
                                     <td>{{$list->value}}</td>
-                                    <td>{{$list->created_at}}</td>
-                                    <td>{{$list->updated_at}}</td>
                                     <td>
                                         <button type="button"
                                                 onclick="saveData('{{$list->id}}','{{$list->attribute_id}}','{{$list->value}}')"
@@ -76,8 +72,6 @@
                                 <th>ID</th>
                                 <th>Attribute ID</th>
                                 <th>Value</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
                                 <th>Action</th>
                             </tr>
                             </tfoot>
@@ -110,7 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="enter_slug" class="col-sm-3 col-form-label">Slug</label>
+                                    <label for="enter_slug" class="col-sm-3 col-form-label">Value</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="value" class="form-control" id="enter_value"
                                                placeholder="Value" required>

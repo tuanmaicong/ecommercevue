@@ -48,8 +48,6 @@
                                 <th>Text</th>
                                 <th>Link</th>
                                 <th>Image</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -60,8 +58,6 @@
                                     <td>{{$list->text}}</td>
                                     <td>{{$list->link}}</td>
                                     <td><img src="{{asset($list->image)}}" width="100px" height="100px"></td>
-                                    <td>{{$list->created_at}}</td>
-                                    <td>{{$list->updated_at}}</td>
                                     <td>
                                         <button type="button"
                                                 onclick="saveData('{{$list->id}}','{{$list->text}}','{{$list->link}}','{{$list->image}}')"
@@ -79,8 +75,6 @@
                                 <th>Text</th>
                                 <th>Link</th>
                                 <th>Image</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
                                 <th>Action</th>
                             </tr>
                             </tfoot>

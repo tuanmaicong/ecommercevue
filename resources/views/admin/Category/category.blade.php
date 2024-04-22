@@ -49,8 +49,6 @@
                                 <th>Slug</th>
                                 <th>Image</th>
                                 <th>Attribute name</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -62,8 +60,6 @@
                                     <td>{{$list->slug}}</td>
                                     <td><img src="{{asset($list->image)}}" width="100px" height="100px"></td>
                                     <td>{{$list->parent_category_id}}</td>
-                                    <td>{{$list->created_at}}</td>
-                                    <td>{{$list->updated_at}}</td>
                                     <td>
                                         <button type="button"
                                                 onclick="saveData('{{$list->id}}','{{$list->name}}','{{$list->slug}}','{{$list->image}}',{{$list->parent_category_id}})"
@@ -82,8 +78,6 @@
                                 <th>Slug</th>
                                 <th>Image</th>
                                 <th>Attribute name</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
                                 <th>Action</th>
                             </tr>
                             </tfoot>
@@ -157,14 +151,14 @@
         var chechID = 0;
         function saveData(id, name, slug, image ,parent_category_id) {
             if(chechID != 0){
-                $('#parent_category_id option[value="'+chechID+'"]').show();
+                $('#parent_category_id option[value="'+chechID+'"]').selected();
             }
             chechID = id;
             $('#enter_id').val(id);
             $('#enter_name').val(name);
             $('#enter_slug').val(slug);
             $('#parent_category_id').val(parent_category_id);
-            $('#parent_category_id option[value="'+id+'"]').hide();
+            $('#parent_category_id option[value="'+0+'"]').hide();
             if (image == '') {
                 var key_image = "{{ URL::asset('assets/images/pngegg.png') }}";
                 $('#imgPreview').attr('src', key_image);

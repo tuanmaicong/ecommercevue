@@ -61,7 +61,6 @@ class ProductController extends Controller
     {
         try {
             DB::beginTransaction(); //make this block observable and process start
-//            prx($request->all());
             $validation = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'slug' => 'required|string|max:255',
@@ -69,7 +68,6 @@ class ProductController extends Controller
                 'item_code' => 'required|string|max:255',
                 'keywords' => 'required|string|max:255',
                 'category_id' => 'required|exists:categories,id',
-//            'id' => 'required'
             ]);
             if ($validation->fails()) {
                 return $this->error($validation->errors()->first(), 400, []);
@@ -87,6 +85,7 @@ class ProductController extends Controller
                 } else {
                     $image_name = Product::where('id', $request->id)->value('image');
                 }
+                //Product
                 $productID = Product::updateOrCreate(
                     ['id' => $request->id],
                     ['name' => $request->name,
@@ -106,21 +105,21 @@ class ProductController extends Controller
                 if ($dataProductAttr){
                     ProductAttribute::where('product_id', $productID)->delete();
                 }
-                foreach ($request->attribute_id as $key => $value) {
-                    ProductAttribute::updateOrCreate(
-                        ['product_id' => $productID,
-                            'category_id' => $request->category_id,
-                            'attribute_value_id' => $value,
-                        ],
-                        ['product_id' => $productID,
-                            'category_id' => $request->category_id,
-                            'attribute_value_id' => $value,
-                        ]
-                    );
+                if ($request->attribute_id != ''){
+                    foreach ($request->attribute_id as $key => $value) {
+                        ProductAttribute::updateOrCreate(
+                            ['product_id' => $productID,
+                                'category_id' => $request->category_id,
+                                'attribute_value_id' => $value,
+                            ],
+                            ['product_id' => $productID,
+                                'category_id' => $request->category_id,
+                                'attribute_value_id' => $value,
+                            ]
+                        );
+                    }
                 }
                 //Product Attrs
-                $productAttrNewID = [];
-//                prx($request->all());
                 foreach ($request->sku as $key => $value) {
                     $productAttrId = ProductAttr::updateOrCreate(
                         ['id' => $request->productAttrId[$key]],
@@ -130,29 +129,36 @@ class ProductController extends Controller
                             'sku' => $request->sku[$key],
                             'mrp' => $request->mrp[$key],
                             'qty' => $request->qty[$key],
+                            'price' => $request->price[$key],
                             'length' => $request->length[$key],
                             'width' => $request->width[$key],
                             'height' => $request->height[$key],
                             'weight' => $request->weight[$key],
                         ]
                     );
+                    //Product Attr Image
                     $productAttrId = $productAttrId->id;
                     $imageVal = 'attr_image_'.$request->imageValue[$key];
-                    if ($request->$imageVal){
-                        foreach ($request->$imageVal as $key=>$value) {
-                            //Product Attr Image
-                            if ($request->$imageVal){
-                                $image_name = upload_file('product_attr_images', $value);
-                                ProductAttrImage::updateOrCreate(
-                                    ['product_id' => $productID,
-                                        'product_attr_id' => $productAttrId,
-                                        'image' => $image_name
-                                    ],
-                                );
-                            }
+                    $imageId = 0;
+                    if (isset($request->$imageVal)){
+                        foreach ($request->$imageVal as $key => $image) {
+                                $imageId = $key;
+                                $productAttrImage = ProductAttrImage::query()->where('id', $imageId)->first();
+                                if ($productAttrImage){
+                                    $oldImage = $productAttrImage->image;
+                                    delete_file($oldImage);
+                                }
+                            $image_name = upload_file('product_attr_images', $image);
+                            ProductAttrImage::updateOrCreate(
+                                ['id' => $imageId], // Cập nhật theo ID ảnh
+                                [
+                                    'product_id' => $productID,
+                                    'product_attr_id' => $productAttrId,
+                                    'image' => $image_name
+                                ]
+                            );
                         }
                     }
-
 
                 }
                 DB::commit(); //process end

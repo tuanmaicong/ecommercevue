@@ -1055,6 +1055,9 @@ export default {
     name: 'Index',
     components: {
         Layout
+    },
+    mounted() {
+        console.log('321');
     }
 }
 </script>
