@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Front\HomePageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -34,3 +35,6 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         ];
     });
 });
+
+//Front-end Data
+Route::post('/getHomeData', [HomePageController::class, 'getHomeData']);

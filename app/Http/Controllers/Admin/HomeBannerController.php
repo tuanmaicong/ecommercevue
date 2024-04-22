@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\ApiResponse;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\URL;
 class HomeBannerController extends Controller
 {
     use ApiResponse;
