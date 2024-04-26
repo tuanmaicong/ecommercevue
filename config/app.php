@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-
 return [
 
     /*
@@ -169,6 +168,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+//        Intervention\Image\Laravel\Facades\Image::class,
     ])->toArray(),
 
     /*

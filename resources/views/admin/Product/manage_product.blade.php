@@ -39,7 +39,7 @@
                                     <div class="row mb-3">
                                         <label for="image" class="col-sm-3 col-form-label">Product Image</label>
                                         <div class="col-sm-9">
-                                            <img width="150px" height="150px" src="{{asset($data->image)}}">
+                                            <img width="150px" height="150px" src="{{$data->image}}">
                                         </div>
                                     </div>
                                 @endif
@@ -55,6 +55,24 @@
                                     <div class="col-sm-9">
                                         <input type="text" name="keywords" class="form-control" id="keywords"
                                                placeholder="Keywords" value="{{$data->keywords}}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="sale_id" class="col-sm-3 col-form-label">Sale</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select" id="sale_id" name="sale_id">
+                                            <option value="">Select sale</option>
+                                            @foreach($sales as $sale)
+                                                @if($data->sale_id == $sale->id)
+                                                    <option selected value="{{$sale->id}}">{{$sale->value}}%
+                                                    </option>
+                                                @else
+                                                    <option value="{{$sale->id}}">{{$sale->value}}
+                                                        %
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -218,7 +236,7 @@
                                                                                        class="form-control image-input" data-image-id="{{$imageAttr->id}}" id="image_{{$count}}">
                                                                             </div>
                                                                             @if($imageAttr->image != '')
-                                                                                <img src="{{asset($imageAttr->image)}}" width="100px" height="100px">
+                                                                                <img src="{{$imageAttr->image}}" width="100px" height="100px">
                                                                             @endif
                                                                             @if($imageCount !== 111)
                                                                                 <button type="button" id="addAttrImages"

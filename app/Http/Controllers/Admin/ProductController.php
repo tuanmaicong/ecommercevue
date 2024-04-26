@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\ProductAttr;
 use App\Models\ProductAttribute;
 use App\Models\ProductAttrImage;
+use App\Models\Sale;
 use App\Models\Size;
 use App\Models\Tax;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class ProductController extends Controller
         $tax = Tax::get();
         $sizes = Size::get();
         $brand = Brand::get();
+        $sales = Sale::get();
         if ($id == 0) {
             //new product
             $data = new Product();
@@ -92,6 +94,7 @@ class ProductController extends Controller
                         'slug' => $request->slug,
                         'item_code' => $request->item_code,
                         'keywords' => $request->keywords,
+                        'sale_id' => $request->sale_id,
                         'category_id' => $request->category_id,
                         'brand_id' => $request->brand_id,
                         'tax_id' => $request->tax_id,

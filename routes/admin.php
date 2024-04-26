@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeBannerController;
+use App\Http\Controllers\Admin\ImageConvertController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SizeController;
@@ -63,3 +64,6 @@ Route::post('/removeAttrId',[ProductController::class,'removeAttrId']);
 
 //Delete data
 Route::get('/deleteData/{id?}/{table?}',[DashboardController::class,'deleteData']);
+
+//Convert image
+Route::get('/convert-image',[ImageConvertController::class,'convertToWebP']);

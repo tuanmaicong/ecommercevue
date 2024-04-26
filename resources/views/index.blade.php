@@ -44,7 +44,6 @@
     <script src="{{asset('cdn/shop/t/6/assets/bootstrap.min8ce2.js?v=16883752084331194951638100177')}}"></script>
     <script src="{{asset('cdn/shop/t/6/assets/plugins3dc4.js?v=152429042681718577271672549980')}}"></script>
     <script src="{{asset('cdn/shop/t/6/assets/jquery.elevateZoom-3.0.8.min400b.js?v=123299089282303306721638100187')}}"></script>
-
     <script src="{{asset('cdn/shop/t/6/assets/instafeed.minad65.js?v=75320137009123578901638100183')}}"></script>
     <!-- Ajax Cart js -->
     <script src="{{asset('cdn/shop/t/6/assets/main2008.js?v=131268998172479988941638100188')}}"></script>
@@ -58,9 +57,6 @@
 
 </div>
 @vite('resources/js/app.js')
-<script src="{{asset('cdn/js/main.js')}}"></script>
-<script>
-    console.log('123')
-</script>
 </body>
+<script src="{{asset('cdn/js/main.js')}}"></script>
 </html>

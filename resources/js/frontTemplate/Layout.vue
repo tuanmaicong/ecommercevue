@@ -58,18 +58,18 @@
                     <div class="row">
                         <div class="col-lg-2 col-md-5 col-5">
                             <div class="logo"><a href="index.html" class="theme-logo">
-                                <img src="cdn/shop/files/logo-icon.png" alt="Fusta-demo">
+                                <img src="cdn/shop/files/logo-icon.png" alt="TuanmcShop">
                             </a></div>
                         </div>
                         <div class="col-lg-8 d-none d-lg-block">
                             <div class="main-menu-area text-center">
                                 <nav class="main-navigation">
                                     <ul>
-                                        <li><a href="index.html">Home </a></li>
-                                        <li><a href="blogs/news.html">Blog </a>
-                                            <ul class="">
-                                                <li class="submenu-li"><a href="blogs/news/blog-image-post.html">Blog
-                                                    Details</a></li>
+                                        <li v-for="item in headerCategories">
+                                            <router-link :to="item.slug">{{item.name}}</router-link>
+                                            <ul v-if="item.subcategories.length > 0" class="">
+                                                <li v-for="childItem in item.subcategories" class="submenu-li">
+                                                    <router-link :to="'/category/'+childItem.slug">{{childItem.name}}</router-link></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -157,7 +157,7 @@
                             <div class="footer-info mt--60">
 
                                 <div class="footer-title">
-                                    <h3>My Account</h3>
+                                    <h3>Thông tin liên hệ</h3>
                                 </div>
 
                                 <ul class="footer-info-list">
@@ -166,16 +166,15 @@
 
                                         <i class="ion-ios-location-outline"></i>
 
-                                        184 Main Rd E, St Albans VIC 3021, Australia
+                                        Cầu Giấy,Hà Nội,Việt Nam
                                     </li>
                                     <li>
                                         <i class="ion-ios-email-outline"></i>
-                                        Mill Us :
-                                        <a href="mailto:yourmail@gmail.com">yourmail@gmail.com</a>
+                                        <a href="mailto:tuanmc0318@gmail.com">tuanmc0318@gmail.com</a>
                                     </li>
                                     <li>
                                         <i class="ion-ios-telephone-outline"></i>
-                                        Phone: + 00 123 456 789
+                                        <a href="tel:0372948410">Phone: 0372948410</a>
                                     </li>
                                 </ul>
                                 <div class="payment-cart">
@@ -253,7 +252,7 @@
                     <div class="row">
                         <div class="col-lg-6  col-md-6">
                             <div class="copyright">
-                                <p>Copyright ©All Right Reserved.</p>
+                                <p>Copyright ©All TuanMC.</p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
@@ -277,10 +276,36 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+import getUrlList from "@/provider.js";
 export default {
     name: 'Layout',
     mounted() {
-        var src = ['']
+        this.getCategories();
+    },
+    data(){
+        return {
+            headerCategories:[]
+        }
+    },
+    methods:{
+        async getCategories(){
+            try {
+                let data = await axios.get(getUrlList().getHeaderCategoriesData);
+                if (data.status == 200 && data.data.data.data.categories.length > 0){
+                    this.headerCategories = data.data.data.data.categories;
+                    this.$nextTick(() => {
+                        $('.megamenu-li').parent('ul').addClass('mega-menu');
+                        $('.submenu-li').parent('ul').addClass('sub-menu');
+                    });
+                    console.log(this.headerCategories);
+                }else {
+                    console.log('Data not found');
+                }
+            }catch (error){
+                console.log(error)
+            }
+        }
     }
 }
 </script>

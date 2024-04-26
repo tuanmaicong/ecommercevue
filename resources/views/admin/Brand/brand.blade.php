@@ -135,7 +135,7 @@
             } else {
                 // Nếu bản ghi có ảnh, hiển thị ảnh đó
                 var key_image = image;
-                $('#imgPreview').attr('src', "{{ URL::asset('') }}" + key_image);
+                $('#imgPreview').attr('src',key_image);
                 $('#photo').prop('required',false);
             }
 

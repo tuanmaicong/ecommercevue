@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@vitejs/plugin-vue": "^5.0.4",
+        "slick-carousel": "^1.8.1",
         "vue": "^3.4.23",
         "vue-router": "^4.0.13"
     }
