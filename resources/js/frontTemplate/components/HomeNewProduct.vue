@@ -78,7 +78,12 @@
     export default {
         name:'HomeNewProduct',
         props:{
-            homeProduct:[]
+            homeProduct:{
+                type:Array,
+                default: function() {
+                    return [];
+                }
+            }
         }
     }
 </script>

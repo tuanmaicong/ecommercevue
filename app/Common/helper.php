@@ -9,6 +9,10 @@ function prx($arr)
     die();
 }
 
+function replaceStr($str)
+{
+    return(preg_match('/\s+/','-'));
+}
 function convert($size, $unit)
 {
     if ($unit == "KB") {

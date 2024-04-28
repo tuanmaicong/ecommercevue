@@ -3,6 +3,7 @@ export function getUrlList(){
     return {
         getHeaderCategoriesData : ''+baseUrl+'/getCategoriesData',
         getHomeData : ''+baseUrl+'/getHomeData',
+        getCategoryData: ''+baseUrl+'/getCategoryData',
     }
 }
 export default getUrlList;

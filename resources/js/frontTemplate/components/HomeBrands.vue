@@ -26,7 +26,12 @@
     export default {
         name:'HomeBrands',
         props:{
-            homeBrands:[]
+            homeBrands:{
+                type:Array,
+                default: function() {
+                    return [];
+                }
+            }
         }
     }
 </script>

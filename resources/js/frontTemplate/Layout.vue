@@ -58,7 +58,7 @@
                     <div class="row">
                         <div class="col-lg-2 col-md-5 col-5">
                             <div class="logo"><a href="index.html" class="theme-logo">
-                                <img src="cdn/shop/files/logo-icon.png" alt="TuanmcShop">
+                                <img src="/cdn/shop/files/logo-icon.png" alt="TuanmcShop">
                             </a></div>
                         </div>
                         <div class="col-lg-8 d-none d-lg-block">
@@ -178,7 +178,7 @@
                                     </li>
                                 </ul>
                                 <div class="payment-cart">
-                                    <img src="cdn/shop/files/1405a.png?v=1613745855" alt="">
+                                    <img src="/cdn/shop/files/1405a.png?v=1613745855" alt="">
                                 </div>
                             </div>
                         </div>
@@ -282,10 +282,11 @@ export default {
     name: 'Layout',
     mounted() {
         this.getCategories();
+        window.addEventListener('scroll', this.handleScroll);
     },
     data(){
         return {
-            headerCategories:[]
+            headerCategories:[],
         }
     },
     methods:{
@@ -305,7 +306,21 @@ export default {
             }catch (error){
                 console.log(error)
             }
+        },
+        handleScroll() {
+            const headerBottomArea = document.querySelector('.header-bottom-area.header-sticky');
+            if (headerBottomArea) {
+                const rect = headerBottomArea.getBoundingClientRect();
+                if (rect.bottom <= 0) {
+                    headerBottomArea.classList.add('is-sticky');
+                } else {
+                    headerBottomArea.classList.remove('is-sticky');
+                }
+            }
         }
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
     }
 }
 </script>

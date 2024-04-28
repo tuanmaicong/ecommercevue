@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeBannerController;
 use App\Http\Controllers\Admin\ImageConvertController;
+use App\Http\Controllers\Admin\InfoShopController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SizeController;
@@ -67,3 +68,7 @@ Route::get('/deleteData/{id?}/{table?}',[DashboardController::class,'deleteData'
 
 //Convert image
 Route::get('/convert-image',[ImageConvertController::class,'convertToWebP']);
+
+//InfoShop
+Route::get('/info_shop',[InfoShopController::class,'index']);
+Route::post('/update_info_shop',[InfoShopController::class,'store']);

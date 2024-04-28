@@ -17,7 +17,7 @@ class CategoryAttribute extends Model
 
     public function attribute()
     {
-        return $this->hasMany(Attribute::class,'id','attribute_id');
+        return $this->hasMany(Attribute::class,'id','attribute_id')->with('values');
     }
 
     public function category()

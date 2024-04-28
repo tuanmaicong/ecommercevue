@@ -33,7 +33,12 @@
     export default {
         name:'HomeBanner',
         props:{
-            homeBanners:[]
+            homeBanners:{
+                type:Array,
+                default: function() {
+                    return [];
+                }
+            }
         }
     }
 </script>

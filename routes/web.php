@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Front\HomePageController;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,8 +31,13 @@ Route::get('/apiDocs',function (){
 });
 
 Route::post('/login_user',[AuthController::class,'loginUser']);
+Route::get('/changeSlug',[HomePageController::class,'changeSlug']);
 
 Route::get('/logout',function (){
     Auth::logout();
     return redirect('login');
 })->name('user.logout');
+
+Route::get('/{vue_capture?}', function () {
+    return view('index');
+})->where('vue_capture', '[\/\w\.-]*');
