@@ -221,45 +221,29 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="shop-sidebar mb--30"><h4 class="title">Thương hiệu</h4>
+                                            <div class="shop-sidebar mb--30 sidebar-list"><h4 class="title">Thương hiệu</h4>
                                                 <ul>
-                                                    <li v-for="item in brands" :key="item.id" class=""><a href="javascript:void(0)">{{item.text}}</a></li>
+                                                    <li v-for="item in brands" :key="item.id" v-on:click="addDataAttr('brand',item.id)"><a :class="this.brand.includes(item.id) ? brandColor : ''" href="javascript:void(0)">{{item.text}}</a></li>
                                                 </ul>
                                             </div>
                                             <div class="sidebar-wedget product-sidebar-color  mb--30"><h4
                                                 class="title">Color</h4>
                                                 <ul>
-                                                    <li v-for="item in colors" class="red"
-                                                        style="background: red no-repeat center; background-size: initial;">
-                                                        <a href="javascript:void(0)"></a></li>
+                                                    <li v-for="item in colors" :key="item.id"
+                                                        v-on:click="addDataAttr('color',item.id)" :style="{backgroundColor: item.value}">
+                                                        <a :class="this.color.includes(item.id) ? colorColor : ''" href="javascript:void(0)"></a></li>
                                                 </ul>
                                             </div>
-                                            <div class="shop-sidebar mb--30"><h4 class="title">Size</h4>
+                                            <div class="shop-sidebar mb--30 sidebar-list"><h4 class="title">Size</h4>
                                                 <ul>
-                                                    <li v-for="item in sizes" :key="item.id"><a href="javascript:void(0)">{{ item.size }}</a></li>
+                                                    <li v-for="item in sizes" :key="item.id" v-on:click="addDataAttr('size',item.id)"><a :class="this.size.includes(item.id) ? sizeColor : ''" href="javascript:void(0)">{{ item.size }}</a></li>
                                                 </ul>
                                             </div>
 
-                                            <div class="shop-sidebar  mb--30"><h4 class="title">Tags</h4>
-                                                <div class="sidebar-tag">
-
-
-                                                    <a href="all/cotton.html">Cotton</a>
-                                                    <a href="all/fiber.html">Fiber</a>
-                                                    <a href="all/partex.html">Partex</a>
-                                                    <a href="all/plastic.html">Plastic</a>
-                                                    <a href="all/wood.html">Wood</a>
-                                                    <a href="all/wool.html">Wool</a>
-                                                    <a href="all/black.html">black</a>
-                                                    <a href="all/brown.html">brown</a>
-                                                    <a href="all/gray.html">gray</a>
-                                                    <a href="all/lg.html">lg</a>
-                                                    <a href="all/magenta.html">magenta</a>
-                                                    <a href="all/md.html">md</a>
-                                                    <a href="all/orange.html">orange</a>
-                                                    <a href="all/pink.html">pink</a>
-                                                    <a href="all/purple.html">purple</a>
-                                                </div>
+                                            <div class="shop-sidebar  mb--30">
+                                                <form action="">
+                                                    <button class="btn more-product-btn">Lọc</button>
+                                                </form>
                                             </div>
                                             <div class="sidbar-product shop-sidebar mb--30"><h4 class="title">BEST
                                                 PRODUCT</h4>
@@ -365,7 +349,13 @@ export default {
             highPrice: '',
             lowPrice: '',
             slug: '',
-            priceRange:''
+            priceRange:'',
+            brand:[],
+            size:[],
+            color:[],
+            brandColor:'brandColor',
+            sizeColor:'sizeColor',
+            colorColor:'colorColor'
         }
     },
     watch:{
@@ -377,6 +367,46 @@ export default {
         this.getProductCate();
     },
     methods: {
+        addDataAttr(type,value){
+            if (type == 'brand'){
+                // console.log(this.brand);
+                if (this.checkArray(type,value)){
+                    //true value exist in array
+                    this.brand.splice(this.brand.indexOf(value),1);
+                }else {
+                    //false value not exist in array
+                    this.brand.push(value);
+                }
+                console.log(this.brand);
+            }else if (type == 'size'){
+                if (this.checkArray(type,value)){
+                    //true value exist in array
+                    this.size.splice(this.size.indexOf(value),1);
+                }else {
+                    //false value not exist in array
+                    this.size.push(value);
+                }
+            }else if (type == 'color'){
+                if (this.checkArray(type,value)){
+                    //true value exist in array
+                    this.color.splice(this.color.indexOf(value),1);
+                }else {
+                    //false value not exist in array
+                    this.color.push(value);
+                }
+            }
+        },
+
+        checkArray(type,value){
+            if (type == 'brand'){
+                return this.brand.includes(value);
+            }else if (type == 'size'){
+                return this.size.includes(value);
+            }else if (type == 'color'){
+                return this.color.includes(value);
+            }
+        },
+
         async getProductCate() {
             try {
                 // const route = useRoute();
@@ -414,5 +444,15 @@ export default {
     }
 }
 </script>
-<script setup>
-</script>
+<style>
+.brandColor::before {
+    background-color: #e97730 !important;
+}
+.sizeColor::before {
+    background-color: #e97730 !important;
+}
+.colorColor::before{
+    content: '\2713';
+    display: inline-block;
+}
+</style>
