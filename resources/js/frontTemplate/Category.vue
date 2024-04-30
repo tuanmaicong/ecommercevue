@@ -1,7 +1,8 @@
 <template>
     <Layout>
         <template v-slot:content>
-            <div class="breadcrumb-area section-ptb" style="background-image: url(../../cdn/shop/files/breadcrumb-bgea73.jpg)!important;">
+            <div class="breadcrumb-area section-ptb"
+                 style="background-image: url(../../cdn/shop/files/breadcrumb-bgea73.jpg)!important;">
                 <div class="container">
                     <div class="row">
                         <div class="col">
@@ -209,40 +210,72 @@
                                         <div class="shop-sidebar-inner">
                                             <div class="shop-sidebar mb--30"><h4 class="title">Danh mục sản phẩm</h4>
                                                 <ul>
-                                                    <li v-for="item in categories" :key="item.id" class=""><router-link :to="item.slug">{{item.name}}<span>(6)</span></router-link></li>
+                                                    <li v-for="item in categories" :key="item.id" class="">
+                                                        <router-link :to="item.slug">{{ item.name }}<span>(6)</span>
+                                                        </router-link>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <div class="shop-sidebar mb--30"><h4 class="title">Giá sản phẩm</h4>
                                                 <div class="price_filter">
-                                                    <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 12.1212%; width: 68.1818%;"></div><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 12.1212%;"></span><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 80.303%;"></span></div>
+                                                    <div id="slider-range"
+                                                         class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                                        <div class="ui-slider-range ui-widget-header ui-corner-all"
+                                                             style="left: 12.1212%; width: 68.1818%;"></div>
+                                                        <span class="ui-slider-handle ui-state-default ui-corner-all"
+                                                              tabindex="0" style="left: 12.1212%;"></span><span
+                                                        class="ui-slider-handle ui-state-default ui-corner-all"
+                                                        tabindex="0" style="left: 80.303%;"></span></div>
                                                     <div class="price_slider_amount">
                                                         <span>Price :</span>
-                                                        <input type="text" id="amount" name="price" v-model="priceRange" placeholder="Add Your Price">
+                                                        <input type="text" @keypress="isNumber($event)" ref="lowPrice" id="lowPrice"
+                                                               placeholder="Add Your Price">
+                                                        <input type="text" @keypress="isNumber($event)" ref="highPrice" id="highPrice"
+                                                               placeholder="Add Your Price">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="shop-sidebar mb--30 sidebar-list"><h4 class="title">Thương hiệu</h4>
+                                            <div v-for="item in attributes" :key="item.id" class="shop-sidebar mb--30 sidebar-list"><h4 class="title">
+                                                {{item.attribute[0].name}}
+                                            </h4>
                                                 <ul>
-                                                    <li v-for="item in brands" :key="item.id" v-on:click="addDataAttr('brand',item.id)"><a :class="this.brand.includes(item.id) ? brandColor : ''" href="javascript:void(0)">{{item.text}}</a></li>
+                                                    <li v-for="itemAttr in item.attribute[0].values" :key="itemAttr.id"
+                                                        v-on:click="addDataAttr('attribute',itemAttr.id)">
+                                                        <a :class="this.attribute.includes(itemAttr.id) ? brandColor : ''"
+                                                           href="javascript:void(0)">{{ itemAttr.value }}</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="shop-sidebar mb--30 sidebar-list"><h4 class="title">Thương
+                                                hiệu</h4>
+                                                <ul>
+                                                    <li v-for="item in brands" :key="item.id"
+                                                        v-on:click="addDataAttr('brand',item.id)"><a
+                                                        :class="this.brand.includes(item.id) ? brandColor : ''"
+                                                        href="javascript:void(0)">{{ item.text }}</a></li>
                                                 </ul>
                                             </div>
                                             <div class="sidebar-wedget product-sidebar-color  mb--30"><h4
                                                 class="title">Color</h4>
                                                 <ul>
                                                     <li v-for="item in colors" :key="item.id"
-                                                        v-on:click="addDataAttr('color',item.id)" :style="{backgroundColor: item.value}">
-                                                        <a :class="this.color.includes(item.id) ? colorColor : ''" href="javascript:void(0)"></a></li>
+                                                        v-on:click="addDataAttr('color',item.id)"
+                                                        :style="{backgroundColor: item.value}">
+                                                        <a :class="this.color.includes(item.id) ? colorColor : ''"
+                                                           href="javascript:void(0)"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="shop-sidebar mb--30 sidebar-list"><h4 class="title">Size</h4>
                                                 <ul>
-                                                    <li v-for="item in sizes" :key="item.id" v-on:click="addDataAttr('size',item.id)"><a :class="this.size.includes(item.id) ? sizeColor : ''" href="javascript:void(0)">{{ item.size }}</a></li>
+                                                    <li v-for="item in sizes" :key="item.id"
+                                                        v-on:click="addDataAttr('size',item.id)"><a
+                                                        :class="this.size.includes(item.id) ? sizeColor : ''"
+                                                        href="javascript:void(0)">{{ item.size }}</a></li>
                                                 </ul>
                                             </div>
 
                                             <div class="shop-sidebar  mb--30">
-                                                <form action="">
-                                                    <button class="btn more-product-btn">Lọc</button>
+                                                <form @submit.prevent>
+                                                    <button v-on:click="getProductCate" class="btn more-product-btn">Lọc</button>
                                                 </form>
                                             </div>
                                             <div class="sidbar-product shop-sidebar mb--30"><h4 class="title">BEST
@@ -319,8 +352,7 @@
                         <!-- End Shop Page -->
                     </div>
                 </div>
-                <input type="hidden" id="highPrice" v-model="highPrice">
-                <input type="hidden" id="lowPrice" v-model="lowPrice">
+
             </main>
         </template>
     </Layout>
@@ -345,21 +377,23 @@ export default {
             colors: [],
             brands: [],
             products: [],
+            attributes: [],
             category: '',
             highPrice: '',
             lowPrice: '',
             slug: '',
-            priceRange:'',
-            brand:[],
-            size:[],
-            color:[],
-            brandColor:'brandColor',
-            sizeColor:'sizeColor',
-            colorColor:'colorColor'
+            priceRange: '',
+            brand: [],
+            size: [],
+            color: [],
+            attribute: [],
+            brandColor: 'brandColor',
+            sizeColor: 'sizeColor',
+            colorColor: 'colorColor'
         }
     },
-    watch:{
-        '$route'(){
+    watch: {
+        '$route'() {
             this.getProductCate();
         }
     },
@@ -367,43 +401,64 @@ export default {
         this.getProductCate();
     },
     methods: {
-        addDataAttr(type,value){
-            if (type == 'brand'){
+        // showDataAttribute(){
+        //     console.log(this.$refs.lowPrice.value);
+        //     console.log(this.$refs.highPrice.value);
+        //     console.log(this.brand);
+        // },
+        isNumber(evt){
+            const charcode = evt.which ? evt.which : evt.keyCode;
+            if (charcode > 31 && (charcode < 48 || charcode > 57) && charcode != 46){
+                evt.preventDefault();
+            }
+        },
+        addDataAttr(type, value) {
+            if (type == 'brand') {
                 // console.log(this.brand);
-                if (this.checkArray(type,value)){
+                if (this.checkArray(type, value)) {
                     //true value exist in array
-                    this.brand.splice(this.brand.indexOf(value),1);
-                }else {
+                    this.brand.splice(this.brand.indexOf(value), 1);
+                } else {
                     //false value not exist in array
                     this.brand.push(value);
                 }
                 console.log(this.brand);
-            }else if (type == 'size'){
-                if (this.checkArray(type,value)){
+            } else if (type == 'size') {
+                if (this.checkArray(type, value)) {
                     //true value exist in array
-                    this.size.splice(this.size.indexOf(value),1);
-                }else {
+                    this.size.splice(this.size.indexOf(value), 1);
+                } else {
                     //false value not exist in array
                     this.size.push(value);
                 }
-            }else if (type == 'color'){
-                if (this.checkArray(type,value)){
+            } else if (type == 'color') {
+                if (this.checkArray(type, value)) {
                     //true value exist in array
-                    this.color.splice(this.color.indexOf(value),1);
-                }else {
+                    this.color.splice(this.color.indexOf(value), 1);
+                } else {
                     //false value not exist in array
                     this.color.push(value);
+                }
+            } else if (type == 'attribute') {
+                if (this.checkArray(type, value)) {
+                    //true value exist in array
+                    this.attribute.splice(this.attribute.indexOf(value), 1);
+                } else {
+                    //false value not exist in array
+                    this.attribute.push(value);
                 }
             }
         },
 
-        checkArray(type,value){
-            if (type == 'brand'){
+        checkArray(type, value) {
+            if (type == 'brand') {
                 return this.brand.includes(value);
-            }else if (type == 'size'){
+            } else if (type == 'size') {
                 return this.size.includes(value);
-            }else if (type == 'color'){
+            } else if (type == 'color') {
                 return this.color.includes(value);
+            } else if (type == 'attribute') {
+                return this.attribute.includes(value);
             }
         },
 
@@ -415,7 +470,15 @@ export default {
                 if (this.slug == '' || this.slug == undefined || this.slug == null) {
                     this.$router.push({name: 'Index'});
                 } else {
-                    let data = await axios.get(getUrlList().getCategoryData + '/' + this.slug);
+                    let data = await axios.post(getUrlList().getCategoryData , {
+                        "slug":this.slug,
+                        "attribute":this.attribute,
+                        "lowPrice":this.$refs.lowPrice.value,
+                        "highPrice":this.$refs.highPrice.value,
+                        "brand":this.brand,
+                        "size":this.size,
+                        "color":this.color,
+                    });
                     console.log(data.data.data.data.products.data);
                     console.log(data);
                     if (data.status == 200 && data.data.data.data.products.data.length > 0) {
@@ -425,9 +488,12 @@ export default {
                         this.brands = data.data.data.data.brands;
                         this.products = data.data.data.data.products.data;
                         this.category = data.data.data.data.categories;
-                        this.highPrice = data.data.data.data.highPrice;
-                        this.lowPrice = data.data.data.data.lowPrice;
+                        this.attributes = data.data.data.data.attributes;
                         this.slug = data.data.data.data.slug;
+                        this.lowPrice = data.data.data.data.lowPrice;
+                        this.highPrice = data.data.data.data.highPrice;
+                        this.$refs.lowPrice.value = data.data.data.data.lowPrice;
+                        this.$refs.highPrice.value = data.data.data.data.highPrice;
                         // Gọi hàm executeSlick() sau khi vòng for đã kết thúc
                         this.$nextTick(() => {
                             initializeSlick();
@@ -439,7 +505,7 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-            console.log(this.categories);
+            console.log(this.$refs.lowPrice.value);
         },
     }
 }
@@ -448,10 +514,12 @@ export default {
 .brandColor::before {
     background-color: #e97730 !important;
 }
+
 .sizeColor::before {
     background-color: #e97730 !important;
 }
-.colorColor::before{
+
+.colorColor::before {
     content: '\2713';
     display: inline-block;
 }

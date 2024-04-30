@@ -32,12 +32,20 @@ class HomePageController extends Controller
         return $this->success(['data'=> $data], 'Successfully data fetched');
     }
 
-    public function getCategoryData($slug = '')
+    public function getCategoryData(Request $request)
     {
+        $slug = $request->slug;
+        $attribute = $request->attribute;
+        $lowPrice = $request->lowPrice;
+        $highPrice = $request->highPrice;
+        $brand = $request->brand;
+        $size = $request->size;
+        $color = $request->color;
         $category = Category::where('slug',$slug)->first();
         if (isset($category->id)){
-            $products = Product::where('category_id',$category->id)->with('product_attributes','sale')
-                ->select('id','name','slug','image','item_code','sale_id')->paginate(10);
+//            $products = Product::where('category_id',$category->id)->with('product_attributes','sale')
+//                ->select('id','name','slug','image','item_code','sale_id')->paginate(10);
+            $products = $this->getFilterProduct($category->id,$size,$color,$brand,$attribute,$lowPrice,$highPrice);
             $data = Category::where('slug',$slug)->with('product:id,category_id,name,slug,image,item_code,sale_id')->get();
             if ($category->parent_category_id == null || $category->parent_category_id == ''){
                 $cat = Category::where('parent_category_id',$category->id)->get();
@@ -72,5 +80,34 @@ class HomePageController extends Controller
             $result->slug = replaceStr($result->slug);
             $result->save();
         }
+    }
+    public function getFilterProduct($category_id,$size,$color,$brand,$attribute,$lowPrice,$highPrice){
+        $products = Product::where('category_id',$category_id);
+        if (sizeof($brand) > 0){
+            $products = $products->whereIn('brand_id',$brand);
+        }
+        if (sizeof($attribute) > 0){
+            $products = $products->withWhereHas('attribute',function ($q) use ($attribute){
+                $q->whereIn('attribute_value_id',$attribute);
+            });
+        }
+        if (sizeof($size) > 0){
+            $products = $products->withWhereHas('product_attributes',function ($q) use ($size){
+                $q->whereIn('size_id',$size);
+            });
+        }
+        if (sizeof($color) > 0){
+            $products = $products->withWhereHas('product_attributes',function ($q) use ($color){
+                $q->whereIn('color_id',$color);
+            });
+        }
+        if ($lowPrice != '' && $lowPrice != null && $highPrice != ''){
+            $products = $products->withWhereHas('product_attributes',function ($q) use ($lowPrice,$highPrice){
+                $q->whereBetween('price',[$lowPrice,$highPrice]);
+            });
+        }
+        $products = $products->with('product_attributes','sale')
+            ->select('id','name','slug','image','item_code','sale_id')->paginate(10);
+        return $products;
     }
 }

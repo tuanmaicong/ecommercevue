@@ -40,4 +40,4 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
 Route::get('/getHomeData', [HomePageController::class, 'getHomeData']);
 Route::get('/getCategoriesData', [HomePageController::class, 'getCategoriesData']);
 Route::get('/getAllProductData', [HomePageController::class, 'getAllProductData']);
-Route::get('/getCategoryData/{slug?}', [HomePageController::class, 'getCategoryData']);
+Route::post('/getCategoryData', [HomePageController::class, 'getCategoryData']);
