@@ -79,7 +79,7 @@
                                         <div class="product-grid-view">
                                             <div class="shop-product-wrap">
                                                 <div class="row">
-                                                    <div v-for="item in products"
+                                                    <div v-if="products.length > 0" v-for="item in products"
                                                          class="col-lg-4 col-md-4 col-sm-6 col-12">
                                                         <!-- single-product-wrap start -->
                                                         <div class="single-product-wrap">
@@ -150,6 +150,9 @@
                                                         </div>
                                                         <!-- single-product-wrap end -->
 
+                                                    </div>
+                                                    <div v-else class="col-lg-4 col-md-4 col-sm-6 col-12">
+                                                        <h2>Không có dữ liệu sản phẩm!</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -499,13 +502,14 @@ export default {
                             initializeSlick();
                         });
                     } else {
+                        this.products = [];
                         console.log('Data not found');
                     }
                 }
             } catch (error) {
                 console.log(error);
             }
-            console.log(this.$refs.lowPrice.value);
+            console.log(this.products);
         },
     }
 }

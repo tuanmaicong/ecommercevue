@@ -10,6 +10,7 @@ use App\Models\Color;
 use App\Models\HomeBanner;
 use App\Models\Product;
 use App\Models\ProductAttr;
+use App\Models\ProductAttribute;
 use App\Models\Size;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
@@ -81,33 +82,27 @@ class HomePageController extends Controller
             $result->save();
         }
     }
-    public function getFilterProduct($category_id,$size,$color,$brand,$attribute,$lowPrice,$highPrice){
-        $products = Product::where('category_id',$category_id);
+    public function getFilterProduct($category_id,$size=[],$color=[],$brand=[],$attribute=[],$lowPrice,$highPrice){
+        $products = Product::where('category_id',$category_id)->get();
         if (sizeof($brand) > 0){
-            $products = $products->whereIn('brand_id',$brand);
+            $products = Product::whereIn('brand_id',$brand)->whereIn('id',$products->pluck('id'))->get();
         }
         if (sizeof($attribute) > 0){
-            $products = $products->withWhereHas('attribute',function ($q) use ($attribute){
-                $q->whereIn('attribute_value_id',$attribute);
-            });
+            $products = ProductAttribute::whereIn('attribute_value_id',$attribute)->whereIn('product_id',$products->pluck('id'))->get();
+            $products = Product::whereIn('id',$products->pluck('product_id'))->get();
+//            prx($products);
         }
+        $data = ProductAttr::whereIn('product_id',$products->pluck('id'))->get();
         if (sizeof($size) > 0){
-            $products = $products->withWhereHas('product_attributes',function ($q) use ($size){
-                $q->whereIn('size_id',$size);
-            });
+            $data = ProductAttr::whereIn('size_id',$size)->whereIn('id',$data->pluck('id'))->get();
         }
         if (sizeof($color) > 0){
-            $products = $products->withWhereHas('product_attributes',function ($q) use ($color){
-                $q->whereIn('color_id',$color);
-            });
+            $data = ProductAttr::whereIn('color_id',$color)->whereIn('id',$data->pluck('id'))->get();
         }
         if ($lowPrice != '' && $lowPrice != null && $highPrice != ''){
-            $products = $products->withWhereHas('product_attributes',function ($q) use ($lowPrice,$highPrice){
-                $q->whereBetween('price',[$lowPrice,$highPrice]);
-            });
+            $data = ProductAttr::whereBetween('price',[$lowPrice,$highPrice])->whereIn('id',$data->pluck('id'))->get();
         }
-        $products = $products->with('product_attributes','sale')
-            ->select('id','name','slug','image','item_code','sale_id')->paginate(10);
-        return $products;
+        $data = Product::whereIn('id',$data->pluck('product_id'))->with('product_attributes','sale')->select('id','name','slug','image','item_code','sale_id')->paginate(10);
+        return $data;
     }
 }

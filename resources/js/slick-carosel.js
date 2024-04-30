@@ -8,13 +8,13 @@ export default function initializeSlick(){
         values: [lowPrice, highPrice],
         slide: function (event, ui) {
             // Format giá trị từ ui.values[0] và ui.values[1] thành VNĐ và hiển thị trong input
-            $("#amount").val(ui.values[0].toLocaleString('vi-VN') + " - " + ui.values[1].toLocaleString('vi-VN') + " VNĐ");
-            $('#lowPrice').val(ui.values[0].toLocaleString('vi-VN'));
-            $('#highPrice').val(ui.values[1].toLocaleString('vi-VN'));
+            $("#amount").val(ui.values[0] + " - " + ui.values[1]);
+            $('#lowPrice').val(ui.values[0]);
+            $('#highPrice').val(ui.values[1]);
         }
     });
 // Format giá trị mặc định từ slider và hiển thị trong input khi trang được tải
-    $("#amount").val($("#slider-range").slider("values", 0).toLocaleString('vi-VN') + " - " + $("#slider-range").slider("values", 1).toLocaleString('vi-VN') + " VNĐ");
+    $("#amount").val($("#slider-range").slider("values", 0) + " - " + $("#slider-range").slider("values", 1));
     $('.hero-slider').slick({
         arrows: true,
         autoplay: false,
