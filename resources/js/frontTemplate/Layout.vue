@@ -24,27 +24,27 @@
                             <div class="header-top-settings language-currency-wrapper">
                                 <ul class="nav align-items-center justify-content-end">
                                     <li class="drodown-show curreny-wrap currency">
-                                            <form method="post" action="" id="localization_form"
-                                                  class="shopify-localization-form"
-                                                  enctype="multipart/form-data">
-                                                <div class="disclosure">
-                                                    <button type="button" class="disclosure__button"
-                                                            aria-expanded="false"
-                                                            aria-controls="CountryList">
-                                                        Việt Nam Đồng (VNĐ)
-                                                        <i class="ion-ios-arrow-down"></i>
-                                                    </button>
-                                                    <ul id="CountryList" role="list"
-                                                        class="open-dropdown dropdown-list curreny-list disclosure__list">
-                                                        <li class="disclosure__item" tabindex="-1">
-                                                            <a href="#" data-value="AF">
-                                                                United States (USD $)
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <input type="hidden" name="country_code" value="US">
-                                                </div>
-                                            </form>
+                                        <form method="post" action="" id="localization_form"
+                                              class="shopify-localization-form"
+                                              enctype="multipart/form-data">
+                                            <div class="disclosure">
+                                                <button type="button" class="disclosure__button"
+                                                        aria-expanded="false"
+                                                        aria-controls="CountryList">
+                                                    Việt Nam Đồng (VNĐ)
+                                                    <i class="ion-ios-arrow-down"></i>
+                                                </button>
+                                                <ul id="CountryList" role="list"
+                                                    class="open-dropdown dropdown-list curreny-list disclosure__list">
+                                                    <li class="disclosure__item" tabindex="-1">
+                                                        <a href="#" data-value="AF">
+                                                            United States (USD $)
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                                <input type="hidden" name="country_code" value="US">
+                                            </div>
+                                        </form>
                                     </li>
                                 </ul>
                             </div>
@@ -66,10 +66,13 @@
                                 <nav class="main-navigation">
                                     <ul>
                                         <li v-for="item in headerCategories">
-                                            <router-link :to="item.slug">{{item.name}}</router-link>
+                                            <router-link :to="item.slug">{{ item.name }}</router-link>
                                             <ul v-if="item.subcategories.length > 0" class="">
                                                 <li v-for="childItem in item.subcategories" class="submenu-li">
-                                                    <router-link :to="'/category/'+childItem.slug">{{childItem.name}}</router-link></li>
+                                                    <router-link :to="'/category/'+childItem.slug">
+                                                        {{ childItem.name }}
+                                                    </router-link>
+                                                </li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -91,9 +94,26 @@
                                         <ul class="cart-tempty-title" style="display:block;">
                                             <li>Your cart is empty!</li>
                                         </ul>
-                                        <ul class="cart-item-loop" style="display:none;">
+                                        <ul class="cart-item-loop">
+                                            <li class="cart-item">
+                                                <div class="cart-image"><a
+                                                    href="/products/como-por-ejemplo?variant=14137245368393"><img
+                                                    src="https://cdn.shopify.com/s/files/1/0044/8964/2057/products/7_11a9b644-e53a-4d05-9929-9639d9108787.jpg?v=1538025902"
+                                                    alt=""></a></div>
+                                                <div class="cart-title"><a
+                                                    href="/products/como-por-ejemplo?variant=14137245368393"><h4>Como
+                                                    Por Ejemplo - xl / gray / Fiber</h4></a><span
+                                                    class="quantity">1 ×</span>
+                                                    <div class="price-box"><span class="new-price"><span class="money"
+                                                                                                         data-currency-usd="12.000₫"
+                                                                                                         data-currency="USD">12.000₫</span></span>
+                                                    </div>
+                                                    <a class="remove_from_cart" href="javascript:void(0);"
+                                                       onclick=""><i
+                                                        class="icon-trash icons"></i></a></div>
+                                            </li>
                                         </ul>
-                                        <ul class="subtotal-title-area" style="display:none;">
+                                        <ul class="subtotal-title-area">
                                             <li class="subtotal-titles">
                                                 <div class="subtotal-titles">
                                                     <h3>Total :</h3><span class="shopping-cart__total"><span
@@ -126,20 +146,20 @@
             <button class="search-close"><span class="icon-close"></span></button>
         </div>
         <div class="sidebar-search-input">
-                <form action="" method="get" class="search-bar" role="search">
-                    <div class="form-search">
-                        <input id="Search" type="search" name="q" value="" role="combobox" aria-expanded="false"
-                               aria-owns="predictive-search-results-list" aria-controls="predictive-search-results-list"
-                               aria-haspopup="listbox" aria-autocomplete="list" autocorrect="off" autocomplete="off"
-                               autocapitalize="off"
-                               spellcheck="false" class="header-search-field form-control"
-                               placeholder="Search our store" style="box-shadow: none">
-                        <button class="search-btn" type="submit">
-                            <i class="icon-magnifier"></i>
-                        </button>
-                    </div>
-                    <div id="predictive-search" tabindex="-1"></div>
-                </form>
+            <form action="" method="get" class="search-bar" role="search">
+                <div class="form-search">
+                    <input id="Search" type="search" name="q" value="" role="combobox" aria-expanded="false"
+                           aria-owns="predictive-search-results-list" aria-controls="predictive-search-results-list"
+                           aria-haspopup="listbox" aria-autocomplete="list" autocorrect="off" autocomplete="off"
+                           autocapitalize="off"
+                           spellcheck="false" class="header-search-field form-control"
+                           placeholder="Search our store" style="box-shadow: none">
+                    <button class="search-btn" type="submit">
+                        <i class="icon-magnifier"></i>
+                    </button>
+                </div>
+                <div id="predictive-search" tabindex="-1"></div>
+            </form>
         </div>
     </div>
     <!-- main-search start -->
@@ -278,32 +298,55 @@
 <script>
 import axios from "axios";
 import getUrlList from "@/provider.js";
+
 export default {
     name: 'Layout',
     mounted() {
         this.getCategories();
+        this.getUser();
         window.addEventListener('scroll', this.handleScroll);
     },
-    data(){
+    data() {
         return {
-            headerCategories:[],
+            headerCategories: [],
+            token:false,
+            user_info:{
+                'user_id':'',
+                'auth':false
+            },
+            cartCount:0,
+            cartProduct:[],
+            cartTotal:0
         }
     },
-    methods:{
-        async getCategories(){
+    methods: {
+        async getUser(){
+            if (localStorage.getItem('user_info')){
+                var user = localStorage.getItem('user_info');
+                var testUser = JSON.parse(user);
+                this.user_info.user_id = testUser.user_id;
+                this.getUserData();
+            }else {
+                this.getUserData();
+            }
+        },
+        async getUserData(){
+
+        },
+        async getCategories() {
             try {
                 let data = await axios.get(getUrlList().getHeaderCategoriesData);
-                if (data.status == 200 && data.data.data.data.categories.length > 0){
+                if (data.status == 200 && data.data.data.data.categories.length > 0) {
                     this.headerCategories = data.data.data.data.categories;
                     this.$nextTick(() => {
                         $('.megamenu-li').parent('ul').addClass('mega-menu');
                         $('.submenu-li').parent('ul').addClass('sub-menu');
                     });
                     console.log(this.headerCategories);
-                }else {
+                } else {
                     console.log('Data not found');
                 }
-            }catch (error){
+            } catch (error) {
                 console.log(error)
             }
         },
