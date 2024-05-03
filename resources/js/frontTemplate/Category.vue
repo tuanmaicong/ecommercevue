@@ -99,7 +99,7 @@
                                                                             class="icon-heart"></i></span>
                                                                     </a>
                                                                     <a href="javascript:void(0);"
-                                                                       onclick=""
+                                                                       @click="addToCart(item.id,item.product_attributes[0].id,1)"
                                                                        class="add-to-cart ajax-spin-cart">
                                                                         <span>
                                                                           <span class="cart-title"><i
@@ -402,6 +402,9 @@ export default {
     },
     mounted() {
         this.getProductCate();
+    },
+    props:{
+        addToCart:Function
     },
     methods: {
         // showDataAttribute(){

@@ -287,6 +287,43 @@
                   }
               }
           }
+      },"/getProductData/{item_code}/{slug}": {
+          "get": {
+              "tags": [
+                  "Product Data"
+              ],
+              "summary": "Product Data",
+              "operationId": "Product Data",
+              "produces": [
+                  "application/json"
+              ],
+              "security": [
+                  {
+                      "APIKeyHeader": []
+                  }
+              ],
+              "parameters": [
+                  {
+                      "name": "item_code",
+                      "in": "path",
+                      "description": "Enter item_code",
+                      "required": true,
+                      "type": "string"
+                  },
+                  {
+                      "name": "slug",
+                      "in": "path",
+                      "description": "Enter slug",
+                      "required": true,
+                      "type": "string"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Data"
+                  }
+              }
+          }
       }
   },
   "securityDefinitions": {

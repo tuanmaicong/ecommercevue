@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\CategoryAttribute;
 use App\Models\Color;
@@ -12,8 +13,11 @@ use App\Models\Product;
 use App\Models\ProductAttr;
 use App\Models\ProductAttribute;
 use App\Models\Size;
+use App\Models\TempUser;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Validator;
+use function Laravel\Prompts\error;
 
 class HomePageController extends Controller
 {
@@ -104,5 +108,112 @@ class HomePageController extends Controller
         }
         $data = Product::whereIn('id',$data->pluck('product_id'))->with('product_attributes','sale')->select('id','name','slug','image','item_code','sale_id')->paginate(10);
         return $data;
+    }
+    function getUserData(Request $request)
+    {
+//        prx($request->all());
+        $token = $request->token;
+        $checkUser = TempUser::where('token',$token)->first();
+        if (isset($checkUser->id)){
+            //token exist in Db
+            $data['user_type'] = $checkUser->user_type;
+            $data['token'] = $checkUser->token;
+            if (checkTokenExpiryInMunites($checkUser->updated_at,60)){
+                //token has expire
+                $token = generateRandomString();
+                $checkUser->updated_at = date('Y-m-d h:i:s a',time());
+                $checkUser->save();
+                $data['token'] = $token;
+            }else{
+                //token not expire
+            }
+        }else{
+            //token not exist in Db
+            $user_id = rand(1111,9999);
+            $token = generateRandomString();
+            $time = date('Y-m-d h:i:s a',time());
+            TempUser::create([
+                'user_id' => $user_id,
+                'token' => $token,
+                'created_at' => $time,
+                'updated_at' => $time
+            ]);
+            $data['user_type'] = 2;
+            $data['token'] = $token;
+        }
+        return $this->success(['data'=> $data], 'Successfully data fetched');
+    }
+    public function getCartData(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+           'token' => 'required|exists:temp_users,token'
+        ]);
+        if ($validation->fails()){
+            return $this->error($validation->errors()->first(),400,[]);
+        }else{
+            $userToken = TempUser::where('token',$request->token)->first();
+            $data      = Cart::where('user_id',$userToken->user_id)->with('products')->get();
+            return $this->success(['data'=> $data], 'Successfully data fetched');
+        }
+    }
+    public function addToCart(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'token' => 'required|exists:temp_users,token',
+            'product_id' => 'required|exists:products,id',
+            'product_attr_id' => 'required|exists:product_attrs,id',
+            'qty' => 'required|numeric|min:0|not_in:0',
+        ]);
+        if ($validation->fails()){
+            return $this->error($validation->errors()->first(),400,[]);
+        }else{
+            $user = TempUser::where('token',$request->token)->first();
+            Cart::updateOrCreate(
+                ['user_id'=>$user->user_id,'product_id'=>$request->product_id,
+                'product_attr_id' => $request->product_attr_id,],
+                ['user_id'=>$user->user_id,'product_id'=>$request->product_id,
+                    'product_attr_id' => $request->product_attr_id,'qty'=>$request->qty,'user_type'=>$user->user_type]
+            );
+//            prx($request->all());
+            return $this->success(['data'=> ''], 'Successfully data fetched');
+        }
+    }
+    public function removeCartData(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'token' => 'required|exists:temp_users,token',
+            'product_id' => 'required|exists:products,id',
+            'product_attr_id' => 'required|exists:product_attrs,id',
+            'qty' => 'required|numeric|min:0|not_in:0',
+        ]);
+        if ($validation->fails()){
+            return $this->error($validation->errors()->first(),400,[]);
+        }else{
+            $user = TempUser::where('token',$request->token)->first();
+            $cart = Cart::where(['user_id'=>$user->user_id,'product_id'=>$request->product_id,
+                'product_attr_id' => $request->product_attr_id])->first();
+            if (isset($cart->id)){
+                $qty = $request->qty;
+                if ($cart->qty == $qty){
+                    $cart->delete();
+                }else if ($cart->qty > $qty){
+                    $cart->qty -= $qty;
+                    $cart->save();
+                }else{
+                    $cart->delete();
+                }
+            }
+            return $this->success(['data'=> ''], 'Successfully data fetched');
+        }
+    }
+    public function getProductData($item_code = '',$slug = '')
+    {
+        $product = Product::where(['item_code' => $item_code,'slug' => $slug])->first();
+        if (isset($product->id)){
+            $data = Product::where(['item_code' => $item_code,'slug' => $slug])->with('product_attributes')->first();
+            return $this->success(['data'=> $data], 'Successfully data fetched');
+        }else{
+            return $this->error('Product Not found',400,[]);
+        }
     }
 }

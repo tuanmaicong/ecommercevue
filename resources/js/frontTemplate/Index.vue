@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <template v-slot:content>
+        <template v-slot:content="slotProps">
             <HomeBanner :homeBanners="homeBanners" />
             <div id="shopify-section-template--14201408815177__about-product" class="shopify-section">
                 <!-- about-area start -->
@@ -51,7 +51,7 @@
                 </div>
                 <!-- about-area end -->
             </div>
-            <HomeNewProduct :homeProduct="homeProduct" />
+            <HomeNewProduct :homeProduct="homeProduct" :addToCart="slotProps.addToCart"/>
             <div id="shopify-section-template--14201408815177__fullwidth-banner" class="shopify-section">
                 <!-- lg-banner-bg start -->
                 <div class="lg-banner-area lg-banner-bg section-ptb" style="background-image: url(cdn/shop/files/018535.jpg?v=1613745592);

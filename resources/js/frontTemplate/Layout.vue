@@ -89,27 +89,24 @@
                                 </div>
                                 <div class="shopping-cart-wrap"><a href="#"><i class="icon-handbag"></i> <span
                                     id="cart-total"><span
-                                    class="bigcounter">0</span></span></a>
+                                    class="bigcounter">{{ cartCount }}</span></span></a>
                                     <div class="mini-cart">
-                                        <ul class="cart-tempty-title" style="display:block;">
+                                        <ul v-if="cartCount == 0" class="cart-tempty-title" style="display:block;">
                                             <li>Your cart is empty!</li>
                                         </ul>
-                                        <ul class="cart-item-loop">
+                                        <ul v-else v-for="item in cartProduct" :key="item.id" class="cart-item-loop">
                                             <li class="cart-item">
                                                 <div class="cart-image"><a
                                                     href="/products/como-por-ejemplo?variant=14137245368393"><img
-                                                    src="https://cdn.shopify.com/s/files/1/0044/8964/2057/products/7_11a9b644-e53a-4d05-9929-9639d9108787.jpg?v=1538025902"
+                                                    :src="item.products[0].image"
                                                     alt=""></a></div>
                                                 <div class="cart-title"><a
-                                                    href="/products/como-por-ejemplo?variant=14137245368393"><h4>Como
-                                                    Por Ejemplo - xl / gray / Fiber</h4></a><span
+                                                    href="/products/como-por-ejemplo?variant=14137245368393"><h4>{{ item.products[0].name }}</h4></a><span
                                                     class="quantity">1 ×</span>
-                                                    <div class="price-box"><span class="new-price"><span class="money"
-                                                                                                         data-currency-usd="12.000₫"
-                                                                                                         data-currency="USD">12.000₫</span></span>
+                                                    <div class="price-box"><span class="new-price"><span class="money">{{ item.products[0].product_attributes[0].price.toLocaleString('vi-VN') }} vn₫</span></span>
                                                     </div>
                                                     <a class="remove_from_cart" href="javascript:void(0);"
-                                                       onclick=""><i
+                                                       @click="removeCartData(item.products[0].id,item.products[0].product_attributes[0].id,1)"><i
                                                         class="icon-trash icons"></i></a></div>
                                             </li>
                                         </ul>
@@ -117,7 +114,7 @@
                                             <li class="subtotal-titles">
                                                 <div class="subtotal-titles">
                                                     <h3>Total :</h3><span class="shopping-cart__total"><span
-                                                    class=money>$0.00</span></span>
+                                                    class=money>{{ cartTotal.toLocaleString('vi-VN') }} vn₫</span></span>
                                                 </div>
                                             </li>
                                             <li class="mini-cart-btns">
@@ -164,7 +161,7 @@
     </div>
     <!-- main-search start -->
     <main role="main">
-        <slot name="content">
+        <slot name="content" :addToCart="addToCart">
 
         </slot>
     </main>
@@ -298,18 +295,11 @@
 <script>
 import axios from "axios";
 import getUrlList from "@/provider.js";
-
 export default {
     name: 'Layout',
-    mounted() {
-        this.getCategories();
-        this.getUser();
-        window.addEventListener('scroll', this.handleScroll);
-    },
     data() {
         return {
             headerCategories: [],
-            token:false,
             user_info:{
                 'user_id':'',
                 'auth':false
@@ -319,19 +309,109 @@ export default {
             cartTotal:0
         }
     },
+    watch:{
+        cartProduct(val){
+            this.cartTotal = 0;
+
+            for (var item in val){
+                this.cartTotal += val[item].qty * val[item].products[0].product_attributes[0].price;
+            }
+        }
+    },
+    mounted() {
+        this.getCategories();
+        window.addEventListener('scroll', this.handleScroll);
+        this.getUser();
+        this.getCartData();
+    },
     methods: {
+        async removeCartData(product_id,product_attr_id,qty){
+            try {
+                let data = await axios.post(getUrlList().removeCartData,{
+                    'token':this.user_info.user_id,
+                    'auth':this.user_info.auth,
+                    'product_id':product_id,
+                    'product_attr_id':product_attr_id,
+                    'qty':qty,
+                });
+                if (data.status == 200){
+                    this.getCartData();
+                }else {
+                    console.log('Data Not found');
+                }
+            }catch (error) {
+                console.log(error);
+            }
+        },
+        async addToCart(product_id,product_attr_id,qty){
+            try {
+                let data = await axios.post(getUrlList().addToCart,{
+                    'token':this.user_info.user_id,
+                    'auth':this.user_info.auth,
+                    'product_id':product_id,
+                    'product_attr_id':product_attr_id,
+                    'qty':qty,
+                });
+                if (data.status == 200){
+                    this.getCartData();
+                }else {
+                    console.log('Data Not found');
+                }
+            }catch (error) {
+                console.log(error);
+            }
+        },
+        async getCartData(){
+            try {
+                let data = await axios.post(getUrlList().getCartData,{
+                    'token':this.user_info.user_id,
+                    'auth':this.user_info.auth,
+                });
+                if (data.status == 200){
+                    this.cartCount = data.data.data.data.length;
+                    this.cartProduct = data.data.data.data;
+                }else {
+                    console.log('Data Not found');
+                }
+            }catch (error) {
+                console.log(error);
+            }
+        },
         async getUser(){
             if (localStorage.getItem('user_info')){
+                //user set into localStorage
                 var user = localStorage.getItem('user_info');
                 var testUser = JSON.parse(user);
                 this.user_info.user_id = testUser.user_id;
                 this.getUserData();
             }else {
+                //user not set into localStorage
                 this.getUserData();
             }
         },
         async getUserData(){
-
+            try {
+                let data = await axios.post(getUrlList().getUserData,{
+                    'token':this.user_info.user_id,
+                });
+                if (data.status == 200){
+                    if (data.data.data.data.user_type == 1){
+                        //Auth user
+                        this.user_info.auth = true;
+                        this.user_info.user_id = data.data.data.data.token;
+                        localStorage.setItem('user_info',JSON.stringify(this.user_info));
+                    }else {
+                        //Not Auth user
+                        this.user_info.auth = false;
+                        this.user_info.user_id = data.data.data.data.token;
+                        localStorage.setItem('user_info',JSON.stringify(this.user_info));
+                    }
+                }else {
+                    console.log('Data Not found');
+                }
+            }catch (error) {
+                console.log(error);
+            }
         },
         async getCategories() {
             try {

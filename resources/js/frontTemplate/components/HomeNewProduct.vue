@@ -28,15 +28,13 @@
                                         <span class="sale-title">Sale</span><span
                                         class="percent-count">{{item.sale.value}}%</span>
                                     </div>
-                                    <a href="">
-                                        <img :src="item.image" alt="">
-                                    </a>
+                                    <router-link :to="'/product/'+item.item_code+'/'+item.slug"><img :src="item.image" alt=""></router-link>
                                     <div class="product-action">
                                         <a class="wishlist" href="" title="Wishlist">
                                             <span class="add-wishlist"><i class="icon-heart"></i></span>
                                         </a>
                                         <a href="javascript:void(0);"
-                                           onclick=""
+                                           @click="addToCart(item.id,item.product_attributes[0].id,1)"
                                            class="add-to-cart ajax-spin-cart">
                                                     <span>
                                                       <span class="cart-title"><i class="icon-handbag"></i></span>
@@ -52,7 +50,7 @@
                                     </div>
                                 </div>
                                 <div class="product-content">
-                                    <h3><a href="">{{item.name}}</a></h3>
+                                    <h3><router-link :to="'/product/'+item.item_code+'/'+item.slug">{{item.name}}</router-link></h3>
                                     <div class="price-box">
                                                 <span v-if="item.sale != null" class="">
                                                     <span class="old-price"><span class=money>{{item.product_attributes[0].price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}}</span></span>
@@ -83,7 +81,8 @@
                 default: function() {
                     return [];
                 }
-            }
+            },
+            addToCart:Function
         }
     }
 </script>

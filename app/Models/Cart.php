@@ -15,4 +15,12 @@ class Cart extends Model
         'product_attr_id',
         'qty',
     ];
+
+    protected $hidden = [
+        'id',
+    ];
+    public function products()
+    {
+        return $this->hasMany(Product::class,'id','product_id')->with('product_attributes');
+    }
 }
