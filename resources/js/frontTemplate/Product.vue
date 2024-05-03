@@ -1,20 +1,21 @@
 <template>
     <Layout>
         <template v-slot:content>
-            <div class="breadcrumb-area section-ptb" style="background-image: url(../../cdn/shop/files/breadcrumb-bgea73.jpg)!important;">
+            <div class="breadcrumb-area section-ptb"
+                 style="background-image: url(../../cdn/shop/files/breadcrumb-bgea73.jpg)!important;">
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <h2 class="breadcrumb-title">Adquiera Mas</h2>
+                            <h2 class="breadcrumb-title">{{ product.name }}</h2>
                             <!-- breadcrumb-list start -->
                             <nav class="" role="navigation" aria-label="breadcrumbs">
                                 <ul class="breadcrumb-list">
 
                                     <li class="breadcrumb-item">
-                                        <a href="" title="Back to the home page">Home</a>
+                                        <router-link to="/">Trang chủ</router-link>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <span>Adquiera Mas</span>
+                                        <span>{{ product.name }}</span>
                                     </li>
                                 </ul>
                             </nav>
@@ -37,15 +38,12 @@
                                                     <div class="featured-image">
                                                         <div class="" id="ProductPhoto"><img id="ProductPhotoImg"
                                                                                              class="product-zoom"
-                                                                                             src="/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_1024x102442a2.jpg?v=1538026280"
-                                                                                             alt="Adquiera Mas"
-                                                                                             data-zoom-image="/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_1024x1024.jpg?v=1538026280">
+                                                                                             :src="product.image"
+                                                                                             :alt="product.name">
                                                         </div>
                                                         <div class="product-badge">
-
                                                             <span class="sale-title">Sale</span>
                                                             <span class="percent-count">-17%</span>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -117,302 +115,241 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-5 col-md-6">
-                                    <form action="https://fusta-demo.myshopify.com/cart/add" method="post"
-                                          enctype="multipart/form-data" id="add-item-form">
-                                        <div class="product_details_info"><h2>Adquiera Mas</h2>
-                                            <div class="product-sku">SKU: <span class="variant-sku">457</span></div>
-                                            <div class="product-ratting">
+                                    <div class="product_details_info"><h2>{{ product.name }}</h2>
+                                        <div class="product-sku">SKU: <span class="variant-sku">457</span></div>
+                                        <div class="product-ratting">
                                                 <span class="shopify-product-reviews-badge"
                                                       data-id="1595619409993"></span>
-                                            </div>
-                                            <ul class="pro_dtl_prize product-price">
-                                                <li class="old_prize"><span id="ComparePrice"><span
-                                                    class=money>$180.00</span></span></li>
-                                                <li><span id="ProductPrice"><span class=money>$150.00</span></span></li>
-                                            </ul>
-                                            <div class="product-description pro_details">Lorem ipsum dolor sit amet,
-                                                consectetur adipiscing elit. Cras a convallis nisl, at aliquam dolor.
-                                                Morbi in iaculis nunc. Nulla eu mi at velit imperdiet sollicitudin sed
-                                                vel risus. Quisque eleifend lorem ipsum, et tempus...
-                                            </div>
-                                            <div class="product-inventory">
-                                                <span>Availability:</span>
-                                            </div>
-                                            <div class="product-variant-option">
-                                                <select name="id" id="productSelect" class="product-single__variants"
-                                                        style="display:none;">
+                                        </div>
+                                        <ul class="pro_dtl_prize product-price">
+                                            <li class="old_prize"><span id="ComparePrice"><span
+                                                class=money>$180.00</span></span></li>
+                                            <li><span id="ProductPrice"><span class=money>$150.00</span></span></li>
+                                        </ul>
+                                        <div class="product-inventory">
+                                            <span>Availability:</span>
+                                        </div>
+                                        <div class="product-variant-option">
+                                            <select name="id" id="productSelect" class="product-single__variants"
+                                                    style="display:none;">
 
 
-                                                    <option selected="selected" data-sku="457" value="14137261326409">32
-                                                        x 16 x 72 / orange / Wool - <span class=money>$150.00 USD</span>
-                                                    </option>
+                                                <option selected="selected" data-sku="457" value="14137261326409">32
+                                                    x 16 x 72 / orange / Wool - <span class=money>$150.00 USD</span>
+                                                </option>
 
 
-                                                    <option data-sku="652" value="14137261359177">32 x 16 x 72 / orange
-                                                        / Fiber - <span class=money>$147.00 USD</span></option>
+                                                <option data-sku="652" value="14137261359177">32 x 16 x 72 / orange
+                                                    / Fiber - <span class=money>$147.00 USD</span></option>
 
 
-                                                    <option data-sku="785" value="14137261391945">32 x 16 x 72 / pink /
-                                                        Wool - <span class=money>$146.00 USD</span></option>
+                                                <option data-sku="785" value="14137261391945">32 x 16 x 72 / pink /
+                                                    Wool - <span class=money>$146.00 USD</span></option>
 
 
-                                                    <option data-sku="364" value="14137261424713">32 x 16 x 72 / pink /
-                                                        Fiber - <span class=money>$126.00 USD</span></option>
+                                                <option data-sku="364" value="14137261424713">32 x 16 x 72 / pink /
+                                                    Fiber - <span class=money>$126.00 USD</span></option>
 
 
-                                                    <option data-sku="124" value="14137261457481">32 x 16 x 72 / black /
-                                                        Wool - <span class=money>$150.00 USD</span></option>
+                                                <option data-sku="124" value="14137261457481">32 x 16 x 72 / black /
+                                                    Wool - <span class=money>$150.00 USD</span></option>
 
 
-                                                    <option data-sku="352" value="14137261490249">32 x 16 x 72 / black /
-                                                        Fiber - <span class=money>$148.00 USD</span></option>
+                                                <option data-sku="352" value="14137261490249">32 x 16 x 72 / black /
+                                                    Fiber - <span class=money>$148.00 USD</span></option>
 
 
-                                                    <option data-sku="241" value="14137261523017">lg / orange / Wool -
-                                                        <span class=money>$145.00 USD</span></option>
+                                                <option data-sku="241" value="14137261523017">lg / orange / Wool -
+                                                    <span class=money>$145.00 USD</span></option>
 
 
-                                                    <option data-sku="536" value="14137261555785">lg / orange / Fiber -
-                                                        <span class=money>$143.00 USD</span></option>
+                                                <option data-sku="536" value="14137261555785">lg / orange / Fiber -
+                                                    <span class=money>$143.00 USD</span></option>
 
 
-                                                    <option data-sku="451" value="14137261588553">lg / pink / Wool -
-                                                        <span class=money>$140.00 USD</span></option>
+                                                <option data-sku="451" value="14137261588553">lg / pink / Wool -
+                                                    <span class=money>$140.00 USD</span></option>
 
 
-                                                    <option data-sku="326" value="14137261621321">lg / pink / Fiber -
-                                                        <span class=money>$138.00 USD</span></option>
+                                                <option data-sku="326" value="14137261621321">lg / pink / Fiber -
+                                                    <span class=money>$138.00 USD</span></option>
 
 
-                                                    <option data-sku="421" value="14137261654089">lg / black / Wool -
-                                                        <span class=money>$135.00 USD</span></option>
+                                                <option data-sku="421" value="14137261654089">lg / black / Wool -
+                                                    <span class=money>$135.00 USD</span></option>
 
 
-                                                    <option data-sku="354" value="14137261686857">lg / black / Fiber -
-                                                        <span class=money>$133.00 USD</span></option>
+                                                <option data-sku="354" value="14137261686857">lg / black / Fiber -
+                                                    <span class=money>$133.00 USD</span></option>
 
 
-                                                    <option data-sku="234" value="14137261719625">md / orange / Wool -
-                                                        <span class=money>$130.00 USD</span></option>
+                                                <option data-sku="234" value="14137261719625">md / orange / Wool -
+                                                    <span class=money>$130.00 USD</span></option>
 
 
-                                                    <option data-sku="123" value="14137261752393">md / orange / Fiber -
-                                                        <span class=money>$128.00 USD</span></option>
+                                                <option data-sku="123" value="14137261752393">md / orange / Fiber -
+                                                    <span class=money>$128.00 USD</span></option>
 
 
-                                                    <option data-sku="456" value="14137261785161">md / pink / Wool -
-                                                        <span class=money>$125.00 USD</span></option>
+                                                <option data-sku="456" value="14137261785161">md / pink / Wool -
+                                                    <span class=money>$125.00 USD</span></option>
 
 
-                                                    <option data-sku="426" value="14137261817929">md / pink / Fiber -
-                                                        <span class=money>$123.00 USD</span></option>
+                                                <option data-sku="426" value="14137261817929">md / pink / Fiber -
+                                                    <span class=money>$123.00 USD</span></option>
 
 
-                                                    <option data-sku="153" value="14137261850697">md / black / Wool -
-                                                        <span class=money>$120.00 USD</span></option>
-                                                    <option data-sku="514" value="14137261916233">md / black / Fiber -
-                                                        <span class=money>$118.00 USD</span></option>
-                                                    <option data-sku="265" value="14137261949001">sm / orange / Wool -
-                                                        <span class=money>$115.00 USD</span></option>
-                                                    <option data-sku="" value="14137261981769">sm / orange / Fiber -
-                                                        <span class=money>$113.00 USD</span></option>
-                                                    <option data-sku="" value="14137262014537">sm / pink / Wool - <span
-                                                        class=money>$110.00 USD</span></option>
-                                                    <option data-sku="" value="14137262047305">sm / pink / Fiber - <span
-                                                        class=money>$108.00 USD</span></option>
-                                                    <option data-sku="" value="14137262080073">sm / black / Wool - <span
-                                                        class=money>$105.00 USD</span></option>
-                                                    <option data-sku="" value="14137262112841">sm / black / Fiber -
-                                                        <span class=money>$100.00 USD</span></option>
-                                                </select>
-                                                <div class="swatch clearfix Size" data-option-index="0">
-                                                    <div class="header">Size :</div>
-                                                    <div data-value="32 x 16 x 72"
-                                                         class="swatch-element 32-x-16-x-72 available">
-                                                        <input id="swatch-0-32-x-16-x-72" type="radio" name="option-0"
-                                                               value="32 x 16 x 72" checked/>
-                                                        <label for="swatch-0-32-x-16-x-72">
-                                                            32 x 16 x 72
+                                                <option data-sku="153" value="14137261850697">md / black / Wool -
+                                                    <span class=money>$120.00 USD</span></option>
+                                                <option data-sku="514" value="14137261916233">md / black / Fiber -
+                                                    <span class=money>$118.00 USD</span></option>
+                                                <option data-sku="265" value="14137261949001">sm / orange / Wool -
+                                                    <span class=money>$115.00 USD</span></option>
+                                                <option data-sku="" value="14137261981769">sm / orange / Fiber -
+                                                    <span class=money>$113.00 USD</span></option>
+                                                <option data-sku="" value="14137262014537">sm / pink / Wool - <span
+                                                    class=money>$110.00 USD</span></option>
+                                                <option data-sku="" value="14137262047305">sm / pink / Fiber - <span
+                                                    class=money>$108.00 USD</span></option>
+                                                <option data-sku="" value="14137262080073">sm / black / Wool - <span
+                                                    class=money>$105.00 USD</span></option>
+                                                <option data-sku="" value="14137262112841">sm / black / Fiber -
+                                                    <span class=money>$100.00 USD</span></option>
+                                            </select>
+                                            <div class="swatch clearfix Size" data-option-index="0">
+                                                <div class="header">Size :</div>
+                                                <div v-for="item in product.sizeList" data-value="lg" class="swatch-element lg available">
+                                                    <input id="swatch-0-lg" type="radio" name="option-0"
+                                                           :value="item.size"/>
+                                                    <label for="swatch-0-lg">
+                                                        {{item.size}}
+                                                    </label>
 
-                                                        </label>
-                                                    </div>
-                                                    <div data-value="lg" class="swatch-element lg available">
-                                                        <input id="swatch-0-lg" type="radio" name="option-0"
-                                                               value="lg"/>
-
-                                                        <label for="swatch-0-lg">
-                                                            lg
-
-                                                        </label>
-
-                                                    </div>
-                                                    <div data-value="md" class="swatch-element md available">
-                                                        <input id="swatch-0-md" type="radio" name="option-0"
-                                                               value="md"/>
-
-                                                        <label for="swatch-0-md">
-                                                            md
-
-                                                        </label>
-
-                                                    </div>
-                                                    <div data-value="sm" class="swatch-element sm available">
-                                                        <input id="swatch-0-sm" type="radio" name="option-0"
-                                                               value="sm"/>
-                                                        <label for="swatch-0-sm">
-                                                            sm
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="swatch clearfix Color" data-option-index="1">
-                                                    <div class="header">Color :</div>
-                                                    <div data-value="orange"
-                                                         class="swatch-element color orange available">
-                                                        <input id="swatch-1-orange" type="radio" name="option-1"
-                                                               value="orange" checked/>
-
-                                                        <label for="swatch-1-orange"
-                                                               style="background-color: orange; background-image: url(/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_thumb42a2.jpg?v=1538026280);">
-
-                                                        </label>
-
-                                                    </div>
-                                                    <div data-value="pink" class="swatch-element color pink available">
-                                                        <input id="swatch-1-pink" type="radio" name="option-1"
-                                                               value="pink"/>
-
-                                                        <label for="swatch-1-pink"
-                                                               style="background-color: pink; background-image: url(/cdn/shop/products/2_0d083693-5bf6-4ccf-afba-0e529ef80448_thumbdd19.jpg?v=1538026296);">
-
-                                                        </label>
-
-                                                    </div>
-                                                    <div data-value="black"
-                                                         class="swatch-element color black available">
-                                                        <input id="swatch-1-black" type="radio" name="option-1"
-                                                               value="black"/>
-
-                                                        <label for="swatch-1-black"
-                                                               style="background-color: black; background-image: url(/cdn/shop/products/4_00091637-02ea-49c2-8b97-70d2574269eb_thumb943b.jpg?v=1538026298);">
-
-                                                        </label>
-
-                                                    </div>
-                                                </div>
-                                                <div class="swatch clearfix Material" data-option-index="2">
-                                                    <div class="header">Material :</div>
-                                                    <div data-value="Wool" class="swatch-element wool available">
-                                                        <input id="swatch-2-wool" type="radio" name="option-2"
-                                                               value="Wool" checked/>
-
-                                                        <label for="swatch-2-wool">
-                                                            Wool
-
-                                                        </label>
-
-                                                    </div>
-                                                    <div data-value="Fiber" class="swatch-element fiber available">
-                                                        <input id="swatch-2-fiber" type="radio" name="option-2"
-                                                               value="Fiber"/>
-
-                                                        <label for="swatch-2-fiber">
-                                                            Fiber
-
-                                                        </label>
-
-                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="product-actions">
-                                                <div class="product-quantity-action">
-                                                    <div class="prodict-statas"><span>Quantity :</span></div>
-                                                    <div class="product-quantity">
-                                                        <form action="#">
-                                                            <div class="product-quantity">
-                                                                <div class="cart-plus-minus">
-                                                                    <input name="quantity" value="1" type="number">
-                                                                </div>
+                                            <div class="swatch clearfix Color" data-option-index="1">
+                                                <div class="header">Color :</div>
+                                                <div v-for="item in product.colorList" class="swatch-element color orange available">
+                                                    <input id="swatch-1-orange" type="radio" name="option-1"
+                                                           value="orange" checked/>
+                                                    <label for="swatch-1-orange"
+                                                           :style="{backgroundColor: item.value}">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="swatch clearfix Material" data-option-index="2">
+                                                <div class="header">Material :</div>
+                                                <div data-value="Wool" class="swatch-element wool available">
+                                                    <input id="swatch-2-wool" type="radio" name="option-2"
+                                                           value="Wool" checked/>
+
+                                                    <label for="swatch-2-wool">
+                                                        Wool
+
+                                                    </label>
+
+                                                </div>
+                                                <div data-value="Fiber" class="swatch-element fiber available">
+                                                    <input id="swatch-2-fiber" type="radio" name="option-2"
+                                                           value="Fiber"/>
+
+                                                    <label for="swatch-2-fiber">
+                                                        Fiber
+
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-actions">
+                                            <div class="product-quantity-action">
+                                                <div class="prodict-statas"><span>Quantity :</span></div>
+                                                <div class="product-quantity">
+                                                    <form action="#">
+                                                        <div class="product-quantity">
+                                                            <div class="cart-plus-minus">
+                                                                <input name="quantity" value="1" type="number">
                                                             </div>
-                                                        </form>
-                                                    </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <div class="cart-and-wishlist-btn">
-                                                    <div class="product-cart-action pro_dtl_btn">
+                                            </div>
+                                            <div class="cart-and-wishlist-btn">
+                                                <div class="product-cart-action pro_dtl_btn">
 
-                                                        <button type="submit" class="ajax-spin-cart" id="AddToCart">
+                                                    <button type="submit" class="ajax-spin-cart" id="AddToCart">
     <span>
       <span class="cart-title" id="AddToCartText">Add To Cart</span>
       <span class="cart-loading">Wait..</span>
       <span class="cart-added">Added</span>
       <span class="cart-unavailable">Uavailable</span>
     </span>
-                                                        </button>
-                                                    </div>
+                                                    </button>
+                                                </div>
 
 
-                                                    <div class="wishlist-action">
+                                                <div class="wishlist-action">
 
-                                                        <a class="wishlist" href="../account/login.html"
-                                                           title="Wishlist">
-                                                            <span class="add-wishlist"><i class="icon-heart"></i></span>
-                                                        </a>
+                                                    <a class="wishlist" href="../account/login.html"
+                                                       title="Wishlist">
+                                                        <span class="add-wishlist"><i class="icon-heart"></i></span>
+                                                    </a>
 
 
-                                                    </div>
                                                 </div>
                                             </div>
-
-
-                                            <!-- Share -->
-                                            <div class="share-icons section fix pro_social_share d-flex">
-
-
-                                                <h2 class="title_2">Share:</h2>
-                                                <ul class="pro_social_link">
-                                                    <li><a target="_blank"
-                                                           href="http://www.facebook.com/sharer.php?u=https://fusta-demo.myshopify.com/products/adquiera-mas"
-                                                           title="Share on Facebook" tabindex="0"><i
-                                                        class="ion-social-facebook"></i></a></li>
-                                                    <li><a target="_blank"
-                                                           href="http://twitter.com/share?text=Adquiera%20Mas&amp;url=https://fusta-demo.myshopify.com/products/adquiera-mas;source=webclient"
-                                                           title="Share on Twitter" tabindex="0"><i
-                                                        class="ion-social-twitter"></i></a></li>
-                                                    <li><a target="_blank"
-                                                           href="http://plus.google.com/share?url=https://fusta-demo.myshopify.com/products/adquiera-mas"
-                                                           title="Share on Google+" tabindex="0"><i
-                                                        class="ion-social-googleplus"></i></a></li>
-
-                                                    <li><a target="_blank"
-                                                           href="../../pinterest.com/pin/create/button/indexae70.html?url=https://fusta-demo.myshopify.com/products/adquiera-mas&amp;media=http://fusta-demo.myshopify.com/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_1024x1024.jpg?v=1538026280&amp;description=Adquiera%20Mas"
-                                                           title="Share on Pinterest" tabindex="0"><i
-                                                        class="ion-social-pinterest"></i></a></li>
-
-                                                </ul>
-                                            </div>
-
-
-                                            <div class="custom-payment-options">
-                                                <div>
-                                                    <p>Guaranteed safe checkout</p>
-                                                </div>
-                                                <div class="methods-of-payment"><img
-                                                    src="/cdn/shopifycloud/shopify/assets/payment_icons/amazon-92e856f82cae5a564cd0f70457f11af4d58fa037cf6e5ab7adf76f6fd3b9cafe.svg"
-                                                    height="35" alt="amazon payments"/><img
-                                                    src="/cdn/shopifycloud/shopify/assets/payment_icons/apple_pay-f6db0077dc7c325b436ecbdcf254239100b35b70b1663bc7523d7c424901fa09.svg"
-                                                    height="35" alt="apple pay"/><img
-                                                    src="/cdn/shopifycloud/shopify/assets/payment_icons/bitcoin-e41278677541fc32b8d2e7fa41e61aaab2935151a6048a1d8d341162f5b93a0a.svg"
-                                                    height="35" alt="bitcoin"/><img
-                                                    src="/cdn/shopifycloud/shopify/assets/payment_icons/google_pay-c66a29c63facf2053bf69352982c958e9675cabea4f2f7ccec08d169d1856b31.svg"
-                                                    height="35" alt="google pay"/><img
-                                                    src="/cdn/shopifycloud/shopify/assets/payment_icons/paypal-49e4c1e03244b6d2de0d270ca0d22dd15da6e92cc7266e93eb43762df5aa355d.svg"
-                                                    height="35" alt="paypal"/><img
-                                                    src="/cdn/shopifycloud/shopify/assets/payment_icons/visa-319d545c6fd255c9aad5eeaad21fd6f7f7b4fdbdb1a35ce83b89cca12a187f00.svg"
-                                                    height="35" alt="visa"/></div>
-                                            </div>
-
-
                                         </div>
-                                    </form>
+
+
+                                        <!-- Share -->
+                                        <div class="share-icons section fix pro_social_share d-flex">
+
+
+                                            <h2 class="title_2">Share:</h2>
+                                            <ul class="pro_social_link">
+                                                <li><a target="_blank"
+                                                       href="http://www.facebook.com/sharer.php?u=https://fusta-demo.myshopify.com/products/adquiera-mas"
+                                                       title="Share on Facebook" tabindex="0"><i
+                                                    class="ion-social-facebook"></i></a></li>
+                                                <li><a target="_blank"
+                                                       href="http://twitter.com/share?text=Adquiera%20Mas&amp;url=https://fusta-demo.myshopify.com/products/adquiera-mas;source=webclient"
+                                                       title="Share on Twitter" tabindex="0"><i
+                                                    class="ion-social-twitter"></i></a></li>
+                                                <li><a target="_blank"
+                                                       href="http://plus.google.com/share?url=https://fusta-demo.myshopify.com/products/adquiera-mas"
+                                                       title="Share on Google+" tabindex="0"><i
+                                                    class="ion-social-googleplus"></i></a></li>
+
+                                                <li><a target="_blank"
+                                                       href="../../pinterest.com/pin/create/button/indexae70.html?url=https://fusta-demo.myshopify.com/products/adquiera-mas&amp;media=http://fusta-demo.myshopify.com/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_1024x1024.jpg?v=1538026280&amp;description=Adquiera%20Mas"
+                                                       title="Share on Pinterest" tabindex="0"><i
+                                                    class="ion-social-pinterest"></i></a></li>
+
+                                            </ul>
+                                        </div>
+
+
+                                        <div class="custom-payment-options">
+                                            <div>
+                                                <p>Guaranteed safe checkout</p>
+                                            </div>
+                                            <div class="methods-of-payment"><img
+                                                src="/cdn/shopifycloud/shopify/assets/payment_icons/amazon-92e856f82cae5a564cd0f70457f11af4d58fa037cf6e5ab7adf76f6fd3b9cafe.svg"
+                                                height="35" alt="amazon payments"/><img
+                                                src="/cdn/shopifycloud/shopify/assets/payment_icons/apple_pay-f6db0077dc7c325b436ecbdcf254239100b35b70b1663bc7523d7c424901fa09.svg"
+                                                height="35" alt="apple pay"/><img
+                                                src="/cdn/shopifycloud/shopify/assets/payment_icons/bitcoin-e41278677541fc32b8d2e7fa41e61aaab2935151a6048a1d8d341162f5b93a0a.svg"
+                                                height="35" alt="bitcoin"/><img
+                                                src="/cdn/shopifycloud/shopify/assets/payment_icons/google_pay-c66a29c63facf2053bf69352982c958e9675cabea4f2f7ccec08d169d1856b31.svg"
+                                                height="35" alt="google pay"/><img
+                                                src="/cdn/shopifycloud/shopify/assets/payment_icons/paypal-49e4c1e03244b6d2de0d270ca0d22dd15da6e92cc7266e93eb43762df5aa355d.svg"
+                                                height="35" alt="paypal"/><img
+                                                src="/cdn/shopifycloud/shopify/assets/payment_icons/visa-319d545c6fd255c9aad5eeaad21fd6f7f7b4fdbdb1a35ce83b89cca12a187f00.svg"
+                                                height="35" alt="visa"/></div>
+                                        </div>
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -877,9 +814,9 @@ export default {
     },
     data() {
         return {
-            slug:'',
-            item_code:'',
-            product:{}
+            slug: '',
+            item_code: '',
+            product: {}
         }
     },
     watch: {
@@ -900,7 +837,7 @@ export default {
                 if (this.slug == '' || this.item_code == '' || this.slug == undefined || this.slug == null) {
                     this.$router.push({name: 'Index'});
                 } else {
-                    let data = await axios.get(getUrlList().getProductData+'/'+this.item_code+'/'+this.slug);
+                    let data = await axios.get(getUrlList().getProductData + '/' + this.item_code + '/' + this.slug);
                     console.log(data.data.data.data);
                     if (data.status == 200 && data.data.data.data.id) {
                         //set product
@@ -932,9 +869,11 @@ export default {
 .lt-ie9 .methods-of-payment, .ie8 .methods-of-payment, .oldie .methods-of-payment {
     display: none;
 }
+
 .product-variant-option .selector-wrapper {
     display: none;
 }
+
 .label[for="product-select-option-0"] {
     display: none;
 }
@@ -946,10 +885,11 @@ export default {
 #product-select-option-0 + .custom-style-select-box {
     display: none !important;
 }
+
 .spr-container {
-     padding: 24px;
-     border-color: #ECECEC;
- }
+    padding: 24px;
+    border-color: #ECECEC;
+}
 
 .spr-review, .spr-form {
     border-color: #ECECEC;

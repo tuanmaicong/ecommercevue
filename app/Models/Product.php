@@ -34,6 +34,10 @@ class Product extends Model
     {
         return $this->hasOne(Sale::class,'id','sale_id');
     }
+    public function size()
+    {
+        return $this->hasMany(ProductAttr::class,'id','product_id')->with('size_value');
+    }
     protected function Image(): Attribute
     {
         return Attribute::make(
