@@ -21,11 +21,9 @@ Route::get('/', function () {
     return view('index');
 //    return redirect('admin/dashboard');
 });
-
-Route::get('/login',function (){
+Route::get('/admin/login',function (){
     return view('auth.signin');
-});
-
+})->name('admin.login');
 Route::get('/apiDocs',function (){
     return view('apiDocs');
 });

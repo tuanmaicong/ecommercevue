@@ -2,26 +2,24 @@
     <Layout>
         <template v-slot:content="slotProps">
             <HomeBanner :homeBanners="homeBanners" />
-            <div id="shopify-section-template--14201408815177__about-product" class="shopify-section">
+            <div v-for="item in topSelling" id="shopify-section-template--14201408815177__about-product" class="shopify-section">
                 <!-- about-area start -->
                 <div class="about-area section-pt" style="padding-top:100px;padding-bottom:0px;background:#ffffff;">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="about-image">
-                                    <a href="#">
-                                        <img src="cdn/shop/files/about-1cc55.jpg?v=1613745590"
-                                             alt="About Product images">
-                                    </a>
-
-                                    <span class="text_left">Welcome To Furniture</span>
-
+                                    <router-link :to="'/product/'+item.item_code+'/'+item.slug">
+                                        <img :src="item.image"
+                                                 alt="About Product images">
+                                    </router-link>
+                                    <span class="text_left">{{item.name}}</span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="about-contents">
 
-                                    <h3>Top Selling!</h3>
+                                    <h3>Top Giảm giá!</h3>
 
                                     <div class="price-box">
 
@@ -72,299 +70,7 @@
                 </div>
                 <!-- lg-banner-bg end -->
             </div>
-            <div id="shopify-section-template--14201408815177__featured-product-carousel" class="shopify-section">
-                <!-- product-area start -->
-                <div class="product-area section-ptb"
-                     style="padding-top:100px;padding-bottom:100px;background:#ffffff;">
-                    <div class="container">
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <!-- section-title start -->
-                                <div class="section-title">
-                                    <h2>Featured Products</h2>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                                </div>
-                                <!-- section-title end -->
-                            </div>
-                        </div>
-                        <!-- product-warpper start -->
-                        <div class="product-warpper">
-                            <div class="product-slider row">
-                                <div class="col">
-                                    <!-- single-product-wrap start -->
-                                    <div class="single-product-wrap">
-                                        <div class="product-image">
-                                            <div class="product-item-badge">
-                                                <span class="sale-title">Sale</span><span
-                                                class="percent-count">-7%</span>
-                                            </div>
-                                            <a href="products/humor-new-agregado.html">
-                                                <img
-                                                    src="cdn/shop/products/1_b99982d9-e441-423f-9671-edef7db49d9c_large2cd3.jpg?v=1538023000"
-                                                    alt="">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="wishlist" href="account/login.html" title="Wishlist">
-                                                    <span class="add-wishlist"><i class="icon-heart"></i></span>
-                                                </a>
-                                                <a href="javascript:void(0);"
-                                                   onclick=""
-                                                   class="add-to-cart ajax-spin-cart">
-                        <span>
-                          <span class="cart-title"><i class="icon-handbag"></i></span>
-                          <span class="cart-loading animated infinite rotateOut"><i class="ion-load-a"></i></span>
-                          <span class="cart-added"><i class="ion-android-done"></i></span>
-                          <span class="cart-unavailable"><i class="ion-android-alert"></i></span>
-                        </span>
-                                                </a>
-                                                <a href="javascript:void(0);" onclick="quiqview('humor-new-agregado')"
-                                                   class="quick-view"
-                                                   data-toggle="modal" data-target="#exampleModalCenter"><i
-                                                    class="icon-magnifier-add"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3><a href="products/humor-new-agregado.html">Humor New Agregado</a></h3>
-                                            <div class="price-box">
-
-                                                <span class="old-price"><span class=money>$700.00</span></span>
-                                                <span class="new-price"><span class=money>$650.00</span></span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- single-product-wrap end -->
-                                </div>
-
-                                <div class="col">
-                                    <!-- single-product-wrap start -->
-                                    <div class="single-product-wrap">
-                                        <div class="product-image">
-                                            <div class="product-item-badge">
-                                                <span class="sale-title">Sale</span><span
-                                                class="percent-count">-17%</span>
-                                            </div>
-                                            <a href="products/adquiera-mas.html">
-                                                <img
-                                                    src="cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_large42a2.jpg?v=1538026280"
-                                                    alt="">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="wishlist" href="account/login.html" title="Wishlist">
-                                                    <span class="add-wishlist"><i class="icon-heart"></i></span>
-                                                </a>
-                                                <a href="javascript:void(0);"
-                                                   onclick=""
-                                                   class="add-to-cart ajax-spin-cart">
-                        <span>
-                          <span class="cart-title"><i class="icon-handbag"></i></span>
-                          <span class="cart-loading animated infinite rotateOut"><i class="ion-load-a"></i></span>
-                          <span class="cart-added"><i class="ion-android-done"></i></span>
-                          <span class="cart-unavailable"><i class="ion-android-alert"></i></span>
-                        </span>
-                                                </a>
-                                                <a href="javascript:void(0);" onclick="quiqview('adquiera-mas')"
-                                                   class="quick-view"
-                                                   data-toggle="modal" data-target="#exampleModalCenter"><i
-                                                    class="icon-magnifier-add"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3><a href="products/adquiera-mas.html">Adquiera Mas</a></h3>
-                                            <div class="price-box">
-
-                                                <span class="old-price"><span class=money>$180.00</span></span>
-                                                <span class="new-price"><span class=money>$150.00</span></span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- single-product-wrap end -->
-                                </div>
-
-                                <div class="col">
-                                    <!-- single-product-wrap start -->
-                                    <div class="single-product-wrap">
-                                        <div class="product-image">
-                                            <div class="product-item-badge">
-                                                <span class="sale-title">Sale</span><span
-                                                class="percent-count">-7%</span>
-                                            </div>
-                                            <a href="products/aquellos-interesados.html">
-                                                <img
-                                                    src="cdn/shop/products/9_68a9e3a7-6d4d-440f-a2ac-873c6280effd_largebe63.jpg?v=1538026146"
-                                                    alt="">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="wishlist" href="account/login.html" title="Wishlist">
-                                                    <span class="add-wishlist"><i class="icon-heart"></i></span>
-                                                </a>
-                                                <a href="javascript:void(0);"
-                                                   onclick=""
-                                                   class="add-to-cart ajax-spin-cart">
-                        <span>
-                          <span class="cart-title"><i class="icon-handbag"></i></span>
-                          <span class="cart-loading animated infinite rotateOut"><i class="ion-load-a"></i></span>
-                          <span class="cart-added"><i class="ion-android-done"></i></span>
-                          <span class="cart-unavailable"><i class="ion-android-alert"></i></span>
-                        </span>
-                                                </a>
-                                                <a href="javascript:void(0);" onclick="quiqview('aquellos-interesados')"
-                                                   class="quick-view"
-                                                   data-toggle="modal" data-target="#exampleModalCenter"><i
-                                                    class="icon-magnifier-add"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3><a href="products/aquellos-interesados.html">Aquellos Interesados</a>
-                                            </h3>
-                                            <div class="price-box">
-                                                <span class="old-price"><span class=money>$275.00</span></span>
-                                                <span class="new-price"><span class=money>$255.00</span></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- single-product-wrap end -->
-                                </div>
-
-                                <div class="col">
-                                    <!-- single-product-wrap start -->
-                                    <div class="single-product-wrap">
-                                        <div class="product-image">
-                                            <div class="product-item-badge">
-                                                <span class="sale-title">Sale</span><span
-                                                class="percent-count">-4%</span>
-                                            </div>
-                                            <a href="products/algunas-veces-por.html">
-                                                <img
-                                                    src="cdn/shop/products/10_fb1aafc8-e118-41e1-afa4-33b2c0387abc_large79e7.jpg?v=1538026183"
-                                                    alt="">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="wishlist" href="account/login.html" title="Wishlist">
-                                                    <span class="add-wishlist"><i class="icon-heart"></i></span>
-                                                </a>
-                                                <a href="javascript:void(0);"
-                                                   onclick=""
-                                                   class="add-to-cart ajax-spin-cart">
-                        <span>
-                          <span class="cart-title"><i class="icon-handbag"></i></span>
-                          <span class="cart-loading animated infinite rotateOut"><i class="ion-load-a"></i></span>
-                          <span class="cart-added"><i class="ion-android-done"></i></span>
-                          <span class="cart-unavailable"><i class="ion-android-alert"></i></span>
-                        </span>
-                                                </a>
-                                                <a href="javascript:void(0);" onclick="quiqview('algunas-veces-por')"
-                                                   class="quick-view"
-                                                   data-toggle="modal" data-target="#exampleModalCenter"><i
-                                                    class="icon-magnifier-add"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3><a href="products/algunas-veces-por.html">Algunas Veces Por</a></h3>
-                                            <div class="price-box">
-
-                                                <span class="old-price"><span class=money>$539.00</span></span>
-                                                <span class="new-price"><span class=money>$519.00</span></span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- single-product-wrap end -->
-                                </div>
-                                <div class="col">
-                                    <!-- single-product-wrap start -->
-                                    <div class="single-product-wrap">
-                                        <div class="product-image">
-                                            <div class="product-item-badge">
-                                                <span class="sale-title">Sale</span><span
-                                                class="percent-count">-12%</span>
-                                            </div>
-                                            <a href="products/combinadas-con.html">
-                                                <img
-                                                    src="cdn/shop/products/8_c44822a2-46d5-46a0-8ca8-91e5c49361cf_large893e.jpg?v=1538025957"
-                                                    alt="">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="wishlist" href="account/login.html" title="Wishlist">
-                                                    <span class="add-wishlist"><i class="icon-heart"></i></span>
-                                                </a>
-                                                <a href="javascript:void(0);"
-                                                   onclick="Shopify.addItem(14137230262345, 1); return false;"
-                                                   class="add-to-cart ajax-spin-cart">
-                        <span>
-                          <span class="cart-title"><i class="icon-handbag"></i></span>
-                          <span class="cart-loading animated infinite rotateOut"><i class="ion-load-a"></i></span>
-                          <span class="cart-added"><i class="ion-android-done"></i></span>
-                          <span class="cart-unavailable"><i class="ion-android-alert"></i></span>
-                        </span>
-                                                </a>
-                                                <a href="javascript:void(0);" onclick="quiqview('combinadas-con')"
-                                                   class="quick-view"
-                                                   data-toggle="modal" data-target="#exampleModalCenter"><i
-                                                    class="icon-magnifier-add"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3><a href="products/combinadas-con.html">Combinadas Con</a></h3>
-                                            <div class="price-box">
-
-                                                <span class="old-price"><span class=money>$340.00</span></span>
-                                                <span class="new-price"><span class=money>$300.00</span></span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- single-product-wrap end -->
-                                </div>
-                                <div class="col">
-                                    <!-- single-product-wrap start -->
-                                    <div class="single-product-wrap">
-                                        <div class="product-image">
-                                            <div class="product-item-badge">
-                                                <span class="sale-title">Sale</span><span
-                                                class="percent-count">-27%</span>
-                                            </div>
-                                            <a href="products/affiliate-product.html">
-                                                <img
-                                                    src="cdn/shop/products/11_cc2138a8-b99f-4bdb-8ddf-3fe71e09c33a_large5026.jpg?v=1538026239"
-                                                    alt="">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="wishlist" href="account/login.html" title="Wishlist">
-                                                    <span class="add-wishlist"><i class="icon-heart"></i></span>
-                                                </a>
-                                                <a class="add-to-cart" title="Add to Cart"
-                                                   href="https://affiliate-program.amazon.com/">
-                                                    <i class="icon-handbag"></i>
-                                                </a>
-                                                <a href="javascript:void(0);" onclick="quiqview('affiliate-product')"
-                                                   class="quick-view"
-                                                   data-toggle="modal" data-target="#exampleModalCenter"><i
-                                                    class="icon-magnifier-add"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3><a href="products/affiliate-product.html">Affiliate Product</a></h3>
-                                            <div class="price-box">
-
-                                                <span class="old-price"><span class=money>$600.00</span></span>
-                                                <span class="new-price"><span class=money>$439.00</span></span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- single-product-wrap end -->
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- product-warpper start -->
-                    </div>
-                </div>
-                <!-- product-area end -->
-            </div>
+            <HomeSaleProduct :homeProductSale="homeProductSale" :addToCart="slotProps.addToCart"/>
             <div id="shopify-section-template--14201408815177__banner-grid" class="shopify-section">
                 <!-- banner-area start -->
                 <div class="banner-area section-pb" style="padding-top:0px;padding-bottom:96px;">
@@ -580,10 +286,12 @@ import initializeSlick from "@/slick-carosel.js";
 import HomeBanner from "@/frontTemplate/components/HomeBanner.vue";
 import HomeBrands from "@/frontTemplate/components/HomeBrands.vue";
 import HomeNewProduct from "@/frontTemplate/components/HomeNewProduct.vue";
+import HomeSaleProduct from "@/frontTemplate/components/HomeSaleProduct.vue";
 
 export default {
     name: 'Index',
     components: {
+        HomeSaleProduct,
         HomeNewProduct,
         HomeBrands,
         HomeBanner,
@@ -597,7 +305,9 @@ export default {
             homeBanners:[],
             homeCategories:[],
             homeBrands:[],
-            homeProduct:[]
+            homeProduct:[],
+            homeProductSale:[],
+            topSelling:[]
         }
     },
     methods:{
@@ -610,6 +320,8 @@ export default {
                     this.homeCategories = data.data.data.data.categories;
                     this.homeBrands = data.data.data.data.brands;
                     this.homeProduct = data.data.data.data.products;
+                    this.homeProductSale = data.data.data.data.product_sale;
+                    this.topSelling = data.data.data.data.product_top_sale;
                     // Gọi hàm executeSlick() sau khi vòng for đã kết thúc
                     this.$nextTick(() => {
                         initializeSlick();
@@ -620,7 +332,7 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-            console.log(this.homeProduct);
+            console.log(this.topSelling);
         },
     }
 }

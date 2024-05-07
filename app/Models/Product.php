@@ -34,6 +34,10 @@ class Product extends Model
     {
         return $this->hasOne(Sale::class,'id','sale_id');
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
     public function size()
     {
         return $this->hasMany(ProductAttr::class,'id','product_id')->with('size_value');

@@ -4,11 +4,14 @@ export function getUrlList(){
         getHeaderCategoriesData : ''+baseUrl+'/getCategoriesData',
         getHomeData : ''+baseUrl+'/getHomeData',
         getCategoryData: ''+baseUrl+'/getCategoryData',
+        getShopData: ''+baseUrl+'/getShopData',
         getProductData: ''+baseUrl+'/getProductData',
         getUserData: ''+baseUrl+'/getUserData',
         getCartData: ''+baseUrl+'/getCartData',
         addToCart: ''+baseUrl+'/addToCart',
         removeCartData: ''+baseUrl+'/removeCartData',
+        login: ''+baseUrl+'/auth/login',
+        logout: ''+baseUrl+'/auth/logout',
     }
 }
 export default getUrlList;

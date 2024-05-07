@@ -39,6 +39,8 @@ class AuthController extends Controller
     }
     public function loginUser(Request $request)
     {
+//        echo $request->email;
+//        prx($request->all());
         $validation = Validator::make($request->all(),[
             'email' => 'required|email|string|exists:users,email',
             'password' => 'required|string'
@@ -57,7 +59,7 @@ class AuthController extends Controller
                         return response()->json([
                             'status' => 200,
                             'message' => 'Admin user',
-                            'url' => 'admin/dashboard'
+                            'url' => 'dashboard'
                         ]);
                     }else{
                         $user = User::where('id',Auth::User()->id)->first();

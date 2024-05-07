@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TaxController;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/dashboard', function () {
     return view('admin.index');
 });

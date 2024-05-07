@@ -16,6 +16,7 @@ use App\Models\Size;
 use App\Models\TempUser;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use function Laravel\Prompts\error;
 
@@ -33,7 +34,24 @@ class HomePageController extends Controller
         $data['banner'] = HomeBanner::get();
         $data['categories'] = Category::with('product:id,category_id,name,slug,image,item_code')->get();
         $data['brands'] = Brand::get();
-        $data['products'] = Product::select('id','category_id','image','name','slug','item_code','sale_id')->with('product_attributes','sale')->get();
+        $data['products'] = Product::select('id', 'category_id', 'image', 'name', 'slug', 'item_code', 'sale_id')
+            ->with('product_attributes', 'sale')
+            ->whereHas('category', function($query) {
+                $query->where('slug', 'new-product');
+            })
+            ->get();
+        $data['product_sale'] = Product::select('id', 'category_id', 'image', 'name', 'slug', 'item_code', 'sale_id')
+            ->with('product_attributes', 'sale')
+            ->whereHas('category', function($query) {
+                $query->where('slug', 'product-sale');
+            })
+            ->get();
+        $data['product_top_sale'] = Product::select('id', 'category_id', 'image', 'name', 'slug', 'item_code', 'sale_id')
+            ->with('product_attributes', 'sale')
+            ->whereHas('category', function($query) {
+                $query->where('slug', 'product-sale')->orderBy('id','desc');
+            })
+            ->get();
         return $this->success(['data'=> $data], 'Successfully data fetched');
     }
 
@@ -111,7 +129,12 @@ class HomePageController extends Controller
     }
     function getUserData(Request $request)
     {
-//        prx($request->all());
+        prx($request->all());
+        $user = $request->user();
+        if ($user){
+            echo 123;
+        }
+        prx($user);
         $token = $request->token;
         $checkUser = TempUser::where('token',$token)->first();
         if (isset($checkUser->id)){
@@ -166,15 +189,29 @@ class HomePageController extends Controller
         ]);
         if ($validation->fails()){
             return $this->error($validation->errors()->first(),400,[]);
-        }else{
+        } else {
             $user = TempUser::where('token',$request->token)->first();
-            Cart::updateOrCreate(
-                ['user_id'=>$user->user_id,'product_id'=>$request->product_id,
-                'product_attr_id' => $request->product_attr_id,],
-                ['user_id'=>$user->user_id,'product_id'=>$request->product_id,
-                    'product_attr_id' => $request->product_attr_id,'qty'=>$request->qty,'user_type'=>$user->user_type]
-            );
-//            prx($request->all());
+
+            $cartItem = Cart::where([
+                'user_id' => $user->user_id,
+                'product_id' => $request->product_id,
+                'product_attr_id' => $request->product_attr_id
+            ])->first();
+
+            if ($cartItem) {
+                // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên 1 đơn vị
+                $cartItem->qty += $request->qty;
+                $cartItem->save();
+            } else {
+                // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm mới vào giỏ hàng
+                Cart::create([
+                    'user_id' => $user->user_id,
+                    'product_id' => $request->product_id,
+                    'product_attr_id' => $request->product_attr_id,
+                    'qty' => $request->qty,
+                    'user_type' => $user->user_type
+                ]);
+            }
             return $this->success(['data'=> ''], 'Successfully data fetched');
         }
     }
@@ -219,9 +256,10 @@ class HomePageController extends Controller
             foreach ($data->product_attributes as $productAttr) {
                 $colorList[] = $productAttr->color;
             }
-            $uniqueColorList = collect($colorList)->unique('text')->values()->all();
+            $uniqueColorList = collect($colorList)->unique('id')->values()->all();
+            $uniqueSizeList = collect($sizeList)->unique('id')->values()->all();
             // Thêm danh sách các size vào dữ liệu trả về
-            $data['sizeList'] = $sizeList;
+            $data['sizeList'] = $uniqueSizeList;
             $data['colorList'] = $uniqueColorList;
 
             return $this->success(['data'=> $data], 'Successfully data fetched');

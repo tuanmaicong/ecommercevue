@@ -1,0 +1,35 @@
+import { createStore } from 'vuex';
+import axios from "axios"; // Thêm dòng này
+
+import getUrlList from "@/provider.js";
+const value = localStorage.getItem('isLoggedIn');
+const store = createStore({
+    state: {
+        isLoggedIn: value // Đảm bảo rằng trạng thái mặc định là false
+    },
+    mutations: {
+        setLoggedIn(state, value) {
+            state.isLoggedIn = value;
+        }
+    },
+    actions: {
+        async logout({ commit }) {
+            try {
+                let access_token = localStorage.getItem('access_token') || '';
+                await axios.post(getUrlList().logout, null, {
+                    headers: {
+                        'Authorization': 'Bearer ' + access_token
+                    }
+                }); // Gọi hàm getUrlList() để lấy URL logout
+                commit('setLoggedIn', false); // Cập nhật trạng thái đăng nhập sang false
+                // Có thể xóa token trong localStorage nếu cần
+                localStorage.removeItem('user_id');
+                localStorage.removeItem('access_token');
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+    }
+});
+
+export default store;

@@ -21,6 +21,6 @@ class Cart extends Model
     ];
     public function products()
     {
-        return $this->hasMany(Product::class,'id','product_id')->with('product_attributes');
+        return $this->hasMany(Product::class,'id','product_id')->with(['product_attributes','sale']);
     }
 }

@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="notification-entry text-center col-12">
-                    <p>All featured product 50% off <a href="#">Shop Now</a></p>
+                    <p>Các sản phẩm giảm giá từ 5-15%<router-link to="/category/product-sale">Xem chi tiết</router-link></p>
                     <button class="notification-close-btn">X</button>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
 
-                            <p>Welcome To <span>Tuanmc-Shop</span></p>
+                            <p>Chào mừng bạn đến với <span>Tuanmc-Shop</span></p>
 
                         </div>
                         <div class="col-lg-6 col-md-6">
@@ -57,9 +57,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-2 col-md-5 col-5">
-                            <div class="logo"><a href="index.html" class="theme-logo">
-                                <img src="/cdn/shop/files/logo-icon.png" alt="TuanmcShop">
-                            </a></div>
+                            <div class="logo"><router-link :to="'/'"><img src="/cdn/shop/files/logo-icon.png" alt="TuanmcShop"></router-link></div>
                         </div>
                         <div class="col-lg-8 d-none d-lg-block">
                             <div class="main-menu-area text-center">
@@ -84,26 +82,38 @@
                                 <div class="search-wrap">
                                     <a href="#" class="trigger-search"><i class="icon-magnifier"></i></a>
                                 </div>
-                                <div class="user-wrap">
-                                    <a href="account/login.html"><i class="icon-user"></i></a>
-                                </div>
+                                    <div class="user-wrap">
+                                        <router-link v-if="!isLoggedIn" to="/login"><i class="icon-user"></i></router-link>
+                                        <a v-else @click="handleLogout"><i class="ion-power"></i></a>
+                                    </div>
                                 <div class="shopping-cart-wrap"><a href="#"><i class="icon-handbag"></i> <span
                                     id="cart-total"><span
                                     class="bigcounter">{{ cartCount }}</span></span></a>
                                     <div class="mini-cart">
-                                        <ul v-if="cartCount == 0" class="cart-tempty-title" style="display:block;">
+                                        <ul v-if="cartCount === 0" class="cart-tempty-title" style="display:block;">
                                             <li>Your cart is empty!</li>
                                         </ul>
-                                        <ul v-else v-for="item in cartProduct" :key="item.id" class="cart-item-loop">
+                                        <ul v-else v-for="(item,index) in cartProduct" :key="index" class="cart-item-loop">
                                             <li class="cart-item">
                                                 <div class="cart-image"><a
                                                     href="/products/como-por-ejemplo?variant=14137245368393"><img
                                                     :src="item.products[0].image"
                                                     alt=""></a></div>
                                                 <div class="cart-title"><a
-                                                    href="/products/como-por-ejemplo?variant=14137245368393"><h4>{{ item.products[0].name }}</h4></a><span
-                                                    class="quantity">1 ×</span>
-                                                    <div class="price-box"><span class="new-price"><span class="money">{{ item.products[0].product_attributes[0].price.toLocaleString('vi-VN') }} vn₫</span></span>
+                                                    href="/products/como-por-ejemplo?variant=14137245368393"><h4>
+                                                    {{ item.products[0].name }}</h4></a><span
+                                                    class="quantity">{{ item.qty }} ×</span>
+                                                    <div class="price-box">
+                                                        <span v-if="item.products[0].sale_id == null" class="new-price">
+                                                            <span class="money">{{
+                                                                    item.products[0].product_attributes[0].price.toLocaleString('vi-VN')
+                                                                }} vn₫</span>
+                                                        </span>
+                                                        <span v-else class="new-price">
+                                                            <span class="money">{{
+                                                                    (item.products[0].product_attributes[0].price * (1 - item.products[0].sale.value / 100)).toLocaleString('vi-VN')
+                                                                }} vn₫</span>
+                                                        </span>
                                                     </div>
                                                     <a class="remove_from_cart" href="javascript:void(0);"
                                                        @click="removeCartData(item.products[0].id,item.products[0].product_attributes[0].id,1)"><i
@@ -114,7 +124,9 @@
                                             <li class="subtotal-titles">
                                                 <div class="subtotal-titles">
                                                     <h3>Total :</h3><span class="shopping-cart__total"><span
-                                                    class=money>{{ cartTotal.toLocaleString('vi-VN') }} vn₫</span></span>
+                                                    class=money>{{
+                                                        cartTotal.toLocaleString('vi-VN')
+                                                    }} vn₫</span></span>
                                                 </div>
                                             </li>
                                             <li class="mini-cart-btns">
@@ -161,7 +173,7 @@
     </div>
     <!-- main-search start -->
     <main role="main">
-        <slot name="content" :addToCart="addToCart">
+        <slot name="content" :addToCart="addToCart" :getCartData="getCartData" :isProxy="isProxy">
 
         </slot>
     </main>
@@ -295,26 +307,38 @@
 <script>
 import axios from "axios";
 import getUrlList from "@/provider.js";
+import {reactive} from "vue";
+import { useStore } from 'vuex';
 export default {
     name: 'Layout',
     data() {
         return {
             headerCategories: [],
-            user_info:{
-                'user_id':'',
-                'auth':false
+            user_info_loaded: false,
+            user_info: {
+                'user_id': '',
+                'auth': false
             },
-            cartCount:0,
-            cartProduct:[],
-            cartTotal:0
+            cartCount: 0,
+            cartProduct: [],
+            cartTotal: 0
         }
     },
-    watch:{
-        cartProduct(val){
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.isLoggedIn;
+        }
+    },
+    watch: {
+        cartProduct(val) {
+            console.log(321);
             this.cartTotal = 0;
-
-            for (var item in val){
-                this.cartTotal += val[item].qty * val[item].products[0].product_attributes[0].price;
+            for (var item in val) {
+                if (val[item].products[0].sale_id == null) {
+                    this.cartTotal += val[item].qty * val[item].products[0].product_attributes[0].price;
+                } else {
+                    this.cartTotal += val[item].qty * (val[item].products[0].product_attributes[0].price * (1 - val[item].products[0].sale.value / 100));
+                }
             }
         }
     },
@@ -325,91 +349,117 @@ export default {
         this.getCartData();
     },
     methods: {
-        async removeCartData(product_id,product_attr_id,qty){
+        async handleLogout() {
             try {
-                let data = await axios.post(getUrlList().removeCartData,{
-                    'token':this.user_info.user_id,
-                    'auth':this.user_info.auth,
-                    'product_id':product_id,
-                    'product_attr_id':product_attr_id,
-                    'qty':qty,
+                await this.$store.dispatch('logout');
+                // Sau khi đăng xuất, bạn có thể chuyển hướng đến trang khác hoặc thực hiện các hành động khác
+            } catch (error) {
+                console.error('Error occurred:', error);
+            }
+        },
+        async removeCartData(product_id, product_attr_id, qty) {
+            try {
+                let data = await axios.post(getUrlList().removeCartData, {
+                    'token': this.user_info.user_id,
+                    'auth': this.user_info.auth,
+                    'product_id': product_id,
+                    'product_attr_id': product_attr_id,
+                    'qty': qty,
                 });
-                if (data.status == 200){
+                if (data.status == 200) {
                     this.getCartData();
-                }else {
+                } else {
                     console.log('Data Not found');
                 }
-            }catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         },
-        async addToCart(product_id,product_attr_id,qty){
+        async addToCart(product_id, product_attr_id, qty) {
             try {
-                let data = await axios.post(getUrlList().addToCart,{
-                    'token':this.user_info.user_id,
-                    'auth':this.user_info.auth,
-                    'product_id':product_id,
-                    'product_attr_id':product_attr_id,
-                    'qty':qty,
+                let user_id = JSON.parse(localStorage.getItem('user_info'));
+                let data = await axios.post(getUrlList().addToCart, {
+                    'token': user_id.user_id,
+                    'auth': user_id.auth,
+                    'product_id': product_id,
+                    'product_attr_id': product_attr_id,
+                    'qty': qty,
                 });
-                if (data.status == 200){
+                if (data.status == 200) {
                     this.getCartData();
-                }else {
+                    console.log('123');
+                } else {
                     console.log('Data Not found');
                 }
-            }catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         },
-        async getCartData(){
+        async getCartData() {
             try {
-                let data = await axios.post(getUrlList().getCartData,{
-                    'token':this.user_info.user_id,
-                    'auth':this.user_info.auth,
-                });
-                if (data.status == 200){
-                    this.cartCount = data.data.data.data.length;
-                    this.cartProduct = data.data.data.data;
-                }else {
-                    console.log('Data Not found');
+                let user_info = JSON.parse(localStorage.getItem('user_info'));
+                if (user_info.user_info != '' || user_info.user_info != null || user_info.user_info != undefined) {
+                    let data = await axios.post(getUrlList().getCartData, {
+                        'token': user_info.user_id,
+                        'auth': user_info.auth,
+                    });
+                    if (data.status == 200) {
+                        this.cartCount = data.data.data.data.length;
+                        if (this.isProxy(data.data.data.data)){
+                            this.cartProduct = reactive(data.data.data.data);
+                        }else {
+                            this.cartProduct = data.data.data.data;
+                        }
+                        console.log(this.cartProduct);
+                    } else {
+                        console.log('Data Not found');
+                    }
                 }
-            }catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         },
-        async getUser(){
-            if (localStorage.getItem('user_info')){
+        isProxy(value) {
+            return value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === Array.prototype;
+        },
+
+        async getUser() {
+            if (localStorage.getItem('user_info')) {
                 //user set into localStorage
                 var user = localStorage.getItem('user_info');
                 var testUser = JSON.parse(user);
                 this.user_info.user_id = testUser.user_id;
                 this.getUserData();
-            }else {
+            } else {
                 //user not set into localStorage
                 this.getUserData();
             }
         },
-        async getUserData(){
+        async getUserData() {
             try {
-                let data = await axios.post(getUrlList().getUserData,{
-                    'token':this.user_info.user_id,
+                console.log(this.user_info.user_id);
+                let user_id = localStorage.getItem('user_id') || '';
+                // console.log(localStorage.getItem('user_id'));
+                let data = await axios.post(getUrlList().getUserData, {
+                    'token': this.user_info.user_id,
+                    'user_id': user_id
                 });
-                if (data.status == 200){
-                    if (data.data.data.data.user_type == 1){
+                if (data.status == 200) {
+                    if (data.data.data.data.user_type == 1) {
                         //Auth user
                         this.user_info.auth = true;
                         this.user_info.user_id = data.data.data.data.token;
-                        localStorage.setItem('user_info',JSON.stringify(this.user_info));
-                    }else {
+                        localStorage.setItem('user_info', JSON.stringify(this.user_info));
+                    } else {
                         //Not Auth user
                         this.user_info.auth = false;
                         this.user_info.user_id = data.data.data.data.token;
-                        localStorage.setItem('user_info',JSON.stringify(this.user_info));
+                        localStorage.setItem('user_info', JSON.stringify(this.user_info));
                     }
-                }else {
+                } else {
                     console.log('Data Not found');
                 }
-            }catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         },

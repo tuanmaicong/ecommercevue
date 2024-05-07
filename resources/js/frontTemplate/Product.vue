@@ -41,9 +41,9 @@
                                                                                              :src="product.image"
                                                                                              :alt="product.name">
                                                         </div>
-                                                        <div class="product-badge">
+                                                        <div v-if="product.sale_id != null" class="product-badge">
                                                             <span class="sale-title">Sale</span>
-                                                            <span class="percent-count">-17%</span>
+                                                            <span class="percent-count">-{{ product.sale.value }}%</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -218,10 +218,10 @@
                                             </select>
                                             <div class="swatch clearfix Size" data-option-index="0">
                                                 <div class="header">Size :</div>
-                                                <div v-for="item in product.sizeList" data-value="lg" class="swatch-element lg available">
-                                                    <input id="swatch-0-lg" type="radio" name="option-0"
+                                                <div v-for="(item,index) in product.sizeList" data-value="lg" class="swatch-element lg available">
+                                                    <input :id="'swatch-'+index+'-lg'" type="checkbox" :name="'option-'+index"
                                                            :value="item.size"/>
-                                                    <label for="swatch-0-lg">
+                                                    <label :for="'swatch-'+index+'-lg'">
                                                         {{item.size}}
                                                     </label>
 
@@ -237,29 +237,6 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="swatch clearfix Material" data-option-index="2">
-                                                <div class="header">Material :</div>
-                                                <div data-value="Wool" class="swatch-element wool available">
-                                                    <input id="swatch-2-wool" type="radio" name="option-2"
-                                                           value="Wool" checked/>
-
-                                                    <label for="swatch-2-wool">
-                                                        Wool
-
-                                                    </label>
-
-                                                </div>
-                                                <div data-value="Fiber" class="swatch-element fiber available">
-                                                    <input id="swatch-2-fiber" type="radio" name="option-2"
-                                                           value="Fiber"/>
-
-                                                    <label for="swatch-2-fiber">
-                                                        Fiber
-
-                                                    </label>
-
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="product-actions">
                                             <div class="product-quantity-action">
@@ -268,7 +245,7 @@
                                                     <form action="#">
                                                         <div class="product-quantity">
                                                             <div class="cart-plus-minus">
-                                                                <input name="quantity" value="1" type="number">
+                                                                <input name="quantity" min="1" value="1" type="number">
                                                             </div>
                                                         </div>
                                                     </form>
@@ -378,42 +355,7 @@
 
 
                                 <div class="description-review-text tab-content">
-                                    <div class="tab-pane active" id="pro-dec" role="tabpanel"><p>Lorem ipsum dolor sit
-                                        amet, consectetur adipiscing elit. Cras a convallis nisl, at aliquam dolor.
-                                        Morbi in iaculis nunc. Nulla eu mi at velit imperdiet sollicitudin sed vel
-                                        risus. Quisque eleifend lorem ipsum, et tempus nulla convallis nec. Nos
-                                        aseguraremos de que para publicar un comentario. Es un hecho establecido hace
-                                        demasiado tiempo que un lector se distraerá con el contenido del texto de un
-                                        sitio mientras que mira su diseño. El punto de usar Lorem Ipsum es que tiene una
-                                        distribución más o menos normal de las letras, al contrario de usar textos como
-                                        por ejemplo "Contenido aquí, contenido aquí". Estos textos hacen parecerlo un
-                                        español que se puede leer. Muchos paquetes de autoedición y editores de páginas
-                                        web usan el Lorem Ipsum como su texto por defecto, y al hacer una búsqueda de
-                                        "Lorem Ipsum" va a dar por resultado muchos sitios web que usan este texto si se
-                                        encuentran en estado de desarrollo.</p>
-                                        <p>En el valle, la vivienda en la vigilancia específica, el reemplazo o la
-                                            consolidación de la cama, un hombre obsesionado con la reducción de opciones
-                                            de apuestas ilegales. Wow, mercado muy atractivo, de mis visitantes. Tiempo
-                                            de desarrollo reciente para odiar, un bar beef tiempo.</p>
-                                        <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de
-                                            texto. Mañana, a partir de los botones de opción, sino un poco de dolor.
-                                            Escribir en el freno ahora. No hay comentarios eran, en el mejor, pero el
-                                            financiamiento de la atención de la salud o la risa. Bienvenido a aprender
-                                            más acerca de la cultura popular, y el tiempo, no, ni a crecer fuerte.
-                                            Miramos a los miembros de televisión por cable de televisión.<br><br>Por
-                                            otra parte, denunciamos con indignación a los hombres que son engañados y
-                                            desmoralizados por los encantos del placer del momento, tan cegados por el
-                                            deseo, que no pueden prever el dolor y la molestia que se va a producir, y
-                                            la misma culpa es de los que faltan a su deber por debilidad de la voluntad,
-                                            que es lo mismo que decir que fallan por la fatiga y el dolor. Estos casos
-                                            son muy simples y fácil de distinguir. En una hora libre, sin las trabas de
-                                            nuestro poder de elección y cuando nada impida que seamos capaces de hacer
-                                            lo que más nos gusta, todo placer es de agradecer y cada dolor se puede
-                                            evitar. Pero en ciertas circunstancias y debido a las exigencias del deber o
-                                            de las obligaciones de la empresa, estos placeres tienen que ser repudiados
-                                            y sus molestias aceptadas .El hombre sabio, por lo tanto, siempre tiene en
-                                            estos asuntos una elección: rechaza placeres para asegurar otros placeres
-                                            mayores, o de lo contrario evita los dolores para evitar dolores peores.</p>
+                                    <div v-html="description" class="tab-pane active" id="pro-dec" role="tabpanel">
                                     </div>
 
                                     <div class="tab-pane" id="pro-review" role="tabpanel">
@@ -496,7 +438,7 @@
                                     <!-- single-product-wrap start -->
                                     <div class="single-product-wrap">
                                         <div class="product-image">
-                                            <div class="product-item-badge">
+                                            <div  class="product-item-badge">
 
 
                                                 <span class="sale-title">Sale</span>
@@ -816,7 +758,9 @@ export default {
         return {
             slug: '',
             item_code: '',
-            product: {}
+            product: {},
+            description:'',
+            price:0
         }
     },
     watch: {
@@ -842,6 +786,7 @@ export default {
                     if (data.status == 200 && data.data.data.data.id) {
                         //set product
                         this.product = data.data.data.data;
+                        this.description = data.data.data.data.description;
                         // Gọi hàm executeSlick() sau khi vòng for đã kết thúc
                         this.$nextTick(() => {
                             initializeSlick();
@@ -858,8 +803,6 @@ export default {
         },
     }
 }
-</script>
-<script setup>
 </script>
 <style>
 .methods-of-payment img {

@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <template v-slot:content>
+        <template v-slot:content="slotProps">
             <div class="breadcrumb-area section-ptb"
                  style="background-image: url(../../cdn/shop/files/breadcrumb-bgea73.jpg)!important;">
                 <div class="container">
@@ -13,19 +13,13 @@
                                 <ul class="breadcrumb-list">
 
                                     <li class="breadcrumb-item">
-                                        <a href="index.html" title="Back to the home page">Home</a>
+                                        <a href="/" title="Back to the home page">Home</a>
                                     </li>
                                     <li class="breadcrumb-item">
-
-
                                         <span>Products</span>
-
-
                                     </li>
                                 </ul>
                             </nav>
-
-
                             <!-- breadcrumb-list end -->
                         </div>
                     </div>
@@ -43,7 +37,6 @@
                                     <div class="row">
                                         <div class="col-lg-12"><!-- shop-top-bar start -->
                                             <div class="shop-top-bar">
-
                                                 <div class="product-view-mode">
                                                     <!-- shop-item-filter-list start -->
                                                     <button class="change-view active" data-view="grid"><i
@@ -52,8 +45,6 @@
                                                         class="ion-ios-list-outline"></i></button>
                                                     <!-- shop-item-filter-list end -->
                                                 </div>
-
-
                                                 <!-- product-short start -->
                                                 <div class="product-short">
                                                     <p>Sort by</p>
@@ -89,9 +80,7 @@
                                                                     <span class="sale-title">Sale</span><span
                                                                     class="percent-count">{{ item.sale.value }}%</span>
                                                                 </div>
-                                                                <a href="products/adquiera-mas.html">
-                                                                    <img :src="item.image" alt="">
-                                                                </a>
+                                                                <router-link :to="'/product/'+item.item_code+'/'+item.slug"><img :src="item.image" alt=""></router-link>
                                                                 <div class="product-action">
                                                                     <a class="wishlist" href="account/login.html"
                                                                        title="Wishlist">
@@ -100,7 +89,7 @@
                                                                     </a>
                                                                     <a href="javascript:void(0);"
                                                                        @click="addToCart(item.id,item.product_attributes[0].id,1)"
-                                                                       class="add-to-cart ajax-spin-cart">
+                                                                        class="add-to-cart ajax-spin-cart">
                                                                         <span>
                                                                           <span class="cart-title"><i
                                                                               class="icon-handbag"></i></span>
@@ -121,7 +110,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="product-content">
-                                                                <h3><a href="">{{ item.name }}</a></h3>
+                                                                <h3><router-link :to="'/product/'+item.item_code+'/'+item.slug">{{item.name}}</router-link></h3>
                                                                 <div class="price-box">
                                                 <span v-if="item.sale != null" class="">
                                                     <span class="old-price"><span class=money>{{
@@ -238,6 +227,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="shop-sidebar  mb--30">
+                                                <form @submit.prevent>
+                                                    <button v-on:click="getProductCate" class="btn more-product-btn">Lọc</button>
+                                                </form>
+                                            </div>
                                             <div v-for="item in attributes" :key="item.id" class="shop-sidebar mb--30 sidebar-list"><h4 class="title">
                                                 {{item.attribute[0].name}}
                                             </h4>
@@ -274,12 +268,6 @@
                                                         :class="this.size.includes(item.id) ? sizeColor : ''"
                                                         href="javascript:void(0)">{{ item.size }}</a></li>
                                                 </ul>
-                                            </div>
-
-                                            <div class="shop-sidebar  mb--30">
-                                                <form @submit.prevent>
-                                                    <button v-on:click="getProductCate" class="btn more-product-btn">Lọc</button>
-                                                </form>
                                             </div>
                                             <div class="sidbar-product shop-sidebar mb--30"><h4 class="title">BEST
                                                 PRODUCT</h4>
@@ -392,7 +380,7 @@ export default {
             attribute: [],
             brandColor: 'brandColor',
             sizeColor: 'sizeColor',
-            colorColor: 'colorColor'
+            colorColor: 'colorColor',
         }
     },
     watch: {
@@ -400,18 +388,15 @@ export default {
             this.getProductCate();
         }
     },
+    props: {
+        addToCart: Function,
+        getCartData: Function,
+        isProxy:Function
+    },
     mounted() {
         this.getProductCate();
     },
-    props:{
-        addToCart:Function
-    },
     methods: {
-        // showDataAttribute(){
-        //     console.log(this.$refs.lowPrice.value);
-        //     console.log(this.$refs.highPrice.value);
-        //     console.log(this.brand);
-        // },
         isNumber(evt){
             const charcode = evt.which ? evt.which : evt.keyCode;
             if (charcode > 31 && (charcode < 48 || charcode > 57) && charcode != 46){

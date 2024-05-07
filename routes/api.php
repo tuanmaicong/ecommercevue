@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
     });
     Route::post('/updateUser', [AuthController::class, 'updateUser']);
     Route::post('/auth/logout',function (Request $request){
+        prx($request->all());
         \auth()->user()->tokens()->delete();
         return [
             'message' => 'Tokens Revoked'
@@ -41,6 +42,7 @@ Route::get('/getHomeData', [HomePageController::class, 'getHomeData']);
 Route::get('/getCategoriesData', [HomePageController::class, 'getCategoriesData']);
 Route::get('/getAllProductData', [HomePageController::class, 'getAllProductData']);
 Route::post('/getCategoryData', [HomePageController::class, 'getCategoryData']);
+Route::post('/getShopData', [HomePageController::class, 'getShopData']);
 Route::get('/getProductData/{item_code}/{slug}', [HomePageController::class, 'getProductData']);
 Route::post('/getUserData', [HomePageController::class, 'getUserData']);
 Route::post('/getCartData', [HomePageController::class, 'getCartData']);

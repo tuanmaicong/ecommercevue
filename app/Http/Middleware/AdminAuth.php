@@ -21,9 +21,9 @@ class AdminAuth
             if ($user && $user->hasRole('admin')){
                 return $next($request);
             }else{
-                return redirect('/login');
+                return redirect()->route('admin.login');
             }
         }
-        return redirect('/login');
+        return redirect()->route('admin.login');
     }
 }
