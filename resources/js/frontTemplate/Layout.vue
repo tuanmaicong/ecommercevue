@@ -340,6 +340,9 @@ export default {
                     this.cartTotal += val[item].qty * (val[item].products[0].product_attributes[0].price * (1 - val[item].products[0].sale.value / 100));
                 }
             }
+        },
+        '$route'() {
+            this.handleLogout();
         }
     },
     mounted() {
@@ -353,6 +356,7 @@ export default {
             try {
                 await this.$store.dispatch('logout');
                 // Sau khi đăng xuất, bạn có thể chuyển hướng đến trang khác hoặc thực hiện các hành động khác
+                this.$router.push({name: 'login'});
             } catch (error) {
                 console.error('Error occurred:', error);
             }

@@ -2,14 +2,18 @@ import { createStore } from 'vuex';
 import axios from "axios"; // Thêm dòng này
 
 import getUrlList from "@/provider.js";
-const value = localStorage.getItem('isLoggedIn');
+
 const store = createStore({
     state: {
-        isLoggedIn: value // Đảm bảo rằng trạng thái mặc định là false
+        isLoggedIn: false // Đảm bảo rằng trạng thái mặc định là false
     },
     mutations: {
         setLoggedIn(state, value) {
             state.isLoggedIn = value;
+        },
+        initializeAuth(state) {
+            const isLoggedIn = localStorage.getItem('access_token') !== null;
+            state.isLoggedIn = isLoggedIn;
         }
     },
     actions: {
@@ -29,7 +33,11 @@ const store = createStore({
                 console.error('Error logging out:', error);
             }
         }
+    },
+    getters: {
+        isLoggedIn: state => state.isLoggedIn
     }
 });
-
+// Khi Vuex store được tạo, kiểm tra và cập nhật trạng thái đăng nhập từ localStorage
+store.commit('initializeAuth');
 export default store;

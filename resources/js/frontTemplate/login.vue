@@ -37,7 +37,7 @@
                                                 <div class="login-form">
                                                     <input type="email" v-model="email" name="email" id="email" placeholder="Email" required>
 
-                                                    <input type="password" v-model="password" name="password" id="password" placeholder="Password" required>
+                                                    <input type="password" v-model="password" name="password" id="password" placeholder="Mật khẩu" required>
 
                                                     <div class="login-toggle-btn">
                                                         <div class="form-action-button">
@@ -88,6 +88,8 @@ import initializeSlick from "@/slick-carosel.js";
 import getUrlList from "@/provider.js";
 import {useRoute} from "vue-router";
 import { useStore } from 'vuex';
+
+
 export default {
     name: 'login',
     components: {
@@ -97,6 +99,11 @@ export default {
         return {
             email:'',
             password:''
+        }
+    },
+    watch: {
+        '$route'() {
+            this.login();
         }
     },
     methods: {
@@ -110,8 +117,8 @@ export default {
                 console.log(response.data);// Hoặc bạn có thể làm gì đó với response.data
                 localStorage.setItem('user_id',response.data.data.user.id);
                 localStorage.setItem('access_token',response.data.data.user.token);
-                localStorage.setItem('isLoggedIn', true);
                 this.$store.commit('setLoggedIn', true);
+                this.$router.push({name: 'Index'});
             } catch (error) {
                 console.error('Error occurred:', error);
             }
