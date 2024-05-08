@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserRegister;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -14,6 +16,7 @@ class AuthController extends Controller
     use ApiResponse;
     public function register(Request $request)
     {
+//        prx($request->all());
         $validation = Validator::make($request->all(),[
             'name'    => 'required|string|max:255',
             'email'   => 'required|string|email|unique:users,email',
@@ -22,7 +25,6 @@ class AuthController extends Controller
 
         if($validation->fails()){
             return $this->error($validation->errors()->first(),400,[]);
-
         }
 
         $user = User::create([
@@ -31,7 +33,7 @@ class AuthController extends Controller
             'email' => $request->email
         ]);
         $customer = Role::where('slug','customer')->first();
-
+        event(new UserRegister($request->name,$request->email,$request->password));
         $user->roles()->attach($customer);
         return $this->success([
             'token' => $user->createToken('API Token')->plainTextToken

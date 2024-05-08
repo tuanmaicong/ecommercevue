@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\Front\HomePageController;
+use App\Http\Controllers\UserSendMailController;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes

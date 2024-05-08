@@ -5,6 +5,7 @@ import Category from "@/frontTemplate/Category.vue";
 import Product from "@/frontTemplate/Product.vue";
 import Layout from "@/frontTemplate/Layout.vue";
 import login from "@/frontTemplate/login.vue";
+import register from "@/frontTemplate/register.vue";
 const routes = [
     {
         name: 'Index',
@@ -30,6 +31,11 @@ const routes = [
         name: 'login',
         path: '/login',
         component: login,
+    },
+    {
+        name: 'register',
+        path: '/register',
+        component: register,
     }
 ];
 const router = createRouter({

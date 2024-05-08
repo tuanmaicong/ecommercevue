@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <h2 class="breadcrumb-title">Đăng nhập</h2>
+                            <h2 class="breadcrumb-title">Đăng ký tài khoản</h2>
                             <!-- breadcrumb-list start -->
                             <nav class="" role="navigation" aria-label="breadcrumbs">
                                 <ul class="breadcrumb-list">
@@ -13,7 +13,7 @@
                                         <a href="" title="Back to the home page">Trang chủ</a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <span>Đăng nhập</span>
+                                        <span>Đăng ký tài khoản</span>
                                     </li>
                                 </ul>
                             </nav>
@@ -30,22 +30,20 @@
                             <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
                                 <div class="login">
                                     <div id="CustomerLoginForm">
-                                        <form method="post" action="api/login" id="customer_login" @submit.prevent="login">
+                                        <form method="post" action="api/auth/register" id="customer_login" @submit.prevent="register">
                                             <div class="login-form-container">
                                                 <div class="login-text">
-                                                    <h2>Đăng nhập</h2></div>
+                                                    <h2>Đăng ký tài khoản</h2></div>
                                                 <div class="login-form">
+                                                    <input type="text" v-model="name" name="name" id="name" placeholder="Tên tài khoản" required>
+
                                                     <input type="email" v-model="email" name="email" id="email" placeholder="Email" required>
 
                                                     <input type="password" v-model="password" name="password" id="password" placeholder="Mật khẩu" required>
 
-                                                    <div class="login-toggle-btn">
-                                                        <div class="form-action-button">
-                                                            <button type="submit" class="theme-default-button">Đăng nhập</button>
-                                                            <a href="#recover" id="RecoverPassword">Quên mật khẩu</a>
-                                                        </div>
+                                                    <div class="login-toggle-btn lni-text-align-right">
                                                         <div class="account-optional-action">
-                                                            <router-link to="/register">Đăng ký</router-link>
+                                                            <button type="submit" class="theme-default-button">Đăng ký</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -91,36 +89,29 @@ import { useStore } from 'vuex';
 
 
 export default {
-    name: 'login',
+    name: 'register',
+
     components: {
         Layout
     },
-    data(){
+    data (){
         return {
-            email:'',
-            password:''
+            name: '',
+            email: '',
+            password: ''
         }
     },
-    watch: {
-        '$route'() {
-            this.login();
-        }
-    },
-    methods: {
-        async login() {
+    methods:{
+        async register(){
             try {
-                const response = await axios.post(getUrlList().login, {
-                    email: this.email,
-                    password: this.password
+                const data = await axios.post(getUrlList().register,{
+                    'name': this.name,
+                    'email': this.email,
+                    'password': this.password
                 });
-                // Xử lý response ở đây
-                console.log(response.data);// Hoặc bạn có thể làm gì đó với response.data
-                localStorage.setItem('user_id',response.data.data.user.id);
-                localStorage.setItem('access_token',response.data.data.user.token);
-                this.$store.commit('setLoggedIn', true);
-                this.$router.push({name: 'Index'});
-            } catch (error) {
-                console.error('Error occurred:', error);
+                this.$router.push({name: 'login'});
+            }catch (error){
+                console.log(error);
             }
         }
     }

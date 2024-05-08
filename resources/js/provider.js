@@ -10,6 +10,7 @@ export function getUrlList(){
         getCartData: ''+baseUrl+'/getCartData',
         addToCart: ''+baseUrl+'/addToCart',
         removeCartData: ''+baseUrl+'/removeCartData',
+        register: ''+baseUrl+'/auth/register',
         login: ''+baseUrl+'/auth/login',
         logout: ''+baseUrl+'/auth/logout',
     }
