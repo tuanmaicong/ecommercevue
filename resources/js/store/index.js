@@ -5,7 +5,10 @@ import getUrlList from "@/provider.js";
 
 const store = createStore({
     state: {
-        isLoggedIn: false // Đảm bảo rằng trạng thái mặc định là false
+        isLoggedIn: false, // Đảm bảo rằng trạng thái mặc định là false
+        cartProduct: [],
+        cartCount: 0,
+        cartTotal: 0
     },
     mutations: {
         setLoggedIn(state, value) {
@@ -14,6 +17,15 @@ const store = createStore({
         initializeAuth(state) {
             const isLoggedIn = localStorage.getItem('access_token') !== null;
             state.isLoggedIn = isLoggedIn;
+        },
+        setCartProduct(state, product) {
+            state.cartProduct = product;
+        },
+        setCartCount(state, count) {
+            state.cartCount = count;
+        },
+        setCartTotal(state, total) {
+            state.cartTotal = total;
         }
     },
     actions: {
@@ -32,10 +44,72 @@ const store = createStore({
             } catch (error) {
                 console.error('Error logging out:', error);
             }
-        }
+        },
+        async getCartData({ commit }) {
+            try {
+                let user_info = JSON.parse(localStorage.getItem('user_info'));
+                if (user_info && user_info.user_info !== '' || user_info.user_info !== null || user_info.user_info !== undefined) {
+                    let data = await axios.post(getUrlList().getCartData, {
+                        'token': user_info.user_id,
+                        'auth': user_info.auth,
+                    });
+                    if (data.status == 200) {
+                        commit('setCartProduct', data.data.data.data);
+                        commit('setCartCount', data.data.data.data.length);
+                        // Tính toán cartTotal tại đây nếu cần
+                    } else {
+                        console.log('Data Not found');
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async addToCart({ dispatch }, payload) {
+            const { product_id, product_attr_id, qty } = payload;
+            try {
+                let user_id = JSON.parse(localStorage.getItem('user_info'));
+                let data = await axios.post(getUrlList().addToCart, {
+                    'token': user_id.user_id,
+                    'auth': user_id.auth,
+                    'product_id': product_id,
+                    'product_attr_id': product_attr_id,
+                    'qty': qty,
+                });
+                if (data.status == 200) {
+                    dispatch('getCartData');
+                    console.log('123');
+                } else {
+                    console.log('Data Not found');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async removeCartData({ dispatch }, { product_id, product_attr_id, qty }) {
+            try {
+                let data = await axios.post(getUrlList().removeCartData, {
+                    'token': this.user_info.user_id,
+                    'auth': this.user_info.auth,
+                    'product_id': product_id,
+                    'product_attr_id': product_attr_id,
+                    'qty': qty,
+                });
+                if (data.status == 200) {
+                    dispatch('getCartData');
+                } else {
+                    console.log('Data Not found');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
     getters: {
-        isLoggedIn: state => state.isLoggedIn
+        isLoggedIn: state => state.isLoggedIn,
+        cartProduct: state => state.cartProduct,
+        cartCount: state => state.cartCount,
+        cartTotal: state => state.cartTotal
     }
 });
 // Khi Vuex store được tạo, kiểm tra và cập nhật trạng thái đăng nhập từ localStorage

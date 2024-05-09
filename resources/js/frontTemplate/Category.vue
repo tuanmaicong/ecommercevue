@@ -80,7 +80,9 @@
                                                                     <span class="sale-title">Sale</span><span
                                                                     class="percent-count">{{ item.sale.value }}%</span>
                                                                 </div>
-                                                                <router-link :to="'/product/'+item.item_code+'/'+item.slug"><img :src="item.image" alt=""></router-link>
+                                                                <router-link
+                                                                    :to="'/product/'+item.item_code+'/'+item.slug"><img
+                                                                    :src="item.image" alt=""></router-link>
                                                                 <div class="product-action">
                                                                     <a class="wishlist" href="account/login.html"
                                                                        title="Wishlist">
@@ -89,7 +91,7 @@
                                                                     </a>
                                                                     <a href="javascript:void(0);"
                                                                        @click="addToCart(item.id,item.product_attributes[0].id,1)"
-                                                                        class="add-to-cart ajax-spin-cart">
+                                                                       class="add-to-cart ajax-spin-cart">
                                                                         <span>
                                                                           <span class="cart-title"><i
                                                                               class="icon-handbag"></i></span>
@@ -110,7 +112,12 @@
                                                                 </div>
                                                             </div>
                                                             <div class="product-content">
-                                                                <h3><router-link :to="'/product/'+item.item_code+'/'+item.slug">{{item.name}}</router-link></h3>
+                                                                <h3>
+                                                                    <router-link
+                                                                        :to="'/product/'+item.item_code+'/'+item.slug">
+                                                                        {{ item.name }}
+                                                                    </router-link>
+                                                                </h3>
                                                                 <div class="price-box">
                                                 <span v-if="item.sale != null" class="">
                                                     <span class="old-price"><span class=money>{{
@@ -220,20 +227,25 @@
                                                         tabindex="0" style="left: 80.303%;"></span></div>
                                                     <div class="price_slider_amount">
                                                         <span>Price :</span>
-                                                        <input type="text" @keypress="isNumber($event)" ref="lowPrice" id="lowPrice"
+                                                        <input type="text" @keypress="isNumber($event)" ref="lowPrice"
+                                                               id="lowPrice"
                                                                placeholder="Add Your Price">
-                                                        <input type="text" @keypress="isNumber($event)" ref="highPrice" id="highPrice"
+                                                        <input type="text" @keypress="isNumber($event)" ref="highPrice"
+                                                               id="highPrice"
                                                                placeholder="Add Your Price">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="shop-sidebar  mb--30">
                                                 <form @submit.prevent>
-                                                    <button v-on:click="getProductCate" class="btn more-product-btn">Lọc</button>
+                                                    <button v-on:click="getProductCate" class="btn more-product-btn">
+                                                        Lọc
+                                                    </button>
                                                 </form>
                                             </div>
-                                            <div v-for="item in attributes" :key="item.id" class="shop-sidebar mb--30 sidebar-list"><h4 class="title">
-                                                {{item.attribute[0].name}}
+                                            <div v-for="item in attributes" :key="item.id"
+                                                 class="shop-sidebar mb--30 sidebar-list"><h4 class="title">
+                                                {{ item.attribute[0].name }}
                                             </h4>
                                                 <ul>
                                                     <li v-for="itemAttr in item.attribute[0].values" :key="itemAttr.id"
@@ -391,15 +403,23 @@ export default {
     props: {
         addToCart: Function,
         getCartData: Function,
-        isProxy:Function,
+        isProxy: Function,
     },
     mounted() {
         this.getProductCate();
     },
     methods: {
-        isNumber(evt){
+        async addToCart(product_id, product_attr_id, qty) {
+            // Gọi action addToCart từ store Vuex với một đối tượng payload
+            await this.$store.dispatch('addToCart', {product_id, product_attr_id, qty});
+        },
+        async getCartData() {
+            // Gọi action getCartData từ store Vuex
+            await this.$store.dispatch('getCartData');
+        },
+        isNumber(evt) {
             const charcode = evt.which ? evt.which : evt.keyCode;
-            if (charcode > 31 && (charcode < 48 || charcode > 57) && charcode != 46){
+            if (charcode > 31 && (charcode < 48 || charcode > 57) && charcode != 46) {
                 evt.preventDefault();
             }
         },
@@ -461,14 +481,14 @@ export default {
                 if (this.slug == '' || this.slug == undefined || this.slug == null) {
                     this.$router.push({name: 'Index'});
                 } else {
-                    let data = await axios.post(getUrlList().getCategoryData , {
-                        "slug":this.slug,
-                        "attribute":this.attribute,
-                        "lowPrice":this.$refs.lowPrice.value,
-                        "highPrice":this.$refs.highPrice.value,
-                        "brand":this.brand,
-                        "size":this.size,
-                        "color":this.color,
+                    let data = await axios.post(getUrlList().getCategoryData, {
+                        "slug": this.slug,
+                        "attribute": this.attribute,
+                        "lowPrice": this.$refs.lowPrice.value,
+                        "highPrice": this.$refs.highPrice.value,
+                        "brand": this.brand,
+                        "size": this.size,
+                        "color": this.color,
                     });
                     console.log(data.data.data.data.products.data);
                     console.log(data);

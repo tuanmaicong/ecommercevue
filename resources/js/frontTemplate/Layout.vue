@@ -173,7 +173,7 @@
     </div>
     <!-- main-search start -->
     <main role="main">
-        <slot name="content" :addToCart="addToCart" :getCartData="getCartData" :isProxy="isProxy">
+        <slot name="content" :isProxy="isProxy">
 
         </slot>
     </main>
@@ -309,6 +309,7 @@ import axios from "axios";
 import getUrlList from "@/provider.js";
 import {reactive} from "vue";
 import { useStore } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 export default {
     name: 'Layout',
     data() {
@@ -319,27 +320,20 @@ export default {
                 'user_id': '',
                 'auth': false
             },
-            cartCount: 0,
-            cartProduct: [],
-            cartTotal: 0
+            // cartCount: 0,
+            // cartProduct: [],
+            // cartTotal: 0
         }
     },
     computed: {
+        ...mapState(['cartProduct', 'cartCount', 'cartTotal']),
         isLoggedIn() {
             return this.$store.state.isLoggedIn;
         }
     },
     watch: {
         cartProduct(val) {
-            console.log(321);
-            this.cartTotal = 0;
-            for (var item in val) {
-                if (val[item].products[0].sale_id == null) {
-                    this.cartTotal += val[item].qty * val[item].products[0].product_attributes[0].price;
-                } else {
-                    this.cartTotal += val[item].qty * (val[item].products[0].product_attributes[0].price * (1 - val[item].products[0].sale.value / 100));
-                }
-            }
+            this.calculateCartTotal(val);
         },
         '$route'() {
             this.handleLogout();
@@ -352,6 +346,18 @@ export default {
         this.getCartData();
     },
     methods: {
+        calculateCartTotal(val) {
+            console.log(321);
+            let cartTotal = 0; // Khai báo một biến mới để lưu trữ giá trị cartTotal
+            for (var item in val) {
+                if (val[item].products[0].sale_id == null) {
+                    cartTotal += val[item].qty * val[item].products[0].product_attributes[0].price;
+                } else {
+                    cartTotal += val[item].qty * (val[item].products[0].product_attributes[0].price * (1 - val[item].products[0].sale.value / 100));
+                }
+            }
+            this.$parent.cartTotal = cartTotal; // Gán giá trị mới cho biến cartTotal nằm trong component cha
+        },
         async handleLogout() {
             try {
                 await this.$store.dispatch('logout');
@@ -364,77 +370,78 @@ export default {
                 console.error('Error occurred:', error);
             }
         },
-        async removeCartData(product_id, product_attr_id, qty) {
-            try {
-                let data = await axios.post(getUrlList().removeCartData, {
-                    'token': this.user_info.user_id,
-                    'auth': this.user_info.auth,
-                    'product_id': product_id,
-                    'product_attr_id': product_attr_id,
-                    'qty': qty,
-                });
-                if (data.status == 200) {
-                    this.getCartData();
-                } else {
-                    console.log('Data Not found');
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        async addToCart(product_id, product_attr_id, qty) {
-            try {
-                let user_id = JSON.parse(localStorage.getItem('user_info'));
-                let data = await axios.post(getUrlList().addToCart, {
-                    'token': user_id.user_id,
-                    'auth': user_id.auth,
-                    'product_id': product_id,
-                    'product_attr_id': product_attr_id,
-                    'qty': qty,
-                });
-                if (data.status == 200) {
-                    this.getCartData();
-                    console.log('123');
-                } else {
-                    console.log('Data Not found');
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        async getCartData() {
-            console.log('cart');
-            try {
-                let user_info = JSON.parse(localStorage.getItem('user_info'));
-                console.log('cart');
-                if (user_info && user_info.user_info !== '' || user_info.user_info !== null || user_info.user_info !== undefined) {
-                    console.log('cart2');
-                    console.log(user_info.user_id);
-                    console.log(user_info.auth);
-                    let data = await axios.post(getUrlList().getCartData, {
-                        'token': user_info.user_id,
-                        'auth': user_info.auth,
-                    });
-                    console.log(data);
-                    if (data.status == 200) {
-                        this.cartCount = data.data.data.data.length;
-                        if (this.isProxy(data.data.data.data)){
-                            console.log('cart3');
-                            this.cartProduct = reactive(data.data.data.data);
-                        } else {
-                            console.log('cart3');
-                            this.cartProduct = data.data.data.data;
-                        }
-                        console.log('cart success');
-                    } else {
-                        console.log('Data Not found');
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-            console.log(this.cartProduct);
-        },
+        ...mapActions(['getCartData', 'addToCart', 'removeCartData']),
+        // async removeCartData(product_id, product_attr_id, qty) {
+        //     try {
+        //         let data = await axios.post(getUrlList().removeCartData, {
+        //             'token': this.user_info.user_id,
+        //             'auth': this.user_info.auth,
+        //             'product_id': product_id,
+        //             'product_attr_id': product_attr_id,
+        //             'qty': qty,
+        //         });
+        //         if (data.status == 200) {
+        //             this.getCartData();
+        //         } else {
+        //             console.log('Data Not found');
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // },
+        // async addToCart(product_id, product_attr_id, qty) {
+        //     try {
+        //         let user_id = JSON.parse(localStorage.getItem('user_info'));
+        //         let data = await axios.post(getUrlList().addToCart, {
+        //             'token': user_id.user_id,
+        //             'auth': user_id.auth,
+        //             'product_id': product_id,
+        //             'product_attr_id': product_attr_id,
+        //             'qty': qty,
+        //         });
+        //         if (data.status == 200) {
+        //             this.getCartData();
+        //             console.log('123');
+        //         } else {
+        //             console.log('Data Not found');
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // },
+        // async getCartData() {
+        //     console.log('cart');
+        //     try {
+        //         let user_info = JSON.parse(localStorage.getItem('user_info'));
+        //         console.log('cart');
+        //         if (user_info && user_info.user_info !== '' || user_info.user_info !== null || user_info.user_info !== undefined) {
+        //             console.log('cart2');
+        //             console.log(user_info.user_id);
+        //             console.log(user_info.auth);
+        //             let data = await axios.post(getUrlList().getCartData, {
+        //                 'token': user_info.user_id,
+        //                 'auth': user_info.auth,
+        //             });
+        //             console.log(data);
+        //             if (data.status == 200) {
+        //                 this.cartCount = data.data.data.data.length;
+        //                 if (this.isProxy(data.data.data.data)){
+        //                     console.log('cart3');
+        //                     this.cartProduct = reactive(data.data.data.data);
+        //                 } else {
+        //                     console.log('cart3');
+        //                     this.cartProduct = data.data.data.data;
+        //                 }
+        //                 console.log('cart success');
+        //             } else {
+        //                 console.log('Data Not found');
+        //             }
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        //     console.log(this.cartProduct);
+        // },
         isProxy(value) {
             return value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === Array.prototype;
         },
