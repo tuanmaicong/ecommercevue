@@ -355,6 +355,9 @@ export default {
         async handleLogout() {
             try {
                 await this.$store.dispatch('logout');
+                localStorage.removeItem('user_info');
+                this.user_info = null;
+                localStorage.setItem('user_info', JSON.stringify({}));
                 // Sau khi đăng xuất, bạn có thể chuyển hướng đến trang khác hoặc thực hiện các hành động khác
                 this.$router.push({name: 'login'});
             } catch (error) {
@@ -400,21 +403,29 @@ export default {
             }
         },
         async getCartData() {
+            console.log('cart');
             try {
                 let user_info = JSON.parse(localStorage.getItem('user_info'));
-                if (user_info.user_info != '' || user_info.user_info != null || user_info.user_info != undefined) {
+                console.log('cart');
+                if (user_info && user_info.user_info !== '' || user_info.user_info !== null || user_info.user_info !== undefined) {
+                    console.log('cart2');
+                    console.log(user_info.user_id);
+                    console.log(user_info.auth);
                     let data = await axios.post(getUrlList().getCartData, {
                         'token': user_info.user_id,
                         'auth': user_info.auth,
                     });
+                    console.log(data);
                     if (data.status == 200) {
                         this.cartCount = data.data.data.data.length;
                         if (this.isProxy(data.data.data.data)){
+                            console.log('cart3');
                             this.cartProduct = reactive(data.data.data.data);
-                        }else {
+                        } else {
+                            console.log('cart3');
                             this.cartProduct = data.data.data.data;
                         }
-                        console.log(this.cartProduct);
+                        console.log('cart success');
                     } else {
                         console.log('Data Not found');
                     }
@@ -422,11 +433,11 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+            console.log(this.cartProduct);
         },
         isProxy(value) {
             return value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === Array.prototype;
         },
-
         async getUser() {
             if (localStorage.getItem('user_info')) {
                 //user set into localStorage
@@ -441,27 +452,33 @@ export default {
         },
         async getUserData() {
             try {
-                console.log(this.user_info.user_id);
-                let user_id = localStorage.getItem('user_id') || '';
-                // console.log(localStorage.getItem('user_id'));
-                let data = await axios.post(getUrlList().getUserData, {
-                    'token': this.user_info.user_id,
-                    'user_id': user_id
-                });
-                if (data.status == 200) {
-                    if (data.data.data.data.user_type == 1) {
-                        //Auth user
-                        this.user_info.auth = true;
-                        this.user_info.user_id = data.data.data.data.token;
-                        localStorage.setItem('user_info', JSON.stringify(this.user_info));
+                if (this.user_info) { // Kiểm tra xem user_info có tồn tại không
+                    // console.log(this.user_info.user_id);
+                    let user_id = localStorage.getItem('user_id') || '';
+                    // console.log(localStorage.getItem('user_id'));
+                    let data = await axios.post(getUrlList().getUserData, {
+                        'token': this.user_info.user_id,
+                        'user_id': user_id
+                    });
+                    if (data.status == 200) {
+                        console.log(data.data.data.data.user_type);
+                        if (data.data.data.data.user_type == 1) {
+                            //Auth user
+                            this.user_info.auth = true;
+                            this.user_info.user_id = data.data.data.data.token;
+                            localStorage.setItem('user_info', JSON.stringify(this.user_info));
+                            console.log(this.user_info.auth);
+                        } else {
+                            //Not Auth user
+                            this.user_info.auth = false;
+                            this.user_info.user_id = data.data.data.data.token;
+                            localStorage.setItem('user_info', JSON.stringify(this.user_info));
+                        }
                     } else {
-                        //Not Auth user
-                        this.user_info.auth = false;
-                        this.user_info.user_id = data.data.data.data.token;
-                        localStorage.setItem('user_info', JSON.stringify(this.user_info));
+                        console.log('Data Not found');
                     }
                 } else {
-                    console.log('Data Not found');
+                    console.log('user_info does not exist'); // Xử lý tình huống khi user_info không tồn tại
                 }
             } catch (error) {
                 console.log(error);

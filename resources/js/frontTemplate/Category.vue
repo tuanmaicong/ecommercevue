@@ -391,7 +391,7 @@ export default {
     props: {
         addToCart: Function,
         getCartData: Function,
-        isProxy:Function
+        isProxy:Function,
     },
     mounted() {
         this.getProductCate();

@@ -14,6 +14,7 @@ use App\Models\ProductAttr;
 use App\Models\ProductAttribute;
 use App\Models\Size;
 use App\Models\TempUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Auth;
@@ -129,14 +130,19 @@ class HomePageController extends Controller
     }
     function getUserData(Request $request)
     {
-        prx($request->all());
-        $user = $request->user();
+//        prx($request->all());
+        $user_id = $request->user_id;
+        $token = '';
+        $checkUser = '';
+        $user = User::where('id',$user_id)->first();
         if ($user){
-            echo 123;
+            $user_id = $user->id;
+            $checkUser = TempUser::where('user_id',$user_id)->first();
+            $token = TempUser::where('user_id', $user_id)->value('token');
+        }else{
+            $token = $request->token;
+            $checkUser = TempUser::where('token',$token)->first();
         }
-        prx($user);
-        $token = $request->token;
-        $checkUser = TempUser::where('token',$token)->first();
         if (isset($checkUser->id)){
             //token exist in Db
             $data['user_type'] = $checkUser->user_type;
@@ -151,23 +157,31 @@ class HomePageController extends Controller
                 //token not expire
             }
         }else{
+            if ($user){
+                $user_id = $user->id;
+//                prx($request->all());
+                $data['user_type'] = 1;
+            }else{
+                $user_id = rand(1111,9999);
+                $data['user_type'] = 2;
+            }
             //token not exist in Db
-            $user_id = rand(1111,9999);
             $token = generateRandomString();
             $time = date('Y-m-d h:i:s a',time());
             TempUser::create([
                 'user_id' => $user_id,
                 'token' => $token,
+                'user_type' => $data['user_type'],
                 'created_at' => $time,
                 'updated_at' => $time
             ]);
-            $data['user_type'] = 2;
             $data['token'] = $token;
         }
         return $this->success(['data'=> $data], 'Successfully data fetched');
     }
     public function getCartData(Request $request)
     {
+//        prx($request->all());
         $validation = Validator::make($request->all(),[
            'token' => 'required|exists:temp_users,token'
         ]);
