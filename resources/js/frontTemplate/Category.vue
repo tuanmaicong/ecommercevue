@@ -367,6 +367,7 @@ import axios from "axios";
 import initializeSlick from "@/slick-carosel.js";
 import getUrlList from "@/provider.js";
 import {useRoute} from "vue-router";
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'Category',
@@ -401,14 +402,15 @@ export default {
         }
     },
     props: {
-        addToCart: Function,
-        getCartData: Function,
+        // addToCart: Function,
+        // getCartData: Function,
         isProxy: Function,
     },
     mounted() {
         this.getProductCate();
     },
     methods: {
+        ...mapActions(['addToCart', 'getCartData']),
         async addToCart(product_id, product_attr_id, qty) {
             // Gọi action addToCart từ store Vuex với một đối tượng payload
             await this.$store.dispatch('addToCart', {product_id, product_attr_id, qty});

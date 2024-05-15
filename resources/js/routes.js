@@ -17,8 +17,8 @@ const routes = [
         path: '/category/:slug?',
         component: Category,
         props: route => ({
-            addToCart: Layout.methods.addToCart,
-            getCartData: Layout.methods.getCartData,
+            // addToCart: Layout.methods.addToCart,
+            // getCartData: Layout.methods.getCartData,
             isProxy: Layout.methods.isProxy
         })
     },

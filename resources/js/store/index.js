@@ -86,24 +86,27 @@ const store = createStore({
                 console.log(error);
             }
         },
-        async removeCartData({ dispatch }, { product_id, product_attr_id, qty }) {
-            try {
-                let data = await axios.post(getUrlList().removeCartData, {
-                    'token': this.user_info.user_id,
-                    'auth': this.user_info.auth,
-                    'product_id': product_id,
-                    'product_attr_id': product_attr_id,
-                    'qty': qty,
-                });
-                if (data.status == 200) {
-                    dispatch('getCartData');
-                } else {
-                    console.log('Data Not found');
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
+        // async removeCartData({ dispatch }, payload) {
+        //     try {
+        //         let user_id = JSON.parse(localStorage.getItem('user_info'));
+        //         const { product_id, product_attr_id, qty } = payload;
+        //         console.log(product_id);
+        //         let data = await axios.post(getUrlList().removeCartData, {
+        //             'token': user_id.user_id,
+        //             'auth': user_id.auth,
+        //             'product_id': product_id,
+        //             'product_attr_id': product_attr_id,
+        //             'qty': qty,
+        //         });
+        //         if (data.status == 200) {
+        //             dispatch('getCartData');
+        //         } else {
+        //             console.log('Data Not found');
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // },
     },
     getters: {
         isLoggedIn: state => state.isLoggedIn,

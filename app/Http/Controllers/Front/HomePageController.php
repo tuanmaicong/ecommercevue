@@ -262,19 +262,6 @@ class HomePageController extends Controller
         $product = Product::where(['item_code' => $item_code,'slug' => $slug])->first();
         if (isset($product->id)){
             $data = Product::where(['item_code' => $item_code,'slug' => $slug])->with('product_attributes.size','product_attributes.color','sale')->first();
-            $sizeList = [];
-            $colorList = [];
-            foreach ($data->product_attributes as $productAttr) {
-                $sizeList[] = $productAttr->size;
-            }
-            foreach ($data->product_attributes as $productAttr) {
-                $colorList[] = $productAttr->color;
-            }
-            $uniqueColorList = collect($colorList)->unique('id')->values()->all();
-            $uniqueSizeList = collect($sizeList)->unique('id')->values()->all();
-            // Thêm danh sách các size vào dữ liệu trả về
-            $data['sizeList'] = $uniqueSizeList;
-            $data['colorList'] = $uniqueColorList;
 
             return $this->success(['data'=> $data], 'Successfully data fetched');
         }else{

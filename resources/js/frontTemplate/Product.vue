@@ -36,10 +36,13 @@
                                             <div class="product_big_images-right">
                                                 <div class="portfolio-full-image tab-content">
                                                     <div class="featured-image">
-                                                        <div class="" id="ProductPhoto"><img id="ProductPhotoImg"
-                                                                                             class="product-zoom"
-                                                                                             :src="product.image"
-                                                                                             :alt="product.name">
+                                                        <div id="ProductPhoto">
+                                                            <img
+                                                                id="ProductPhotoImg"
+                                                                class="product-zoom"
+                                                                :src="currentImage"
+                                                                :alt="product.name"
+                                                            />
                                                         </div>
                                                         <div v-if="product.sale_id != null" class="product-badge">
                                                             <span class="sale-title">Sale</span>
@@ -48,68 +51,16 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="ProductThumbs"
-                                                 class="product_small_images-left vartical-product-active">
-
-                                                <a class="product-single__thumbnail "
-                                                   href="/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_1024x102442a2.jpg?v=1538026280"
-                                                   data-image="//fusta-demo.myshopify.com/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_1024x1024.jpg?v=1538026280"
-                                                   data-zoom-image="//fusta-demo.myshopify.com/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_1024x1024.jpg?v=1538026280"
-                                                   data-image-id="4404676198473">
-                                                    <img
-                                                        src="/cdn/shop/products/12_04e3e7f4-8892-4f96-876a-6ef2cf745027_120x12542a2.jpg?v=1538026280"
-                                                        alt="Adquiera Mas">
+                                            <div id="ProductThumbs" class="product_small_images-left vartical-product-active">
+                                                <a
+                                                    v-for="(item, index) in images"
+                                                    :key="index"
+                                                    :class="'product-single__thumbnail' + showActiveClass(1, index)"
+                                                    href="javascript:void(0)"
+                                                    @click="updateImage(index)"
+                                                >
+                                                    <img :src="item.image" alt="Adquiera Mas" />
                                                 </a>
-
-                                                <a class="product-single__thumbnail "
-                                                   href="/cdn/shop/products/1_1024x1024b358.jpg?v=1538026294"
-                                                   data-image="//fusta-demo.myshopify.com/cdn/shop/products/1_1024x1024.jpg?v=1538026294"
-                                                   data-zoom-image="//fusta-demo.myshopify.com/cdn/shop/products/1_1024x1024.jpg?v=1538026294"
-                                                   data-image-id="4404680228937">
-                                                    <img src="/cdn/shop/products/1_120x125b358.jpg?v=1538026294"
-                                                         alt="Adquiera Mas">
-                                                </a>
-
-                                                <a class="product-single__thumbnail "
-                                                   href="/cdn/shop/products/2_0d083693-5bf6-4ccf-afba-0e529ef80448_1024x1024dd19.jpg?v=1538026296"
-                                                   data-image="//fusta-demo.myshopify.com/cdn/shop/products/2_0d083693-5bf6-4ccf-afba-0e529ef80448_1024x1024.jpg?v=1538026296"
-                                                   data-zoom-image="//fusta-demo.myshopify.com/cdn/shop/products/2_0d083693-5bf6-4ccf-afba-0e529ef80448_1024x1024.jpg?v=1538026296"
-                                                   data-image-id="4404680556617">
-                                                    <img
-                                                        src="/cdn/shop/products/2_0d083693-5bf6-4ccf-afba-0e529ef80448_120x125dd19.jpg?v=1538026296"
-                                                        alt="Adquiera Mas">
-                                                </a>
-
-                                                <a class="product-single__thumbnail "
-                                                   href="/cdn/shop/products/3_2fac38cc-0f1b-4c1d-89d3-a039b1435e03_1024x1024ab51.jpg?v=1538026297"
-                                                   data-image="//fusta-demo.myshopify.com/cdn/shop/products/3_2fac38cc-0f1b-4c1d-89d3-a039b1435e03_1024x1024.jpg?v=1538026297"
-                                                   data-zoom-image="//fusta-demo.myshopify.com/cdn/shop/products/3_2fac38cc-0f1b-4c1d-89d3-a039b1435e03_1024x1024.jpg?v=1538026297"
-                                                   data-image-id="4404680785993">
-                                                    <img
-                                                        src="/cdn/shop/products/3_2fac38cc-0f1b-4c1d-89d3-a039b1435e03_120x125ab51.jpg?v=1538026297"
-                                                        alt="Adquiera Mas">
-                                                </a>
-
-                                                <a class="product-single__thumbnail "
-                                                   href="/cdn/shop/products/4_00091637-02ea-49c2-8b97-70d2574269eb_1024x1024943b.jpg?v=1538026298"
-                                                   data-image="//fusta-demo.myshopify.com/cdn/shop/products/4_00091637-02ea-49c2-8b97-70d2574269eb_1024x1024.jpg?v=1538026298"
-                                                   data-zoom-image="//fusta-demo.myshopify.com/cdn/shop/products/4_00091637-02ea-49c2-8b97-70d2574269eb_1024x1024.jpg?v=1538026298"
-                                                   data-image-id="4404681048137">
-                                                    <img
-                                                        src="/cdn/shop/products/4_00091637-02ea-49c2-8b97-70d2574269eb_120x125943b.jpg?v=1538026298"
-                                                        alt="Adquiera Mas">
-                                                </a>
-
-                                                <a class="product-single__thumbnail "
-                                                   href="/cdn/shop/products/12_21ff57ca-8458-4ee2-93f8-d9841c861845_1024x1024b00c.jpg?v=1538026299"
-                                                   data-image="//fusta-demo.myshopify.com/cdn/shop/products/12_21ff57ca-8458-4ee2-93f8-d9841c861845_1024x1024.jpg?v=1538026299"
-                                                   data-zoom-image="//fusta-demo.myshopify.com/cdn/shop/products/12_21ff57ca-8458-4ee2-93f8-d9841c861845_1024x1024.jpg?v=1538026299"
-                                                   data-image-id="4404681310281">
-                                                    <img
-                                                        src="/cdn/shop/products/12_21ff57ca-8458-4ee2-93f8-d9841c861845_120x125b00c.jpg?v=1538026299"
-                                                        alt="Adquiera Mas">
-                                                </a>
-
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +75,7 @@
                                         <ul class="pro_dtl_prize product-price">
                                             <li class="old_prize"><span id="ComparePrice"><span
                                                 class=money>$180.00</span></span></li>
-                                            <li><span id="ProductPrice"><span class=money>$150.00</span></span></li>
+                                            <li><span id="ProductPrice"><span class=money>{{product.product_attributes[0].price}} vnđ</span></span></li>
                                         </ul>
                                         <div class="product-inventory">
                                             <span>Availability:</span>
@@ -218,23 +169,33 @@
                                             </select>
                                             <div class="swatch clearfix Size" data-option-index="0">
                                                 <div class="header">Size :</div>
-                                                <div v-for="(item,index) in product.sizeList" data-value="lg" class="swatch-element lg available">
-                                                    <input :id="'swatch-'+index+'-lg'" type="checkbox" :name="'option-'+index"
-                                                           :value="item.size"/>
-                                                    <label :for="'swatch-'+index+'-lg'">
-                                                        {{item.size}}
+                                                <div v-for="item in uniquesSizes" :data-value="item" :class="'swatch-element' + ' ' + item + ' ' + 'available'">
+                                                    <input :id="'swatch-2-' + item" type="radio" name="option-2" :value="item" checked  />
+
+                                                    <label :for="'swatch-2-' + item">
+                                                        {{item}}
                                                     </label>
 
                                                 </div>
+<!--                                                <div data-value="Wood" class="swatch-element wood available">-->
+<!--                                                    <input id="swatch-2-wood" type="radio" name="option-2" value="Wood"  />-->
+
+<!--                                                    <label for="swatch-2-wood">-->
+<!--                                                        Wood-->
+
+<!--                                                    </label>-->
+
+<!--                                                </div>-->
                                             </div>
                                             <div class="swatch clearfix Color" data-option-index="1">
                                                 <div class="header">Color :</div>
-                                                <div v-for="item in product.colorList" class="swatch-element color orange available">
-                                                    <input id="swatch-1-orange" type="radio" name="option-1"
-                                                           value="orange" checked/>
-                                                    <label for="swatch-1-orange"
-                                                           :style="{backgroundColor: item.value}">
+                                                <div v-for="item in uniquesColors" :data-value="item" class="swatch-element color black available">
+                                                    <input :id="'swatch-1-'+item" type="radio" name="option-1" value="black" checked  />
+
+                                                    <label :for="'swatch-1-'+item" :style="{backgroundColor: item}">
+
                                                     </label>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -747,7 +708,7 @@ import Layout from "@/frontTemplate/Layout.vue";
 import axios from "axios";
 import initializeSlick from "@/slick-carosel.js";
 import getUrlList from "@/provider.js";
-import {useRoute} from "vue-router";
+import { useRoute } from "vue-router";
 
 export default {
     name: 'Product',
@@ -758,9 +719,21 @@ export default {
         return {
             slug: '',
             item_code: '',
-            product: {},
-            description:'',
-            price:0
+            product: {
+                product_attributes: [
+                    { price: '' }
+                ]
+            },
+            images: [],
+            colors: [],
+            sizes: [],
+            uniquesSizes: [],
+            uniquesColors: [],
+            description: '',
+            price: 0,
+            size: '',
+            currentImage: '',
+            color: { id: '', text: '', product_attr: '' }
         }
     },
     watch: {
@@ -772,6 +745,13 @@ export default {
         this.getProduct();
     },
     methods: {
+        updateImage(index) {
+            this.currentImage = this.images[index].image;
+        },
+        showActiveClass(someValue, index) {
+            // Implement your logic to add active class if necessary
+            return '';
+        },
         async getProduct() {
             try {
                 const route = useRoute();
@@ -779,27 +759,47 @@ export default {
                 this.slug = this.$route.params.slug;
                 console.log(this.slug);
                 if (this.slug == '' || this.item_code == '' || this.slug == undefined || this.slug == null) {
-                    this.$router.push({name: 'Index'});
+                    this.$router.push({ name: 'Index' });
                 } else {
                     let data = await axios.get(getUrlList().getProductData + '/' + this.item_code + '/' + this.slug);
                     console.log(data.data.data.data);
                     if (data.status == 200 && data.data.data.data.id) {
-                        //set product
+                        // Set product
                         this.product = data.data.data.data;
-                        this.description = data.data.data.data.description;
-                        // Gọi hàm executeSlick() sau khi vòng for đã kết thúc
+
+                        // Populate images
+                        this.images = this.product.product_attributes.flatMap(attr => attr.images);
+
+                        if (this.images.length > 0) {
+                            this.currentImage = this.images[0].image;
+                        }
+
+                        // Populate description
+                        this.description = this.product.description;
+
+                        // Populate price
+                        this.price = this.product.product_attributes[0].price;
+
+                        // Populate sizes and colors
+                        this.sizes = this.product.product_attributes.map(attr => attr.size);
+                        this.colors = this.product.product_attributes.map(attr => attr.color);
+
+                        // Unique sizes and colors
+                        this.uniquesSizes = [...new Set(this.sizes.map(size => size.size))];
+                        this.uniquesColors = [...new Set(this.colors.map(color => color.value))];
+
+                        // Initialize Slick carousel
                         this.$nextTick(() => {
                             initializeSlick();
                         });
                     } else {
-                        // this.products = [];
                         console.log('Data not found');
                     }
                 }
             } catch (error) {
                 console.log(error);
             }
-            console.log(this.products);
+            console.log(this.uniquesColors);
         },
     }
 }

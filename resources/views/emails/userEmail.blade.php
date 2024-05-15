@@ -18,7 +18,7 @@
 <body>
 <div class="container">
     <div class="logo">
-        <img src="{{asset('/cdn/shop/files/logo-icon.png')}}">
+        <img src="{{ url('/cdn/shop/files/logo-icon.png') }}" alt="TuanmcShop Logo">
     </div>
     <h1>Chào bạn,{{ $data['name'] }}</h1>
     <p>Bạn đã đăng ký thành công tài khoản tại <strong class="shop">TuanmcShop</strong></p>
