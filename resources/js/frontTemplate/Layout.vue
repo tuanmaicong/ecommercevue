@@ -125,8 +125,9 @@
                                                 <div class="subtotal-titles">
                                                     <h3>Total :</h3><span class="shopping-cart__total"><span
                                                     class=money>{{
-                                                        cartTotal.toLocaleString('vi-VN')
-                                                    }} vn₫</span></span>
+                                                        this.$parent.cartTotal !== undefined
+                                                            ? this.$parent.cartTotal.toLocaleString('vi-VN')
+                                                            : '0'}} vn₫</span></span>
                                                 </div>
                                             </li>
                                             <li class="mini-cart-btns">
@@ -333,6 +334,7 @@ export default {
     },
     watch: {
         cartProduct(val) {
+            console.log('success');
             this.calculateCartTotal(val);
         },
         '$route'() {
@@ -389,59 +391,6 @@ export default {
                 console.log(error);
             }
         },
-        // async addToCart(product_id, product_attr_id, qty) {
-        //     try {
-        //         let user_id = JSON.parse(localStorage.getItem('user_info'));
-        //         let data = await axios.post(getUrlList().addToCart, {
-        //             'token': user_id.user_id,
-        //             'auth': user_id.auth,
-        //             'product_id': product_id,
-        //             'product_attr_id': product_attr_id,
-        //             'qty': qty,
-        //         });
-        //         if (data.status == 200) {
-        //             this.getCartData();
-        //             console.log('123');
-        //         } else {
-        //             console.log('Data Not found');
-        //         }
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // },
-        // async getCartData() {
-        //     console.log('cart');
-        //     try {
-        //         let user_info = JSON.parse(localStorage.getItem('user_info'));
-        //         console.log('cart');
-        //         if (user_info && user_info.user_info !== '' || user_info.user_info !== null || user_info.user_info !== undefined) {
-        //             console.log('cart2');
-        //             console.log(user_info.user_id);
-        //             console.log(user_info.auth);
-        //             let data = await axios.post(getUrlList().getCartData, {
-        //                 'token': user_info.user_id,
-        //                 'auth': user_info.auth,
-        //             });
-        //             console.log(data);
-        //             if (data.status == 200) {
-        //                 this.cartCount = data.data.data.data.length;
-        //                 if (this.isProxy(data.data.data.data)){
-        //                     console.log('cart3');
-        //                     this.cartProduct = reactive(data.data.data.data);
-        //                 } else {
-        //                     console.log('cart3');
-        //                     this.cartProduct = data.data.data.data;
-        //                 }
-        //                 console.log('cart success');
-        //             } else {
-        //                 console.log('Data Not found');
-        //             }
-        //         }
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        //     console.log(this.cartProduct);
-        // },
         isProxy(value) {
             return value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === Array.prototype;
         },

@@ -75,7 +75,14 @@
                                         <ul class="pro_dtl_prize product-price">
                                             <li class="old_prize"><span id="ComparePrice"><span
                                                 class=money>$180.00</span></span></li>
-                                            <li><span id="ProductPrice"><span class=money>{{product.product_attributes[0].price}} vnđ</span></span></li>
+                                            <li><span v-if="price == 0" id="ProductPrice"><span class=money>
+                                                {{product.product_attributes[0].price !== undefined ? product.product_attributes[0].price.toLocaleString('vi-VN')
+                                                : '0'}} vn₫</span></span>
+                                                <span v-else id="ProductPrice"><span class=money>
+                                                {{price !== undefined ? price.toLocaleString('vi-VN')
+                                                    : '0'}} vn₫</span></span>
+                                            </li>
+
                                         </ul>
                                         <div class="product-inventory">
                                             <span>Availability:</span>
@@ -169,30 +176,22 @@
                                             </select>
                                             <div class="swatch clearfix Size" data-option-index="0">
                                                 <div class="header">Size :</div>
-                                                <div v-for="item in uniquesSizes" :data-value="item" :class="'swatch-element' + ' ' + item + ' ' + 'available'">
-                                                    <input :id="'swatch-2-' + item" type="radio" name="option-2" :value="item" checked  />
+                                                <div v-for="(item,index) in uniquesSizes" :data-value="item" :class="'swatch-element' + ' ' + item + ' ' + 'available'">
+                                                    <input @change="filterColorsBySize(item)" v-if="index == 0" :id="'swatch-2-' + item" type="radio" name="option-2" :value="item" checked />
+                                                    <input @change="filterColorsBySize(item)" v-else :id="'swatch-2-' + item" type="radio" name="option-2" :value="item" />
 
                                                     <label :for="'swatch-2-' + item">
                                                         {{item}}
                                                     </label>
-
                                                 </div>
-<!--                                                <div data-value="Wood" class="swatch-element wood available">-->
-<!--                                                    <input id="swatch-2-wood" type="radio" name="option-2" value="Wood"  />-->
-
-<!--                                                    <label for="swatch-2-wood">-->
-<!--                                                        Wood-->
-
-<!--                                                    </label>-->
-
-<!--                                                </div>-->
                                             </div>
                                             <div class="swatch clearfix Color" data-option-index="1">
                                                 <div class="header">Color :</div>
-                                                <div v-for="item in uniquesColors" :data-value="item" class="swatch-element color black available">
-                                                    <input :id="'swatch-1-'+item" type="radio" name="option-1" value="black" checked  />
+                                                <div v-for="(item,index) in uniquesColors" :data-value="item" class="swatch-element color black available">
+                                                    <input v-if="index == 0" :id="'swatch-1-'+item" type="radio" name="option-1" value="black" checked />
+                                                    <input v-else :id="'swatch-1-'+item" type="radio" name="option-1" value="black" />
 
-                                                    <label :for="'swatch-1-'+item" :style="{backgroundColor: item}">
+                                                    <label @click="filterAttrByColor(item)" :for="'swatch-1-'+item" :style="{backgroundColor: item}">
 
                                                     </label>
 
@@ -205,8 +204,8 @@
                                                 <div class="product-quantity">
                                                     <form action="#">
                                                         <div class="product-quantity">
-                                                            <div class="cart-plus-minus">
-                                                                <input name="quantity" min="1" value="1" type="number">
+                                                            <div class="cart-plus-minus" >
+                                                                <input name="quantity" min="1" value="{{ qty }}" type="number" v-model="qty">
                                                             </div>
                                                         </div>
                                                     </form>
@@ -732,6 +731,7 @@ export default {
             description: '',
             price: 0,
             size: '',
+            qty:1,
             currentImage: '',
             color: { id: '', text: '', product_attr: '' }
         }
@@ -752,6 +752,26 @@ export default {
             // Implement your logic to add active class if necessary
             return '';
         },
+        filterColorsBySize(selectedSize) {
+            // Lọc các màu tương ứng với size được chọn
+            const selectedColors = this.product.product_attributes
+                .filter(attr => attr.size.size === selectedSize) // Lọc các product_attributes có size tương ứng
+                .map(attr => attr.color); // Lấy giá trị color từ các product_attributes đã lọc
+            this.uniquesColors = [...new Set(selectedColors.map(color => color.value))];
+            // this.price = this.product.product_attributes
+            //     .filter(attr => attr.color.value === this.uniquesColors[0]).map(attr => attr.price);
+            this.price = this.product.product_attributes
+                .find(attr => attr.color.value === this.uniquesColors[0]
+                    && attr.size.size === selectedSize).price;
+            console.log(this.price);
+        },
+        filterAttrByColor(selectedColor) {
+            // Lọc các màu tương ứng với size được chọn
+            const selectedColors = this.product.product_attributes
+                .filter(attr => attr.color.value === selectedColor); // Lọc các product_attributes có size tương ứng
+            return selectedColor;
+
+        },
         async getProduct() {
             try {
                 const route = useRoute();
@@ -768,6 +788,7 @@ export default {
                         this.product = data.data.data.data;
 
                         // Populate images
+
                         this.images = this.product.product_attributes.flatMap(attr => attr.images);
 
                         if (this.images.length > 0) {
@@ -777,17 +798,29 @@ export default {
                         // Populate description
                         this.description = this.product.description;
 
+                        for (var item in this.product.product_attributes){
+                            // Populate sizes and colors
+                            this.colors.push({
+                                id: this.product.product_attributes[item].color.id,
+                                value: this.product.product_attributes[item].color.value,
+                                product_attr_id: this.product.product_attributes[item].id,
+                                size: this.product.product_attributes[item].size.id,
+                            });
+                            this.sizes.push({
+                                id: this.product.product_attributes[item].size.id,
+                                size: this.product.product_attributes[item].size.size,
+                                product_attr_id: this.product.product_attributes[item].id,
+                            });
+                        }
+                        console.log(this.colors);
+                        console.log(this.sizes);
                         // Populate price
                         this.price = this.product.product_attributes[0].price;
 
-                        // Populate sizes and colors
-                        this.sizes = this.product.product_attributes.map(attr => attr.size);
-                        this.colors = this.product.product_attributes.map(attr => attr.color);
 
                         // Unique sizes and colors
                         this.uniquesSizes = [...new Set(this.sizes.map(size => size.size))];
                         this.uniquesColors = [...new Set(this.colors.map(color => color.value))];
-
                         // Initialize Slick carousel
                         this.$nextTick(() => {
                             initializeSlick();
@@ -799,7 +832,7 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-            console.log(this.uniquesColors);
+            console.log(this.qty);
         },
     }
 }

@@ -262,7 +262,7 @@ class HomePageController extends Controller
         $product = Product::where(['item_code' => $item_code,'slug' => $slug])->first();
         if (isset($product->id)){
             $data = Product::where(['item_code' => $item_code,'slug' => $slug])->with('product_attributes.size','product_attributes.color','sale')->first();
-
+//            prx($data->toArray());
             return $this->success(['data'=> $data], 'Successfully data fetched');
         }else{
             return $this->error('Product Not found',400,[]);

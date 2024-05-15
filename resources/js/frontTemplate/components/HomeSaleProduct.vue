@@ -81,8 +81,17 @@ export default {
             default: function() {
                 return [];
             }
+        }
+    },
+    methods:{
+        async addToCart(product_id, product_attr_id, qty) {
+            // Gọi action addToCart từ store Vuex với một đối tượng payload
+            await this.$store.dispatch('addToCart', { product_id, product_attr_id, qty });
         },
-        addToCart:Function
+        async getCartData() {
+            // Gọi action getCartData từ store Vuex
+            await this.$store.dispatch('getCartData');
+        },
     }
 }
 </script>
