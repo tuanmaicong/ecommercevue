@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <template v-slot:content>
+        <template v-slot:content="slotProps">
             <div class="breadcrumb-area section-ptb"
                  style="background-image: url(../../cdn/shop/files/breadcrumb-bgea73.jpg)!important;">
                 <div class="container">
@@ -177,8 +177,7 @@
                                             <div class="swatch clearfix Size" data-option-index="0">
                                                 <div class="header">Size :</div>
                                                 <div v-for="(item,index) in uniquesSizes" :data-value="item" :class="'swatch-element' + ' ' + item + ' ' + 'available'">
-                                                    <input @change="filterColorsBySize(item)" v-if="index == 0" :id="'swatch-2-' + item" type="radio" name="option-2" :value="item" checked />
-                                                    <input @change="filterColorsBySize(item)" v-else :id="'swatch-2-' + item" type="radio" name="option-2" :value="item" />
+                                                    <input @change="filterColorsBySize(item)" :id="'swatch-2-' + item" type="radio" name="option-2" :value="item" />
 
                                                     <label :for="'swatch-2-' + item">
                                                         {{item}}
@@ -188,8 +187,7 @@
                                             <div class="swatch clearfix Color" data-option-index="1">
                                                 <div class="header">Color :</div>
                                                 <div v-for="(item,index) in uniquesColors" :data-value="item" class="swatch-element color black available">
-                                                    <input v-if="index == 0" :id="'swatch-1-'+item" type="radio" name="option-1" value="black" checked />
-                                                    <input v-else :id="'swatch-1-'+item" type="radio" name="option-1" value="black" />
+                                                    <input :id="'swatch-1-'+item" type="radio" name="option-1" value="black" />
 
                                                     <label @click="filterAttrByColor(item)" :for="'swatch-1-'+item" :style="{backgroundColor: item}">
 
@@ -205,7 +203,7 @@
                                                     <form action="#">
                                                         <div class="product-quantity">
                                                             <div class="cart-plus-minus" >
-                                                                <input name="quantity" min="1" value="{{ qty }}" type="number" v-model="qty">
+                                                                <input name="quantity" min="1" :value="qty" type="number">
                                                             </div>
                                                         </div>
                                                     </form>
@@ -213,35 +211,17 @@
                                             </div>
                                             <div class="cart-and-wishlist-btn">
                                                 <div class="product-cart-action pro_dtl_btn">
-
-                                                    <button type="submit" class="ajax-spin-cart" id="AddToCart">
-    <span>
-      <span class="cart-title" id="AddToCartText">Add To Cart</span>
-      <span class="cart-loading">Wait..</span>
-      <span class="cart-added">Added</span>
-      <span class="cart-unavailable">Uavailable</span>
-    </span>
+                                                    <button @click="addToCart(product.id,color.product_attr,qty)" class="ajax-spin-cart" id="AddToCart">
+                                                        <span>
+                                                          <span class="cart-title" id="AddToCartText">Add To Cart</span>
+                                                        </span>
                                                     </button>
-                                                </div>
-
-
-                                                <div class="wishlist-action">
-
-                                                    <a class="wishlist" href="../account/login.html"
-                                                       title="Wishlist">
-                                                        <span class="add-wishlist"><i class="icon-heart"></i></span>
-                                                    </a>
-
-
                                                 </div>
                                             </div>
                                         </div>
 
-
                                         <!-- Share -->
                                         <div class="share-icons section fix pro_social_share d-flex">
-
-
                                             <h2 class="title_2">Share:</h2>
                                             <ul class="pro_social_link">
                                                 <li><a target="_blank"
@@ -708,6 +688,7 @@ import axios from "axios";
 import initializeSlick from "@/slick-carosel.js";
 import getUrlList from "@/provider.js";
 import { useRoute } from "vue-router";
+import {mapActions} from "vuex";
 
 export default {
     name: 'Product',
@@ -720,7 +701,7 @@ export default {
             item_code: '',
             product: {
                 product_attributes: [
-                    { price: '' }
+                    { price: ''}
                 ]
             },
             images: [],
@@ -741,36 +722,61 @@ export default {
             this.getProduct();
         }
     },
+    props: {
+        isProxy: Function,
+    },
     mounted() {
         this.getProduct();
     },
     methods: {
+        ...mapActions(['addToCart', 'getCartData']),
         updateImage(index) {
             this.currentImage = this.images[index].image;
+        },
+        async addToCart(product_id, product_attr_id, qty) {
+            // Gọi action addToCart từ store Vuex với một đối tượng payload
+            await this.$store.dispatch('addToCart', {product_id, product_attr_id, qty});
+        },
+        async getCartData() {
+            // Gọi action getCartData từ store Vuex
+            await this.$store.dispatch('getCartData');
         },
         showActiveClass(someValue, index) {
             // Implement your logic to add active class if necessary
             return '';
         },
         filterColorsBySize(selectedSize) {
-            // Lọc các màu tương ứng với size được chọn
-            const selectedColors = this.product.product_attributes
-                .filter(attr => attr.size.size === selectedSize) // Lọc các product_attributes có size tương ứng
-                .map(attr => attr.color); // Lấy giá trị color từ các product_attributes đã lọc
+            // Lọc các product_attributes có size tương ứng
+            const filteredAttrs = this.product.product_attributes.filter(attr => attr.size.size === selectedSize);
+
+            // Lấy các màu từ các product_attributes đã lọc
+            const selectedColors = filteredAttrs.map(attr => attr.color);
             this.uniquesColors = [...new Set(selectedColors.map(color => color.value))];
-            // this.price = this.product.product_attributes
-            //     .filter(attr => attr.color.value === this.uniquesColors[0]).map(attr => attr.price);
-            this.price = this.product.product_attributes
-                .find(attr => attr.color.value === this.uniquesColors[0]
-                    && attr.size.size === selectedSize).price;
-            console.log(this.price);
+
+            // Chọn màu đầu tiên (nếu có) và cập nhật giá và product_attr_id
+            if (this.uniquesColors.length > 0) {
+                const firstColor = this.uniquesColors[0];
+                const attr = filteredAttrs.find(attr => attr.color.value === firstColor);
+                if (attr) {
+                    this.price = attr.price;
+                    this.color.product_attr = attr.id;
+                }
+            }
         },
         filterAttrByColor(selectedColor) {
-            // Lọc các màu tương ứng với size được chọn
-            const selectedColors = this.product.product_attributes
-                .filter(attr => attr.color.value === selectedColor); // Lọc các product_attributes có size tương ứng
-            return selectedColor;
+            // Lọc các product_attributes có màu tương ứng
+            const selectedAttrs = this.product.product_attributes.filter(attr => attr.color.value === selectedColor);
 
+            // Lấy size hiện tại từ radio button được chọn
+            const selectedSize = document.querySelector('input[name="option-2"]:checked').value;
+
+            // Lọc product_attributes theo size và màu đã chọn
+            const attr = selectedAttrs.find(attr => attr.size.size === selectedSize);
+            if (attr) {
+                this.price = attr.price;
+                this.color.product_attr = attr.id;
+            }
+            console.log(this.color.product_attr);
         },
         async getProduct() {
             try {

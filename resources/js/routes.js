@@ -24,6 +24,9 @@ const routes = [
         name: 'Product',
         path: '/product/:item_code?/:slug?',
         component: Product,
+        props: route => ({
+            isProxy: Layout.methods.isProxy
+        })
     },
     {
         name: 'login',

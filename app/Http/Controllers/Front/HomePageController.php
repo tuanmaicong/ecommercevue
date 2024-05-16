@@ -93,6 +93,7 @@ class HomePageController extends Controller
         $sizes = Size::get();
         $colors = Color::get();
         $attributes = CategoryAttribute::where('category_id',$category->id)->with('attribute')->get();
+//        prx($products);
         return $this->success(['data'=> get_defined_vars()], 'Successfully data fetched');
     }
 
@@ -243,6 +244,7 @@ class HomePageController extends Controller
             $user = TempUser::where('token',$request->token)->first();
             $cart = Cart::where(['user_id'=>$user->user_id,'product_id'=>$request->product_id,
                 'product_attr_id' => $request->product_attr_id])->first();
+//            prx($request->all());
             if (isset($cart->id)){
                 $qty = $request->qty;
                 if ($cart->qty == $qty){

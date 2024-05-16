@@ -477,7 +477,7 @@ export default {
 
         async getProductCate() {
             try {
-                // const route = useRoute();
+                const route = useRoute();
                 this.slug = this.$route.params.slug;
                 console.log(this.slug);
                 if (this.slug == '' || this.slug == undefined || this.slug == null) {

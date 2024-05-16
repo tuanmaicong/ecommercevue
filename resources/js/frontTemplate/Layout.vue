@@ -337,8 +337,9 @@ export default {
             console.log('success');
             this.calculateCartTotal(val);
         },
+        //các hàm được gọi khi router thay đổi
         '$route'() {
-            this.handleLogout();
+            this.checkForLogout();
         }
     },
     mounted() {
@@ -370,6 +371,13 @@ export default {
                 this.$router.push({name: 'login'});
             } catch (error) {
                 console.error('Error occurred:', error);
+            }
+        },
+        checkForLogout() {
+            // Điều kiện cụ thể để logout
+            const shouldLogout = false; // Cập nhật điều kiện của bạn ở đây
+            if (shouldLogout) {
+                this.handleLogout();
             }
         },
         ...mapActions(['getCartData', 'addToCart']),
