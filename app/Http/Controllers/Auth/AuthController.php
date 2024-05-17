@@ -37,7 +37,7 @@ class AuthController extends Controller
         $user->roles()->attach($customer);
         return $this->success([
             'token' => $user->createToken('API Token')->plainTextToken
-        ]);
+        ],'Đăng ký thành công!');
     }
     public function loginUser(Request $request)
     {
@@ -67,7 +67,7 @@ class AuthController extends Controller
                         $user = User::where('id',Auth::User()->id)->first();
                         $user['token'] = $user->createToken('API Token')->plainTextToken;
                         return $this->success(
-                            ['user' => $user],'successfully login'
+                            ['user' => $user],'successfully login',200
                         );
                     }
                 }

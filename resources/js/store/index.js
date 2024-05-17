@@ -8,7 +8,12 @@ const store = createStore({
         isLoggedIn: false, // Đảm bảo rằng trạng thái mặc định là false
         cartProduct: [],
         cartCount: 0,
-        cartTotal: 0
+        cartTotal: 0,
+        snackbar: {
+            show: false,
+            message: '',
+            color: '',
+        },
     },
     mutations: {
         setLoggedIn(state, value) {
@@ -26,9 +31,23 @@ const store = createStore({
         },
         setCartTotal(state, total) {
             state.cartTotal = total;
-        }
+        },
+        showSnackbar(state, payload) {
+            state.snackbar.show = true;
+            state.snackbar.message = payload.message;
+            state.snackbar.color = payload.color;
+        },
+        hideSnackbar(state) {
+            state.snackbar.show = false;
+        },
     },
     actions: {
+        showSnackbar({ commit }, payload) {
+            commit('showSnackbar', payload);
+        },
+        hideSnackbar({ commit }) {
+            commit('hideSnackbar');
+        },
         async logout({ commit }) {
             try {
                 let access_token = localStorage.getItem('access_token') || '';
