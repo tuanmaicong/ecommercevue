@@ -86,7 +86,29 @@ const store = createStore({
             } catch (error) {
                 console.log(error);
             }
-        }
+        },
+        async removeCartData({ dispatch }, payload) {
+            console.log('vuex');
+            const { product_id, product_attr_id, qty } = payload;
+            try {
+                console.log(123);
+                let user_info = JSON.parse(localStorage.getItem('user_info'));
+                let data = await axios.post(getUrlList().removeCartData, {
+                    'token': user_info.user_id,
+                    'auth': user_info.auth,
+                    'product_id': product_id,
+                    'product_attr_id': product_attr_id,
+                    'qty': qty,
+                });
+                if (data.status == 200) {
+                    dispatch('getCartData');
+                } else {
+                    console.log('Data Not found');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
     getters: {
         isLoggedIn: state => state.isLoggedIn,

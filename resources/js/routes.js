@@ -46,7 +46,8 @@ const routes = [
         component: cart,
         props: route => ({
             isProxy: Layout.methods.isProxy,
-            findProductAttribute: Layout.methods.findProductAttribute
+            findProductAttribute: Layout.methods.findProductAttribute,
+            removeCartData:Layout.methods.removeCartData,
         })
     },
     {

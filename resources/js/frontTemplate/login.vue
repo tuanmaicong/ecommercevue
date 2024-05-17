@@ -34,6 +34,9 @@
                                             <div class="login-form-container">
                                                 <div class="login-text">
                                                     <h2>Đăng nhập</h2></div>
+                                                <div v-if="showError" class="error-message">
+                                                    <span class="warning">{{ errorMessage }}</span>
+                                                </div>
                                                 <div class="login-form">
                                                     <input type="email" v-model="email" name="email" id="email" placeholder="Email" required>
 
@@ -71,7 +74,6 @@
                                             </div>
                                         </form>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -89,7 +91,6 @@ import getUrlList from "@/provider.js";
 import {useRoute} from "vue-router";
 import { useStore } from 'vuex';
 
-
 export default {
     name: 'login',
     components: {
@@ -98,7 +99,9 @@ export default {
     data(){
         return {
             email:'',
-            password:''
+            password:'',
+            errorMessage: '',
+            showError: false
         }
     },
     watch: {
@@ -115,10 +118,18 @@ export default {
                 });
                 // Xử lý response ở đây
                 console.log(response.data);// Hoặc bạn có thể làm gì đó với response.data
-                localStorage.setItem('user_id',response.data.data.user.id);
-                localStorage.setItem('access_token',response.data.data.user.token);
-                this.$store.commit('setLoggedIn', true);
-                this.$router.push({name: 'Index'});
+                if (response.data.status == 200){
+                    localStorage.setItem('user_id',response.data.data.user.id);
+                    localStorage.setItem('access_token',response.data.data.user.token);
+                    this.$store.commit('setLoggedIn', true);
+                    this.$router.push({name: 'Index'});
+                }else {
+                    this.errorMessage = response.data.message;
+                    this.showError = true;
+                    setTimeout(() => {
+                        this.showError = false;
+                    }, 3000);
+                }
             } catch (error) {
                 console.error('Error occurred:', error);
             }
@@ -126,3 +137,10 @@ export default {
     }
 }
 </script>
+<style>
+.error-message {
+    color: red;
+    font-style: italic;
+    margin: 10px 0;
+}
+</style>

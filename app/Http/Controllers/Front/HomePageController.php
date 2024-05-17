@@ -131,44 +131,43 @@ class HomePageController extends Controller
     }
     function getUserData(Request $request)
     {
-//        prx($request->all());
         $user_id = $request->user_id;
         $token = '';
         $checkUser = '';
-        $user = User::where('id',$user_id)->first();
-        if ($user){
+        $user = User::where('id', $user_id)->first();
+        if ($user) {
             $user_id = $user->id;
-            $checkUser = TempUser::where('user_id',$user_id)->first();
+            $checkUser = TempUser::where('user_id', $user_id)->first();
             $token = TempUser::where('user_id', $user_id)->value('token');
-        }else{
+        } else {
             $token = $request->token;
-            $checkUser = TempUser::where('token',$token)->first();
+            $checkUser = TempUser::where('token', $token)->first();
         }
-        if (isset($checkUser->id)){
-            //token exist in Db
+        if (isset($checkUser->id)) {
+            // token exist in Db
             $data['user_type'] = $checkUser->user_type;
             $data['token'] = $checkUser->token;
-            if (checkTokenExpiryInMunites($checkUser->updated_at,60)){
-                //token has expire
+            if (checkTokenExpiryInMunites($checkUser->updated_at, 60)) {
+                // token has expired
                 $token = generateRandomString();
-                $checkUser->updated_at = date('Y-m-d h:i:s a',time());
+                $checkUser->updated_at = now();
+                $checkUser->token = $token;  // Update the token
                 $checkUser->save();
                 $data['token'] = $token;
-            }else{
-                //token not expire
+            } else {
+                // token not expired
             }
-        }else{
-            if ($user){
+        } else {
+            if ($user) {
                 $user_id = $user->id;
-//                prx($request->all());
                 $data['user_type'] = 1;
-            }else{
-                $user_id = rand(1111,9999);
+            } else {
+                $user_id = rand(1111, 9999);
                 $data['user_type'] = 2;
             }
-            //token not exist in Db
+            // token not exist in Db
             $token = generateRandomString();
-            $time = date('Y-m-d h:i:s a',time());
+            $time = now();
             TempUser::create([
                 'user_id' => $user_id,
                 'token' => $token,
@@ -178,7 +177,7 @@ class HomePageController extends Controller
             ]);
             $data['token'] = $token;
         }
-        return $this->success(['data'=> $data], 'Successfully data fetched');
+        return $this->success(['data' => $data], 'Successfully data fetched');
     }
     public function getCartData(Request $request)
     {
@@ -232,6 +231,7 @@ class HomePageController extends Controller
     }
     public function removeCartData(Request $request)
     {
+//        prx($request->all());
         $validation = Validator::make($request->all(),[
             'token' => 'required|exists:temp_users,token',
             'product_id' => 'required|exists:products,id',

@@ -110,6 +110,7 @@ export default {
                     'password': this.password
                 });
                 this.$router.push({name: 'login'});
+                alert('Đăng ký thành công!');
             }catch (error){
                 console.log(error);
             }

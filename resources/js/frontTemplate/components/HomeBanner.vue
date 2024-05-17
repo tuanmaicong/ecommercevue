@@ -12,7 +12,7 @@
                                 <h3>Sản phẩm bán chạy!</h3>
                                 <h1>{{item.text}}</h1>
                                 <p>Sản phẩm phù hợp với mọi gia đình dùng làm việc,trang trí phòng</p>
-                                <a href="" class="btn slider-btn uppercase"><span>Xem Chi tiết</span></a>
+                                <router-link to="/category/new-product" class="btn slider-btn uppercase"><span>Xem Chi tiết</span></router-link>
                             </div>
                         </div>
                         <div class="col-lg-6">

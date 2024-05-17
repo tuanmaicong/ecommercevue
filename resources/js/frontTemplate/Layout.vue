@@ -91,7 +91,7 @@
                                     class="bigcounter">{{ cartCount }}</span></span></a>
                                     <div class="mini-cart">
                                         <ul v-if="cartCount === 0" class="cart-tempty-title" style="display:block;">
-                                            <li>Your cart is empty!</li>
+                                            <li>Giỏ hàng của bạn đang trống!</li>
                                         </ul>
                                         <ul v-else v-for="(item, index) in cartProduct" :key="index" class="cart-item-loop">
                                             <li class="cart-item">
@@ -124,10 +124,10 @@
                                             </li>
                                         </ul>
 
-                                        <ul class="subtotal-title-area">
+                                        <ul v-if="cartCount > 0" class="subtotal-title-area">
                                             <li class="subtotal-titles">
                                                 <div class="subtotal-titles">
-                                                    <h3>Total :</h3><span class="shopping-cart__total"><span
+                                                    <h3>Tổng tiền :</h3><span class="shopping-cart__total"><span
                                                     class=money>{{
                                                         this.$parent.cartTotal !== undefined
                                                             ? this.$parent.cartTotal.toLocaleString('vi-VN')
@@ -384,72 +384,45 @@ export default {
                 this.handleLogout();
             }
         },
-        ...mapActions(['getCartData', 'addToCart']),
+        ...mapActions(['getCartData', 'addToCart','removeCartData']),
         findProductAttribute(product, productAttrId) {
             return product.product_attributes.find(attr => attr.id === productAttrId);
         },
         async removeCartData(product_id, product_attr_id, qty) {
-            try {
-                let data = await axios.post(getUrlList().removeCartData, {
-                    'token': this.user_info.user_id,
-                    'auth': this.user_info.auth,
-                    'product_id': product_id,
-                    'product_attr_id': product_attr_id,
-                    'qty': qty,
-                });
-                if (data.status == 200) {
-                    this.getCartData();
-                } else {
-                    console.log('Data Not found');
-                }
-            } catch (error) {
-                console.log(error);
-            }
+            // Gọi action removeCartData từ store Vuex với một đối tượng payload
+            await this.$store.dispatch('removeCartData', {product_id, product_attr_id, qty});
         },
         isProxy(value) {
             return value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === Array.prototype;
         },
         async getUser() {
             if (localStorage.getItem('user_info')) {
-                //user set into localStorage
                 var user = localStorage.getItem('user_info');
                 var testUser = JSON.parse(user);
                 this.user_info.user_id = testUser.user_id;
                 this.getUserData();
             } else {
-                //user not set into localStorage
                 this.getUserData();
             }
         },
         async getUserData() {
             try {
-                if (this.user_info) { // Kiểm tra xem user_info có tồn tại không
-                    // console.log(this.user_info.user_id);
+                if (this.user_info) {
                     let user_id = localStorage.getItem('user_id') || '';
-                    // console.log(localStorage.getItem('user_id'));
                     let data = await axios.post(getUrlList().getUserData, {
                         'token': this.user_info.user_id,
                         'user_id': user_id
                     });
                     if (data.status == 200) {
-                        console.log(data.data.data.data.user_type);
-                        if (data.data.data.data.user_type == 1) {
-                            //Auth user
-                            this.user_info.auth = true;
-                            this.user_info.user_id = data.data.data.data.token;
-                            localStorage.setItem('user_info', JSON.stringify(this.user_info));
-                            console.log(this.user_info.auth);
-                        } else {
-                            //Not Auth user
-                            this.user_info.auth = false;
-                            this.user_info.user_id = data.data.data.data.token;
-                            localStorage.setItem('user_info', JSON.stringify(this.user_info));
-                        }
+                        let responseData = data.data.data.data;
+                        this.user_info.auth = responseData.user_type == 1;
+                        this.user_info.user_id = responseData.token;
+                        localStorage.setItem('user_info', JSON.stringify(this.user_info));
                     } else {
                         console.log('Data Not found');
                     }
                 } else {
-                    console.log('user_info does not exist'); // Xử lý tình huống khi user_info không tồn tại
+                    console.log('user_info does not exist');
                 }
             } catch (error) {
                 console.log(error);

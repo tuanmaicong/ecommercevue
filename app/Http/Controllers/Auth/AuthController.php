@@ -33,7 +33,7 @@ class AuthController extends Controller
             'email' => $request->email
         ]);
         $customer = Role::where('slug','customer')->first();
-        event(new UserRegister($request->name,$request->email,$request->password));
+//        event(new UserRegister($request->name,$request->email,$request->password));
         $user->roles()->attach($customer);
         return $this->success([
             'token' => $user->createToken('API Token')->plainTextToken
@@ -74,7 +74,7 @@ class AuthController extends Controller
             }else{
                 return response()->json([
                     'status' => 404,
-                    'message' => 'Wrong'
+                    'message' => 'Email hoặc mật khẩu không chính xác.'
                 ]);
             }
         }

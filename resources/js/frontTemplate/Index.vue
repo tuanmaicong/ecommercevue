@@ -28,20 +28,9 @@
                                         <span class="new-price"> $230.00</span>
                                     </div>
                                     <p>
-                                        <p>Experience the epitome of comfort and style with our top-selling furniture
-                                            piece,
-                                            the "Harmony
-                                            Chair." Crafted with precision and upholstered in sumptuous fabrics, it
-                                            offers
-                                            the perfect blend of
-                                            modern aesthetics and ergonomic support. Designed to complement any living
-                                            space, the Harmony Chair
-                                            invites you to relax and unwind in unparalleled luxury. Redefine your home
-                                            with
-                                            this timeless
-                                            statement.</p>
+                                        Với sự cạnh tranh ngày càng khốc liệt trên thị trường thương mại điện tử, để thu hút khách hàng và cạnh tranh với những cửa hàng online khác, các chủ shop đang ngày càng đầu tư hơn về chất lượng dịch vụ, hình ảnh, giá cả, khuyến mại, quảng cáo,... Tuy vậy, có những điều tưởng chừng như đơn giản nhưng lại quyết định rất lớn đến tâm lý mua hàng của người tiêu dùng mà bạn dễ dàng bỏ qua, đó chính là một bài viết mô tả sản phẩm hay.
                                     </p>
-                                    <a class="btn shop-btn-two" href="products/humor-new-agregado.html">Shop Now</a>
+                                    <router-link to="/category/product-sale" class="btn shop-btn-two">Truy cập ngay</router-link>
                                 </div>
                             </div>
                         </div>
@@ -58,11 +47,9 @@
                         <div class="row">
                             <div class="col-lg-7 col-md-10">
                                 <div class="lg-banner-info">
-                                    <h2>Contrary to popular belief is not simply rand.</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit <br> sed do eiusmod
-                                        tempor
-                                        incid</p>
-                                    <a class="btn more-product-btn" href="collections/all.html">MORE PRODUCTS</a>
+                                    <h2>Sản phẩm dẫn đầu xu hướng</h2>
+                                    <p>Nội thất mang phong cách trang trọng,tinh tế.</p>
+                                    <router-link to="/category/new-product" class="btn more-product-btn" >Xem chi tiết</router-link>
                                 </div>
                             </div>
                         </div>
@@ -87,8 +74,8 @@
                                     </div>
                                     <div class="banner-contet">
                                         <p>30% Off</p>
-                                        <h3>Chair Collection</h3>
-                                        <a href="collections/all.html" class="btn-3">SHOP NOW</a>
+                                        <h3>Ghế văn phòng</h3>
+                                        <router-link to="/category/product-sale" class="btn-3">Truy cập ngay</router-link>
                                     </div>
                                 </div>
                                 <!-- single-banner end -->
@@ -107,10 +94,10 @@
                                         <p>30% Off</p>
 
 
-                                        <h3>Chair Collection</h3>
+                                        <h3>Ghế thư giãn</h3>
 
 
-                                        <a href="collections/all.html" class="btn-3">SHOP NOW</a>
+                                        <router-link to="/category/product-sale" class="btn-3">Truy cập ngay</router-link>
 
                                     </div>
                                 </div>
@@ -131,67 +118,25 @@
                         <div class="row">
                             <div class="col-lg-8 offset-md-2 col-md-8 col-sm-12">
                                 <div class="testimonial-slider">
-
                                     <div class="testimonial-inner text-center">
                                         <div class="test-cont">
                                             <img src="cdn/shop/files/2_70x842d.png?v=1613745605"
                                                  alt="testimonial image">
 
-                                            <p>There are many variations of passages of Lorem Ipsum available, but the
-                                                majority have suffered
-                                                alteration in some form. There are many variations of passages.</p>
+                                            <p>Các sản phẩm của shop được nhập khẩu từ các thương hiệu nổi tiếng mang đến
+                                            trải nghiệm tuyệt vời với người dùng!
+                                            </p>
 
                                         </div>
                                         <div class="test-author">
 
-                                            <h4>Michelle Mitchell</h4>
+                                            <h4>Tuanmc</h4>
 
 
-                                            <p>ui ux - Designer</p>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="testimonial-inner text-center">
-                                        <div class="test-cont">
-                                            <img src="cdn/shop/files/2_70x842d.png?v=1613745605"
-                                                 alt="testimonial image">
-
-                                            <p>There are many variations of passages of Lorem Ipsum available, but the
-                                                majority have suffered
-                                                alteration in some form. There are many variations of passages.</p>
-
-                                        </div>
-                                        <div class="test-author">
-
-                                            <h4>Michelle Mitchell</h4>
-
-
-                                            <p>ui ux - Designer</p>
+                                            <p>ui ux - Tuanmc</p>
 
                                         </div>
                                     </div>
-
-                                    <div class="testimonial-inner text-center">
-                                        <div class="test-cont">
-                                            <img src="cdn/shop/files/2_70x842d.png?v=1613745605"
-                                                 alt="testimonial image">
-
-                                            <p>There are many variations of passages of Lorem Ipsum available, but the
-                                                majority have suffered
-                                                alteration in some form. There are many variations of passages.</p>
-
-                                        </div>
-                                        <div class="test-author">
-
-                                            <h4>Michelle Mitchell</h4>
-
-
-                                            <p>ui ux - Designer</p>
-
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -208,8 +153,8 @@
                                 <div class="instagram-wrapper">
                                     <div class="instaram-title text-center">
 
-                                        <h3>Follow us on Instagram
-                                            <a href="#">@furniture</a>
+                                        <h3>Instagram
+                                            <a href="https://www.instagram.com/tuanmc__/">@tuanmc__</a>
                                         </h3>
 
                                     </div>
@@ -223,16 +168,16 @@
 
                                         <div class="col-lg-6 col-md-6">
                                             <a
-                                                href="cdn/shopifycloud/shopify/assets/no-image-2048-5e88c1b20e087fb7bbe9a3771824e743c244f437e4f8ba93bbf7b11b53f7824c.gif"><img
-                                                src="cdn/shop/files/1_da3d63b7-9dd7-4de8-9a8c-f1aaa8810e2b37c7.jpg?v=1625031869"
+                                                href="https://www.instagram.com/tuanmc__/"><img
+                                                src="/cdn/shop/files/1_da3d63b7-9dd7-4de8-9a8c-f1aaa8810e2b37c7.jpg?v=1625031869"
                                                 alt="insta_img"/></a>
                                         </div>
 
 
                                         <div class="col-lg-6 col-md-6">
                                             <a
-                                                href="cdn/shopifycloud/shopify/assets/no-image-2048-5e88c1b20e087fb7bbe9a3771824e743c244f437e4f8ba93bbf7b11b53f7824c.gif"><img
-                                                src="cdn/shop/files/2_013b8c16-ec7d-46b6-823e-859d918fb3916538.jpg?v=1625031891"
+                                                href="https://www.instagram.com/tuanmc__/"><img
+                                                src="/cdn/shop/files/2_013b8c16-ec7d-46b6-823e-859d918fb3916538.jpg?v=1625031891"
                                                 alt="insta_img"/></a>
                                         </div>
 
@@ -244,28 +189,21 @@
                                 <div class="subscribe-area">
                                     <div class="subsctibe-title text-center">
 
-                                        <h3>Subscribe</h3>
+                                        <h3>Đặt mua</h3>
 
 
-                                        <p>Lorem ipsum dolor sit amet consectetur elit.</p>
+                                        <p>Để lại thông tin liên hệ của bạn.</p>
 
                                     </div>
                                     <div class="subscribe-content text-center">
-                                        <form
-                                            action="//devitems.us11.list-manage.com//subscribe//post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef"
-                                            method="post" id="mc-embedded-subscribe-form"
-                                            name="mc-embedded-subscribe-form"
-                                            class="validate"
-                                            target="_blank" novalidate>
                                             <div id="mc_embed_signup_scroll" class="newsletter__box">
                                                 <input type="email" value="" name="EMAIL" class="email input-field"
                                                        id="mce-EMAIL"
-                                                       placeholder="your mail address" required>
+                                                       placeholder="Email" required>
                                                 <button type="submit" name="subscribe" id="mc-embedded-subscribe"
-                                                        class="btn subscribe-btn">SUBSCRIBE
+                                                        class="btn subscribe-btn">Gửi
                                                 </button>
                                             </div>
-                                        </form>
                                     </div>
                                 </div>
                             </div>

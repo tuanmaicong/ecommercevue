@@ -68,7 +68,7 @@
                                                 vn₫
                                             </span>
                                         </td>
-                                        <td class="pro-remove"><a href="/cart/change?line=1&amp;quantity=0">×</a></td>
+                                        <td class="pro-remove"><a href="javascript:void(0);" @click="removeCartData(item.products[0].id, item.product_attr_id, 1)">×</a></td>
                                     </tr>
 
                                     </tbody>
@@ -97,7 +97,7 @@
                                             </tr>
                                             </tbody>
                                         </table><div class="proceed-to-checkout">
-                                        <button type="submit" class="theme-default-button" name="checkout">Proceed to Checkout</button>
+                                        <router-link to="/checkout"><button type="submit" class="theme-default-button" name="checkout">Đặt hàng</button></router-link>
                                     </div>
                                     </div>
                                 </div>
@@ -135,13 +135,17 @@ export default {
     },
     props: {
         isProxy: Function,
-        findProductAttribute: Function
+        findProductAttribute: Function,
     },
     methods: {
-        ...mapActions(['getCartData']),
+        ...mapActions(['getCartData','removeCartData']),
         async getCartData() {
             // Gọi action getCartData từ store Vuex
             await this.$store.dispatch('getCartData');
+        },
+        async removeCartData(product_id, product_attr_id, qty) {
+            // Gọi action removeCartData từ store Vuex với một đối tượng payload
+            await this.$store.dispatch('removeCartData', {product_id, product_attr_id, qty});
         },
         findSizeColor(product, productAttrId) {
             const attribute = this.findProductAttribute(product, productAttrId);
