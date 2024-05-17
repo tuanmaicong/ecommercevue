@@ -93,33 +93,37 @@
                                         <ul v-if="cartCount === 0" class="cart-tempty-title" style="display:block;">
                                             <li>Your cart is empty!</li>
                                         </ul>
-                                        <ul v-else v-for="(item,index) in cartProduct" :key="index" class="cart-item-loop">
+                                        <ul v-else v-for="(item, index) in cartProduct" :key="index" class="cart-item-loop">
                                             <li class="cart-item">
-                                                <div class="cart-image"><a
-                                                    href="/products/como-por-ejemplo?variant=14137245368393"><img
-                                                    :src="item.products[0].image"
-                                                    alt=""></a></div>
-                                                <div class="cart-title"><a
-                                                    href="/products/como-por-ejemplo?variant=14137245368393"><h4>
-                                                    {{ item.products[0].name }}</h4></a><span
-                                                    class="quantity">{{ item.qty }} ×</span>
+                                                <div class="cart-image">
+                                                    <a :href="`/products/${item.products[0].slug}?variant=${item.product_attr_id}`">
+                                                        <img :src="findProductAttribute(item.products[0], item.product_attr_id).images[0].image" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="cart-title">
+                                                    <a :href="`/products/${item.products[0].slug}?variant=${item.product_attr_id}`">
+                                                        <h4>{{ item.products[0].name }}</h4>
+                                                    </a>
+                                                    <span class="quantity">{{ item.qty }} ×</span>
                                                     <div class="price-box">
-                                                        <span v-if="item.products[0].sale_id == null" class="new-price">
-                                                            <span class="money">{{
-                                                                    item.products[0].product_attributes[0].price.toLocaleString('vi-VN')
-                                                                }} vn₫</span>
-                                                        </span>
+                <span v-if="item.products[0].sale_id == null" class="new-price">
+                    <span class="money">
+                        {{ findProductAttribute(item.products[0], item.product_attr_id).price.toLocaleString('vi-VN') }} vn₫
+                    </span>
+                </span>
                                                         <span v-else class="new-price">
-                                                            <span class="money">{{
-                                                                    (item.products[0].product_attributes[0].price * (1 - item.products[0].sale.value / 100)).toLocaleString('vi-VN')
-                                                                }} vn₫</span>
-                                                        </span>
+                    <span class="money">
+                        {{ (findProductAttribute(item.products[0], item.product_attr_id).price * (1 - item.products[0].sale.value / 100)).toLocaleString('vi-VN') }} vn₫
+                    </span>
+                </span>
                                                     </div>
-                                                    <a class="remove_from_cart" href="javascript:void(0);"
-                                                       @click="removeCartData(item.products[0].id,item.products[0].product_attributes[0].id,1)"><i
-                                                        class="icon-trash icons"></i></a></div>
+                                                    <a class="remove_from_cart" href="javascript:void(0);" @click="removeCartData(item.products[0].id, item.product_attr_id, 1)">
+                                                        <i class="icon-trash icons"></i>
+                                                    </a>
+                                                </div>
                                             </li>
                                         </ul>
+
                                         <ul class="subtotal-title-area">
                                             <li class="subtotal-titles">
                                                 <div class="subtotal-titles">
@@ -381,6 +385,9 @@ export default {
             }
         },
         ...mapActions(['getCartData', 'addToCart']),
+        findProductAttribute(product, productAttrId) {
+            return product.product_attributes.find(attr => attr.id === productAttrId);
+        },
         async removeCartData(product_id, product_attr_id, qty) {
             try {
                 let data = await axios.post(getUrlList().removeCartData, {

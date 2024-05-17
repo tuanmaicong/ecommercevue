@@ -55,6 +55,7 @@ const store = createStore({
                     });
                     if (data.status == 200) {
                         commit('setCartProduct', data.data.data.data);
+                        console.log(data.data.data.data);
                         commit('setCartCount', data.data.data.data.length);
                         // Tính toán cartTotal tại đây nếu cần
                     } else {
