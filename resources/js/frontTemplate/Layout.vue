@@ -106,16 +106,16 @@
                                                     </a>
                                                     <span class="quantity">{{ item.qty }} ×</span>
                                                     <div class="price-box">
-                <span v-if="item.products[0].sale_id == null" class="new-price">
-                    <span class="money">
-                        {{ findProductAttribute(item.products[0], item.product_attr_id).price.toLocaleString('vi-VN') }} vn₫
-                    </span>
-                </span>
-                                                        <span v-else class="new-price">
-                    <span class="money">
-                        {{ (findProductAttribute(item.products[0], item.product_attr_id).price * (1 - item.products[0].sale.value / 100)).toLocaleString('vi-VN') }} vn₫
-                    </span>
-                </span>
+                                                        <span v-if="item.products[0].sale_id == null" class="new-price">
+                                                            <span class="money">
+                                                                {{ findProductAttribute(item.products[0], item.product_attr_id).price.toLocaleString('vi-VN') }} vn₫
+                                                            </span>
+                                                        </span>
+                                                                                                <span v-else class="new-price">
+                                                            <span class="money">
+                                                                {{ (findProductAttribute(item.products[0], item.product_attr_id).price * (1 - item.products[0].sale.value / 100)).toLocaleString('vi-VN') }} vn₫
+                                                            </span>
+                                                        </span>
                                                     </div>
                                                     <a class="remove_from_cart" href="javascript:void(0);" @click="removeCartData(item.products[0].id, item.product_attr_id, 1)">
                                                         <i class="icon-trash icons"></i>
@@ -136,8 +136,8 @@
                                             </li>
                                             <li class="mini-cart-btns">
                                                 <div class="cart-btns">
-                                                    <a href="cart.html">View cart</a>
-                                                    <a href="index.html">Checkout</a>
+                                                    <router-link to="/cart">Giỏ hàng</router-link>
+                                                    <router-link to="/checkout">Thanh toán</router-link>
                                                 </div>
                                             </li>
                                         </ul>

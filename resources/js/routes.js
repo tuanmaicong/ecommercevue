@@ -6,6 +6,8 @@ import Product from "@/frontTemplate/Product.vue";
 import Layout from "@/frontTemplate/Layout.vue";
 import login from "@/frontTemplate/login.vue";
 import register from "@/frontTemplate/register.vue";
+import cart from "@/frontTemplate/cart.vue";
+import checkout from "@/frontTemplate/checkout.vue";
 const routes = [
     {
         name: 'Index',
@@ -37,6 +39,24 @@ const routes = [
         name: 'register',
         path: '/register',
         component: register,
+    },
+    {
+        name: 'cart',
+        path: '/cart',
+        component: cart,
+        props: route => ({
+            isProxy: Layout.methods.isProxy,
+            findProductAttribute: Layout.methods.findProductAttribute
+        })
+    },
+    {
+        name: 'checkout',
+        path: '/checkout',
+        component: checkout,
+        props: route => ({
+            isProxy: Layout.methods.isProxy,
+            findProductAttribute: Layout.methods.findProductAttribute
+        })
     }
 ];
 const router = createRouter({

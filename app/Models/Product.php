@@ -28,7 +28,7 @@ class Product extends Model
     }
     public function product_attributes()
     {
-        return $this->hasMany(ProductAttr::class,'product_id','id')->with('images');
+        return $this->hasMany(ProductAttr::class,'product_id','id')->with('images','size','color');
     }
     public function sale()
     {
