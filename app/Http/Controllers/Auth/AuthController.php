@@ -67,7 +67,7 @@ class AuthController extends Controller
                         $user = User::where('id',Auth::User()->id)->first();
                         $user['token'] = $user->createToken('API Token')->plainTextToken;
                         return $this->success(
-                            ['user' => $user],'successfully login',200
+                            ['user' => $user],'Đăng nhập thành công!',200
                         );
                     }
                 }

@@ -278,22 +278,15 @@
                             <div class="product-description-review">
                                 <div class="description-review-title nav" role=tablist>
                                     <a class="active" href="#pro-dec" data-toggle="tab" role="tab" aria-selected="true">
-                                        Description
+                                        Mô tả
                                     </a>
-
                                     <a href="#pro-review" data-toggle="tab" role="tab" aria-selected="false">
-                                        Reviews
+                                        Đánh giá
                                     </a>
-
-
                                     <a href="#comment-box" data-toggle="tab" aria-selected="false">
-                                        Comments
+                                        Bình luận
                                     </a>
-
-
                                 </div>
-
-
                                 <div class="description-review-text tab-content">
                                     <div v-html="description" class="tab-pane active" id="pro-dec" role="tabpanel">
                                     </div>

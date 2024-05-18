@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\CategoryAttribute;
 use App\Models\Color;
 use App\Models\HomeBanner;
+use App\Models\OrderSummary;
 use App\Models\Product;
 use App\Models\ProductAttr;
 use App\Models\ProductAttribute;
@@ -268,6 +269,57 @@ class HomePageController extends Controller
             return $this->success(['data'=> $data], 'Successfully data fetched');
         }else{
             return $this->error('Product Not found',400,[]);
+        }
+    }
+    public function orderSummary(Request $request)
+    {
+
+        $token = $request->user_id;
+        $user_id = TempUser::where('token',$token)->first();
+        $data = $request->validate([
+            'name_customer' => 'required|string',
+            'email_customer' => 'required|string|email',
+            'phone_number_customer' => 'required|string',
+            'address_customer' => 'required|string',
+            'country_customer' => 'required|string',
+            'city_customer' => 'required|string',
+            'zip_code' => 'required|string',
+            'shipping' => 'required|string',
+            'payment_method_id' => 'required|integer',
+            'code_order_summary' => 'required|string',
+            'total_order_summary' => 'required|integer',
+            'status_oder_id' => 'required|integer',
+            'products' => 'required|array',
+            'products.*.product_id' => 'required|integer',
+            'products.*.product_attr_id' => 'required|integer',
+            'products.*.qty' => 'required|integer',
+        ]);
+
+        try {
+            foreach ($data['products'] as $item) {
+                OrderSummary::create([
+                    'user_id' => $user_id->user_id,
+                    'name_customer' => $data['name_customer'],
+                    'email_customer' => $data['email_customer'],
+                    'phone_number_customer' => $data['phone_number_customer'],
+                    'address_customer' => $data['address_customer'],
+                    'country_customer' => $data['country_customer'],
+                    'city_customer' => $data['city_customer'],
+                    'zip_code' => $data['zip_code'],
+                    'shipping' => $data['shipping'],
+                    'payment_method_id' => $data['payment_method_id'],
+                    'code_order_summary' => $data['code_order_summary'],
+                    'product_id' => $item['product_id'],
+                    'product_attr_id' => $item['product_attr_id'],
+                    'qty' => $item['qty'],
+                    'total_order_summary' => $data['total_order_summary'],
+                    'status_payment' => $data['payment_method_id'],
+                    'status_oder_id' => $data['status_oder_id'],
+                ]);
+            }
+            return response()->json(['message' => 'Đặt hàng thành công'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to place order', 'message' => $e->getMessage()], 500);
         }
     }
 }

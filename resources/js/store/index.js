@@ -127,13 +127,13 @@ const store = createStore({
             } catch (error) {
                 console.log(error);
             }
-        },
+        }
     },
     getters: {
         isLoggedIn: state => state.isLoggedIn,
         cartProduct: state => state.cartProduct,
         cartCount: state => state.cartCount,
-        cartTotal: state => state.cartTotal
+        cartTotal: state => state.cartTotal,
     }
 });
 // Khi Vuex store được tạo, kiểm tra và cập nhật trạng thái đăng nhập từ localStorage

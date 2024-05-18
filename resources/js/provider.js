@@ -13,6 +13,7 @@ export function getUrlList(){
         register: ''+baseUrl+'/auth/register',
         login: ''+baseUrl+'/auth/login',
         logout: ''+baseUrl+'/auth/logout',
+        orderSummary: ''+baseUrl+'/orderSummary',
     }
 }
 export default getUrlList;

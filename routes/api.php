@@ -48,3 +48,4 @@ Route::post('/getUserData', [HomePageController::class, 'getUserData']);
 Route::post('/getCartData', [HomePageController::class, 'getCartData']);
 Route::post('/addToCart', [HomePageController::class, 'addToCart']);
 Route::post('/removeCartData', [HomePageController::class, 'removeCartData']);
+Route::post('/orderSummary', [HomePageController::class, 'orderSummary']);

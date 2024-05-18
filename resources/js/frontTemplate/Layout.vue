@@ -479,4 +479,8 @@ export default {
     background-color: #66BB6A; /* Màu nền bạn muốn */
     color: #fff; /* Màu chữ nếu cần */
 }
+.snackbar-request .v-snackbar__wrapper {
+    background-color: #039BE5; /* Màu nền bạn muốn */
+    color: #fff; /* Màu chữ nếu cần */
+}
 </style>
